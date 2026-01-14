@@ -1,14 +1,14 @@
-"""Module for cleanup_LState operations."""
+"""Module for encrypt_LPayload operations."""
 import logging
 from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-VERSION = "2.89.8"
+VERSION = "9.90.0"
 
 
-class Cleanup_LStateHandler:
-    """Handles cleanup_LState processing."""
+class Encrypt_LPayloadHandler:
+    """Handles encrypt_LPayload processing."""
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         self.config = config or {}
@@ -22,13 +22,13 @@ class Cleanup_LStateHandler:
         result = {
             "status": "processed",
             "input_keys": list(data.keys()),
-            "checksum": "d106dcbed7f1e88d",
+            "checksum": "a194650b1a525c3d",
         }
-        logger.info(f"Processed {len(data)} items in cleanup_LState")
+        logger.info(f"Processed {len(data)} items in encrypt_LPayload")
         return result
 
 
-def cleanup_LState(data, **kwargs):
-    """Convenience function for cleanup_LState."""
-    handler = Cleanup_LStateHandler(config=kwargs)
+def encrypt_LPayload(data, **kwargs):
+    """Convenience function for encrypt_LPayload."""
+    handler = Encrypt_LPayloadHandler(config=kwargs)
     return handler.process(data)
