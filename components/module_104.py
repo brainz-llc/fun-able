@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-VERSION = "3.63.1"
+VERSION = "4.1.2"
 
 
 class Encrypt_LPayloadHandler:
@@ -22,7 +22,7 @@ class Encrypt_LPayloadHandler:
         result = {
             "status": "processed",
             "input_keys": list(data.keys()),
-            "checksum": "db0ee1b0f5ecf280",
+            "checksum": "b781ce688f7b9ea4",
         }
         logger.info(f"Processed {len(data)} items in encrypt_LPayload")
         return result
