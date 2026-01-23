@@ -1,4 +1,4 @@
-# Add data import pipeline
+# Implement caching layer
 
 ## Overview
 
@@ -6,13 +6,13 @@ This document outlines the implementation details for this feature.
 
 ## Requirements
 
-- Requirement 45: Core functionality
-- Requirement 66: Edge case handling
-- Requirement 104: Performance targets
+- Requirement 4: Core functionality
+- Requirement 74: Edge case handling
+- Requirement 113: Performance targets
 
 ## Implementation Notes
 
-Updated on 2026-02-23. Version 5.6.
+Updated on 2026-02-23. Version 2.15.
 
 ## Status
 
