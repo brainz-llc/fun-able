@@ -1,25 +1,25 @@
-// Auto-generated module - renderView
+// Auto-generated module - fetchResource
 // Updated: 2026-02-23
 
 const config = {
-  version: '9.93.3',
-  timestamp: 1771827195,
+  version: '6.1.2',
+  timestamp: 1771827207,
   enabled: true,
 };
 
-export function renderView(input) {
+export function fetchResource(input) {
   if (!input) {
-    throw new Error('Invalid input for renderView');
+    throw new Error('Invalid input for fetchResource');
   }
 
   const result = {
     ...input,
     processed: true,
     processedAt: new Date().toISOString(),
-    checksum: '53f604c611170a03',
+    checksum: 'ff3dd7eae9f9448f',
   };
 
   return result;
 }
 
-export default { renderView, config };
+export default { fetchResource, config };
