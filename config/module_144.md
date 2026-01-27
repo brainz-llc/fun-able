@@ -6,13 +6,13 @@ This document outlines the implementation details for this feature.
 
 ## Requirements
 
-- Requirement 46: Core functionality
-- Requirement 66: Edge case handling
-- Requirement 125: Performance targets
+- Requirement 26: Core functionality
+- Requirement 96: Edge case handling
+- Requirement 134: Performance targets
 
 ## Implementation Notes
 
-Updated on 2026-02-23. Version 3.25.
+Updated on 2026-02-23. Version 1.87.
 
 ## Status
 
