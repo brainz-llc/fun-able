@@ -2,7 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 import consumer from "channels/consumer"
 
 export default class extends Controller {
-  static targets = ["timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount", "victoryModal", "victoryTitle", "victoryGif", "connectionStatus", "mobileScoreboardOverlay", "mobileScoreboardBackdrop", "mobileScoreboardPanel"]
+  static targets = [
+    "timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount",
+    "victoryModal", "victoryTitle", "victoryGif", "connectionStatus",
+    "mobileScoreboardOverlay", "mobileScoreboardBackdrop", "mobileScoreboardPanel",
+    "winnerOverlay", "winnerCard", "winnerName", "countdown", "submissionCard"
+  ]
   static values = {
     id: Number,
     playerId: Number,
@@ -172,16 +177,93 @@ export default class extends Controller {
   }
 
   handleWinnerSelected(data) {
-    // Highlight the winning submission briefly
+    console.log("Winner selected:", data)
+
+    // Step 1: Fade out non-winning cards
+    const allCards = this.submissionCardTargets
     const winningEl = document.querySelector(`[data-submission-id="${data.winning_submission_id}"]`)
-    if (winningEl) {
-      winningEl.classList.add("ring-4", "ring-yellow-400", "scale-105")
+
+    allCards.forEach(card => {
+      if (card.dataset.submissionId !== String(data.winning_submission_id)) {
+        card.classList.add("opacity-30", "scale-95", "pointer-events-none")
+        card.style.transition = "all 0.5s ease-out"
+      }
+    })
+
+    // Step 2: After a moment, show the winner overlay
+    setTimeout(() => {
+      this.showWinnerOverlay(data, winningEl)
+    }, 800)
+  }
+
+  showWinnerOverlay(data, winningEl) {
+    if (!this.hasWinnerOverlayTarget) {
+      // Fallback if no overlay target - just refresh
+      setTimeout(() => window.Turbo.visit(window.location.href), 2000)
+      return
     }
 
-    // Quick refresh to next round
+    // Build the winning cards HTML
+    const cardsHtml = data.winning_cards.map((card, idx) => `
+      <p class="text-base md:text-lg text-white leading-relaxed ${idx > 0 ? 'mt-3 pt-3 border-t border-white/20' : ''}">
+        ${card.content}
+      </p>
+    `).join('')
+
+    // Set winner card content
+    this.winnerCardTarget.innerHTML = cardsHtml
+
+    // Set winner name
+    this.winnerNameTarget.textContent = `🏆 ${data.winner_name} gana la ronda!`
+
+    // Show overlay with animation
+    this.winnerOverlayTarget.classList.remove("hidden")
+    this.winnerOverlayTarget.classList.add("flex")
+
+    // Animate in
     setTimeout(() => {
-      window.Turbo.visit(window.location.href)
-    }, 2000)
+      this.winnerOverlayTarget.querySelector('[data-animate-in]')?.classList.remove("opacity-0", "scale-90")
+    }, 50)
+
+    // Fire confetti
+    if (typeof window.confetti === "function") {
+      window.confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      })
+    }
+
+    // Start countdown after celebration
+    setTimeout(() => {
+      this.startCountdown()
+    }, 1500)
+  }
+
+  startCountdown() {
+    if (!this.hasCountdownTarget) {
+      setTimeout(() => window.Turbo.visit(window.location.href), 3000)
+      return
+    }
+
+    let count = 3
+    this.countdownTarget.classList.remove("hidden")
+    this.countdownTarget.textContent = count
+
+    const countInterval = setInterval(() => {
+      count--
+      if (count > 0) {
+        this.countdownTarget.textContent = count
+        this.countdownTarget.classList.add("scale-125")
+        setTimeout(() => this.countdownTarget.classList.remove("scale-125"), 200)
+      } else {
+        clearInterval(countInterval)
+        this.countdownTarget.textContent = "¡Siguiente ronda!"
+        setTimeout(() => {
+          window.Turbo.visit(window.location.href)
+        }, 500)
+      }
+    }, 1000)
   }
 
   handleGameEnded(data) {
