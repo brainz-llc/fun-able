@@ -65,6 +65,20 @@ class Round < ApplicationRecord
     )
   end
 
+  def force_advance_to_judging!
+    return false unless submitting?
+
+    # Shuffle submission order for judging (whatever we have)
+    card_submissions.shuffle.each_with_index do |submission, index|
+      submission.update!(reveal_order: index + 1)
+    end
+
+    update!(
+      phase: :judging,
+      timer_expires_at: game.turn_timer.seconds.from_now
+    )
+  end
+
   def advance_to_revealing!
     return false unless can_advance_to_revealing?
     update!(phase: :revealing)

@@ -89,6 +89,22 @@ class GameService
     schedule_timer!
   end
 
+  def force_advance_to_judging!
+    round = game.current_round
+    return unless round&.submitting?
+
+    # Check if we have at least one submission
+    if round.card_submissions.any?
+      round.force_advance_to_judging!
+      GameChannel.broadcast_judging_started(game, round)
+      schedule_timer!
+    else
+      # No submissions at all - auto-select a random player as "winner" and skip to next round
+      Rails.logger.warn("No submissions for round #{round.id}, skipping to next round")
+      skip_round_no_submissions!
+    end
+  end
+
   def select_winner!(judge_player, submission_id)
     round = game.current_round
     raise Error, 'No es momento de seleccionar' unless round&.judging? || round&.revealing?
@@ -123,7 +139,8 @@ class GameService
     when 'submitting'
       # Auto-submit random cards for players who haven't submitted
       auto_submit_for_missing_players!
-      advance_to_judging!
+      # Force advance to judging even if some players couldn't submit
+      force_advance_to_judging!
     when 'judging'
       # Auto-select random winner
       auto_select_winner!
@@ -187,6 +204,21 @@ class GameService
         Rails.logger.error("Auto-submit failed for player #{player.id}: #{e.message}")
       end
     end
+  end
+
+  def skip_round_no_submissions!
+    round = game.current_round
+    return unless round
+
+    # Mark round as complete without a winner
+    round.update!(phase: :complete, timer_expires_at: nil)
+
+    # Start new round
+    game.start_new_round!
+    new_round = game.current_round
+
+    GameChannel.broadcast_new_round(game, new_round)
+    schedule_timer!
   end
 
   def auto_select_winner!
