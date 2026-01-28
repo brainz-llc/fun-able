@@ -1,6 +1,6 @@
 <div class="min-h-screen -mt-16 pt-16 relative overflow-hidden">
-  <!-- Animated Background -->
-  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+  <!-- Animated Background - Only on mobile -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none md:hidden">
     <div class="absolute top-1/4 -left-32 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
     <div class="absolute top-1/2 -right-32 w-80 h-80 bg-cyan-500/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
     <div class="absolute bottom-1/4 left-1/3 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
@@ -13,10 +13,10 @@
     <div class="relative w-full max-w-sm md:max-w-6xl h-44 md:h-72 mb-6 md:mb-0 md:mt-10 order-1 md:order-3">
 
       <!-- Desktop Only: Extra White Card (far left) -->
-      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-18deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-18deg] transition-transform hover:rotate-0 hover:scale-105 duration-300"
            style="left: 2%; width: 160px; height: 210px;">
         <div class="w-full h-full rounded-xl p-4"
-             style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
+             style="background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 30px rgba(0,0,0,0.4);">
           <p class="text-white text-sm leading-relaxed">Llorar en el bano del trabajo.</p>
         </div>
       </div>
@@ -50,31 +50,31 @@
       </div>
 
       <!-- Desktop Only: Extra White Card (far right) -->
-      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[15deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[15deg] transition-transform hover:rotate-0 hover:scale-105 duration-300"
            style="right: 2%; width: 160px; height: 210px;">
         <div class="w-full h-full rounded-xl p-4"
-             style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
+             style="background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 30px rgba(0,0,0,0.4);">
           <p class="text-white text-sm leading-relaxed">La foto de perfil de tu ex.</p>
         </div>
       </div>
 
       <!-- Desktop Only: Extra Black Card (left of center) -->
-      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-8deg] transition-transform hover:rotate-0 hover:scale-110 duration-300 z-[5]"
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-8deg] transition-transform hover:rotate-0 hover:scale-105 duration-300 z-[5]"
            style="left: 28%; width: 160px; height: 210px;">
         <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
-             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 30px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
-          <p class="text-white text-sm leading-relaxed">Mi vida amorosa es como <span class="border-b-2 border-pink-500 inline-block w-14"></span>.</p>
-          <span class="text-[10px] text-pink-500/60">Fun-able</span>
+             style="background: #0f0f0f; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Mi vida amorosa es como <span class="border-b-2 border-white/40 inline-block w-14"></span>.</p>
+          <span class="text-[10px] text-white/30">Fun-able</span>
         </div>
       </div>
 
       <!-- Desktop Only: Extra Black Card (right of center) -->
-      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[6deg] transition-transform hover:rotate-0 hover:scale-110 duration-300 z-[5]"
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[6deg] transition-transform hover:rotate-0 hover:scale-105 duration-300 z-[5]"
            style="right: 28%; width: 160px; height: 210px;">
         <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
-             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 30px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
-          <p class="text-white text-sm leading-relaxed">En mi tiempo libre me gusta <span class="border-b-2 border-pink-500 inline-block w-14"></span>.</p>
-          <span class="text-[10px] text-pink-500/60">Fun-able</span>
+             style="background: #0f0f0f; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">En mi tiempo libre me gusta <span class="border-b-2 border-white/40 inline-block w-14"></span>.</p>
+          <span class="text-[10px] text-white/30">Fun-able</span>
         </div>
       </div>
     </div>
@@ -88,15 +88,13 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="w-full max-w-md md:max-w-2xl space-y-5 order-3 md:order-2">
-      <!-- Create Game Button - Different on mobile vs desktop -->
-      <%= link_to new_game_path, class: "group relative block w-full overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" do %>
-        <div class="absolute inset-0 bg-gradient-to-r from-pink-600 via-pink-500 to-purple-500"></div>
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 bg-[length:200%_100%] animate-gradient"></div>
-
-        <!-- Mobile Layout -->
-        <div class="relative md:hidden flex items-center justify-center gap-4 py-5 px-8">
-          <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+    <div class="w-full max-w-md space-y-5 order-3 md:order-2">
+      <!-- Create Game Button - Mobile: Neon glow, Desktop: Simple -->
+      <%= link_to new_game_path, class: "group block w-full" do %>
+        <!-- Mobile Layout - Neon style -->
+        <div class="md:hidden flex items-center justify-center gap-4 py-5 px-8 rounded-2xl bg-pink-500 transition-all duration-300 active:scale-[0.98]"
+             style="box-shadow: 0 0 40px rgba(236, 72, 153, 0.5);">
+          <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
             </svg>
@@ -107,28 +105,13 @@
           </div>
         </div>
 
-        <!-- Desktop Layout -->
-        <div class="relative hidden md:flex items-center justify-between py-4 px-8">
-          <div class="flex items-center gap-5">
-            <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/20">
-              <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-            </div>
-            <div class="text-left">
-              <span class="block text-2xl font-black text-white tracking-wide"><%= t('home.create_game') %></span>
-              <span class="block text-sm text-white/60">Crea una sala y comparte el codigo con tus amigos</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
-            <span class="text-sm font-medium">Comenzar</span>
-            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-            </svg>
-          </div>
+        <!-- Desktop Layout - Neon border -->
+        <div class="hidden md:flex items-center justify-center gap-3 py-4 px-8 rounded-xl border border-pink-500/50 hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300">
+          <svg class="w-5 h-5 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span class="text-lg font-medium text-white"><%= t('home.create_game') %></span>
         </div>
-
-        <div class="absolute inset-0 rounded-2xl" style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 0 40px rgba(236, 72, 153, 0.4);"></div>
       <% end %>
 
       <!-- Divider -->
@@ -141,17 +124,25 @@
       <!-- Join Game -->
       <%= form_with url: join_game_by_code_path, method: :post, class: "w-full" do %>
         <div class="relative">
+          <!-- Mobile: Cyan neon style -->
           <input type="text"
                  name="code"
                  placeholder="ABC123"
                  maxlength="6"
-                 class="w-full text-center uppercase tracking-[0.5em] font-mono text-2xl py-4 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 placeholder:text-white/20"
+                 class="w-full text-center uppercase tracking-[0.5em] font-mono text-2xl md:text-xl py-4 md:py-3 rounded-2xl md:rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 md:focus:ring-white/30 placeholder:text-white/20"
                  style="background: rgba(10, 10, 15, 0.9); border: 2px solid rgba(6, 182, 212, 0.3); color: #22d3ee; letter-spacing: 0.5em;"
                  autocomplete="off">
-          <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95"
+          <!-- Mobile: Cyan button -->
+          <button type="submit" class="md:hidden absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95"
                   style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </button>
+          <!-- Desktop: Simple button -->
+          <button type="submit" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
           </button>
         </div>
@@ -167,74 +158,127 @@
     </svg>
   </div>
 
-  <!-- How to Play Section -->
-  <div class="relative z-10 py-16 px-6">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12 text-white">Como Jugar</h2>
+  <!-- How to Play - Animated Demo Section -->
+  <div class="relative z-10 py-12 md:py-20 px-4" data-controller="game-demo">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-white">Como Jugar</h2>
 
-    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="text-center p-6 rounded-2xl transition-all duration-300 hover:scale-105"
-           style="background: linear-gradient(180deg, rgba(236, 72, 153, 0.1) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(236, 72, 153, 0.2);">
-        <div class="w-14 h-14 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold"
-             style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);">1</div>
-        <h3 class="font-bold text-lg mb-2 text-pink-400">Crea o Unete</h3>
-        <p class="text-white/50 text-sm">Crea una partida y comparte el codigo con tus amigos</p>
+    <!-- Phase Indicator -->
+    <p class="text-center text-lg md:text-xl font-medium mb-8 h-8 text-cyan-400"
+       data-game-demo-target="phaseIndicator">
+      El Zar revela la carta negra
+    </p>
+
+    <!-- Demo Container -->
+    <div class="relative max-w-2xl mx-auto h-[420px] md:h-[480px] overflow-hidden">
+
+      <!-- Black Card (Center Top) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-75"
+           data-game-demo-target="blackCard">
+        <div class="w-40 md:w-48 h-52 md:h-60 rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+                    border: 2px solid rgba(236, 72, 153, 0.5);
+                    box-shadow: 0 0 30px rgba(236, 72, 153, 0.3), 0 10px 30px rgba(0,0,0,0.5);">
+          <p class="text-white text-sm md:text-base leading-relaxed">
+            Lo peor de las reuniones familiares es <span class="border-b-2 border-pink-500 inline-block w-16 md:w-20"></span>.
+          </p>
+          <span class="text-xs text-pink-500/60">Fun-able</span>
+        </div>
       </div>
 
-      <div class="text-center p-6 rounded-2xl transition-all duration-300 hover:scale-105"
-           style="background: linear-gradient(180deg, rgba(6, 182, 212, 0.1) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(6, 182, 212, 0.2);">
-        <div class="w-14 h-14 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold"
-             style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">2</div>
-        <h3 class="font-bold text-lg mb-2 text-cyan-400">Responde</h3>
-        <p class="text-white/50 text-sm">Elige tus mejores cartas blancas para completar la negra</p>
+      <!-- Submitted Cards Area (Middle) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-[180px] md:top-[200px] w-full max-w-lg opacity-0 transition-opacity duration-500"
+           data-game-demo-target="submittedCards">
+
+        <div class="flex justify-center items-end gap-2 md:gap-4">
+          <!-- Opponent 1 Card -->
+          <div class="w-28 md:w-36 h-36 md:h-44 rounded-lg p-3 -translate-x-full opacity-0 transition-all duration-500 ease-out relative"
+               data-game-demo-target="opponentCard1"
+               style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%);
+                      border: 1px solid rgba(255,255,255,0.15);
+                      box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+            <p class="text-white/90 text-xs md:text-sm leading-relaxed">Llorar en el bano del trabajo.</p>
+            <div class="absolute bottom-2 right-2 text-[10px] text-white/30">Jugador 1</div>
+          </div>
+
+          <!-- My Submission (Center) -->
+          <div class="w-32 md:w-40 h-40 md:h-48 rounded-lg p-3 translate-y-full opacity-0 transition-all duration-500 ease-out relative z-10"
+               data-game-demo-target="mySubmission"
+               style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%);
+                      border: 1px solid rgba(6, 182, 212, 0.4);
+                      box-shadow: 0 0 20px rgba(6, 182, 212, 0.2), 0 10px 25px rgba(0,0,0,0.4);">
+            <p class="text-white text-xs md:text-sm leading-relaxed">Tu tio borracho en la boda.</p>
+            <div class="absolute bottom-2 right-2 text-[10px] text-cyan-400/60">Tu</div>
+          </div>
+
+          <!-- Opponent 2 Card -->
+          <div class="w-28 md:w-36 h-36 md:h-44 rounded-lg p-3 translate-x-full opacity-0 transition-all duration-500 ease-out relative"
+               data-game-demo-target="opponentCard2"
+               style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%);
+                      border: 1px solid rgba(255,255,255,0.15);
+                      box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+            <p class="text-white/90 text-xs md:text-sm leading-relaxed">Los memes de WhatsApp de tu mama.</p>
+            <div class="absolute bottom-2 right-2 text-[10px] text-white/30">Jugador 2</div>
+          </div>
+        </div>
+
+        <!-- Winner Badge -->
+        <div class="absolute left-1/2 -translate-x-1/2 top-0 -mt-6 scale-0 opacity-0 transition-all duration-500 ease-out z-20"
+             data-game-demo-target="winnerBadge">
+          <div class="px-4 py-2 rounded-full font-bold text-sm"
+               style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+                      box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+                      color: #1a1a1a;">
+            +1 Punto
+          </div>
+        </div>
       </div>
 
-      <div class="text-center p-6 rounded-2xl transition-all duration-300 hover:scale-105"
-           style="background: linear-gradient(180deg, rgba(168, 85, 247, 0.1) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(168, 85, 247, 0.2);">
-        <div class="w-14 h-14 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold"
-             style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">3</div>
-        <h3 class="font-bold text-lg mb-2 text-purple-400">Gana</h3>
-        <p class="text-white/50 text-sm">El Zar elige la respuesta mas graciosa. Gana puntos!</p>
+      <!-- Player Hand (Bottom) -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full opacity-0 transition-all duration-700 ease-out"
+           data-game-demo-target="playerHand">
+        <div class="flex justify-center items-end -space-x-4 md:-space-x-6">
+          <!-- Card 1 -->
+          <div class="w-24 md:w-32 h-32 md:h-40 rounded-lg p-2 md:p-3 -rotate-12 transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+               data-game-demo-target="playerCard1"
+               style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%);
+                      border: 1px solid rgba(6, 182, 212, 0.3);
+                      box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+            <p class="text-white/80 text-[10px] md:text-xs leading-relaxed">Ignorar las llamadas de tu mama.</p>
+          </div>
+
+          <!-- Card 2 (Selected) -->
+          <div class="w-26 md:w-36 h-36 md:h-44 rounded-lg p-2 md:p-3 rotate-0 z-10 transition-all duration-300 cursor-pointer"
+               data-game-demo-target="playerCard2"
+               style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%);
+                      border: 1px solid rgba(6, 182, 212, 0.4);
+                      box-shadow: 0 0 15px rgba(6, 182, 212, 0.15), 0 10px 25px rgba(0,0,0,0.4);">
+            <p class="text-white text-xs md:text-sm leading-relaxed">Tu tio borracho en la boda.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="w-24 md:w-32 h-32 md:h-40 rounded-lg p-2 md:p-3 rotate-12 transition-all duration-300 hover:-translate-y-2 cursor-pointer"
+               data-game-demo-target="playerCard3"
+               style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%);
+                      border: 1px solid rgba(6, 182, 212, 0.3);
+                      box-shadow: 0 8px 20px rgba(0,0,0,0.4);">
+            <p class="text-white/80 text-[10px] md:text-xs leading-relaxed">Un video de TikTok de 3 horas.</p>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 
-  <!-- Features -->
-  <div class="relative z-10 py-16 px-6">
-    <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="p-5 rounded-xl text-center transition-all duration-300 hover:scale-105"
-           style="background: rgba(15, 15, 20, 0.6); border: 1px solid rgba(255,255,255,0.1);">
-        <div class="text-3xl mb-2">🌎</div>
-        <h3 class="font-bold text-sm text-white mb-1">Regional</h3>
-        <p class="text-white/40 text-xs">Humor local</p>
-      </div>
-      <div class="p-5 rounded-xl text-center transition-all duration-300 hover:scale-105"
-           style="background: rgba(15, 15, 20, 0.6); border: 1px solid rgba(255,255,255,0.1);">
-        <div class="text-3xl mb-2">🎨</div>
-        <h3 class="font-bold text-sm text-white mb-1">Personaliza</h3>
-        <p class="text-white/40 text-xs">Crea mazos</p>
-      </div>
-      <div class="p-5 rounded-xl text-center transition-all duration-300 hover:scale-105"
-           style="background: rgba(15, 15, 20, 0.6); border: 1px solid rgba(255,255,255,0.1);">
-        <div class="text-3xl mb-2">⚡</div>
-        <h3 class="font-bold text-sm text-white mb-1">Tiempo Real</h3>
-        <p class="text-white/40 text-xs">Sin recargas</p>
-      </div>
-      <div class="p-5 rounded-xl text-center transition-all duration-300 hover:scale-105"
-           style="background: rgba(15, 15, 20, 0.6); border: 1px solid rgba(255,255,255,0.1);">
-        <div class="text-3xl mb-2">🔥</div>
-        <h3 class="font-bold text-sm text-white mb-1">+18</h3>
-        <p class="text-white/40 text-xs">Sin limites</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Browse Decks CTA -->
-  <div class="relative z-10 py-16 px-6 text-center">
-    <%= link_to decks_path, class: "inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-white/80 hover:text-white transition-all duration-300 hover:scale-105", style: "background: rgba(15, 15, 20, 0.8); border: 1px solid rgba(168, 85, 247, 0.3);" do %>
-      <span>Explorar Mazos</span>
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-      </svg>
-    <% end %>
-  </div>
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    .shadow-winner {
+      box-shadow: 0 0 40px rgba(251, 191, 36, 0.5), 0 0 80px rgba(251, 191, 36, 0.3) !important;
+    }
+  </style>
 </div>
