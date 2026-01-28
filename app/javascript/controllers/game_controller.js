@@ -153,6 +153,11 @@ export default class extends Controller {
   }
 
   handleNewRound(data) {
+    // If we're showing winner animation, ignore - let the animation handle redirect
+    if (this.showingWinnerAnimation) {
+      console.log("Ignoring new_round - winner animation in progress")
+      return
+    }
     // Refresh the page to get new round state
     window.Turbo.visit(window.location.href)
   }
@@ -216,6 +221,9 @@ export default class extends Controller {
 
   handleWinnerSelected(data) {
     console.log("Winner selected:", data)
+
+    // Prevent new_round from interrupting animation
+    this.showingWinnerAnimation = true
 
     const allCards = this.submissionCardTargets
     const winningIdx = allCards.findIndex(card =>
@@ -375,6 +383,9 @@ export default class extends Controller {
   }
 
   handleGameEnded(data) {
+    // Prevent new_round from interrupting animation
+    this.showingWinnerAnimation = true
+
     // Show victory modal after a short delay
     setTimeout(() => {
       this.showVictory(data.winner_name, "game_win")

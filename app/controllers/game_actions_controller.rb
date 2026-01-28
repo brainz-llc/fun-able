@@ -96,10 +96,14 @@ class GameActionsController < ApplicationController
     if round.select_winner!(submission)
       GameChannel.broadcast_winner_selected(current_game, round, submission)
 
+      # Delay the next round broadcast to allow winner animation to play
+      # The client will handle the transition after showing the celebration
       if current_game.finished?
-        GameChannel.broadcast_game_ended(current_game)
+        # Game ended - client will show victory modal then redirect
+        BroadcastNewRoundJob.set(wait: 6.seconds).perform_later(current_game.id, :game_ended)
       else
-        GameChannel.broadcast_new_round(current_game, current_game.current_round)
+        # New round - client will show winner celebration then countdown
+        BroadcastNewRoundJob.set(wait: 7.seconds).perform_later(current_game.id, :new_round)
       end
 
       respond_to do |format|
