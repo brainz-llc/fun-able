@@ -102,6 +102,26 @@ export default class extends Controller {
     }
   }
 
+  showToast(message, type = "info") {
+    // Remove existing toast
+    const existing = document.getElementById("game-toast")
+    if (existing) existing.remove()
+
+    const toast = document.createElement("div")
+    toast.id = "game-toast"
+    toast.className = `fixed bottom-20 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg shadow-lg z-50 text-white font-medium transition-all ${
+      type === "success" ? "bg-green-500" : type === "error" ? "bg-red-500" : "bg-terracotta"
+    }`
+    toast.textContent = message
+    document.body.appendChild(toast)
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+      toast.style.opacity = "0"
+      setTimeout(() => toast.remove(), 300)
+    }, 3000)
+  }
+
   handleReceived(data) {
     console.log("Received:", data.type, data)
 
@@ -178,20 +198,33 @@ export default class extends Controller {
   }
 
   handleWinnerSelected(data) {
-    this.showVictory(data.winner_name, "round_win")
+    // First highlight the winning submission
+    const winningEl = document.querySelector(`[data-submission-id="${data.winning_submission_id}"]`)
+    if (winningEl) {
+      winningEl.classList.add("ring-4", "ring-green-500", "scale-105")
+    }
 
-    // Update scoreboard
+    // Show victory modal after a short delay to see the winning cards
+    setTimeout(() => {
+      this.showVictory(data.winner_name, "round_win")
+    }, 1500)
+
+    // Wait longer so players can see the celebration
     setTimeout(() => {
       window.Turbo.visit(window.location.href)
-    }, 3000)
+    }, 10000)
   }
 
   handleGameEnded(data) {
-    this.showVictory(data.winner_name, "game_win")
+    // Show victory modal after a short delay
+    setTimeout(() => {
+      this.showVictory(data.winner_name, "game_win")
+    }, 1000)
 
+    // Wait even longer for game winner celebration
     setTimeout(() => {
       window.Turbo.visit(window.location.href)
-    }, 5000)
+    }, 15000)
   }
 
   updateTimer(data) {
@@ -243,16 +276,30 @@ export default class extends Controller {
 
     this.victoryTitleTarget.textContent =
       category === "game_win"
-        ? `${winnerName} gana la partida!`
-        : `${winnerName} gana la ronda!`
+        ? `🏆 ${winnerName} gana la partida! 🏆`
+        : `🎉 ${winnerName} gana la ronda!`
+
+    // Show loading placeholder
+    this.victoryGifTarget.innerHTML = `
+      <div class="w-full h-48 bg-bg-surface rounded flex items-center justify-center">
+        <div class="animate-pulse text-text-secondary">Cargando...</div>
+      </div>
+    `
 
     // Fetch victory GIF
     fetch(`/api/v1/memes/victory?category=${category}`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data.url) {
-          this.victoryGifTarget.innerHTML = `<img src="${data.data.url}" class="w-full rounded">`
+          const img = new Image()
+          img.onload = () => {
+            this.victoryGifTarget.innerHTML = `<img src="${data.data.url}" class="w-full rounded max-h-64 object-contain">`
+          }
+          img.src = data.data.url
         }
+      })
+      .catch(() => {
+        this.victoryGifTarget.innerHTML = ""
       })
 
     this.victoryModalTarget.style.display = "flex"
@@ -260,10 +307,18 @@ export default class extends Controller {
     // Trigger confetti if available
     if (typeof window.confetti === "function") {
       window.confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 150,
+        spread: 100,
         origin: { y: 0.6 }
       })
+
+      // Fire more confetti for game win
+      if (category === "game_win") {
+        setTimeout(() => {
+          window.confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0 } })
+          window.confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1 } })
+        }, 500)
+      }
     }
   }
 
