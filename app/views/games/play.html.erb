@@ -24,37 +24,63 @@
   </div>
 
   <!-- Top Bar -->
-  <div class="relative z-20 flex items-center justify-between px-4 py-3 bg-black/40 backdrop-blur-md border-b border-white/10">
-    <div class="flex items-center gap-3">
-      <span class="text-white font-bold">
-        Ronda <%= round&.round_number || 1 %>
-      </span>
-      <span class="text-white/40 text-sm">
-        / <%= current_game.points_to_win %>
-      </span>
-    </div>
-
-    <!-- Timer -->
-    <div class="text-3xl md:text-4xl font-mono font-bold text-cyan-400"
-         data-game-target="timer"
-         data-controller="timer"
-         data-timer-expires-at-value="<%= round&.timer_expires_at&.iso8601 %>"
-         style="text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);">
-      <span data-timer-target="display">--</span>
-    </div>
-
-    <div class="flex items-center gap-3">
-      <div class="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/10">
-        <span class="text-xs text-white/50">Pts</span>
-        <span class="font-bold text-cyan-400"><%= current_game_player&.score || 0 %></span>
+  <div class="relative z-20 px-4 py-3 bg-black/60 backdrop-blur-xl border-b border-white/5">
+    <div class="flex items-center justify-between">
+      <!-- Left: Round Counter -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
+             style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+                    border: 1px solid rgba(236, 72, 153, 0.2);">
+          <span class="text-[10px] uppercase tracking-wider text-pink-400/70">Ronda</span>
+          <span class="text-lg font-black text-white" style="text-shadow: 0 0 10px rgba(236, 72, 153, 0.4);">
+            <%= round&.round_number || 1 %>
+          </span>
+        </div>
       </div>
-      <button type="button"
-              class="p-2 rounded-lg text-white/60 hover:text-white hover:bg-white/10 transition-all"
-              data-action="click->game#toggleScoreboard">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
+
+      <!-- Center: Timer -->
+      <div class="absolute left-1/2 -translate-x-1/2 flex flex-col items-center"
+           data-game-target="timer"
+           data-controller="timer"
+           data-timer-expires-at-value="<%= round&.timer_expires_at&.iso8601 %>">
+        <div class="relative">
+          <div class="px-5 py-2 rounded-xl"
+               style="background: linear-gradient(145deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+                      border: 1px solid rgba(6, 182, 212, 0.25);
+                      box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);">
+            <span class="text-2xl md:text-3xl font-mono font-black text-cyan-400 tabular-nums"
+                  data-timer-target="display"
+                  style="text-shadow: 0 0 15px rgba(6, 182, 212, 0.6), 0 0 30px rgba(6, 182, 212, 0.3);">
+              --
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Score + Menu -->
+      <div class="flex items-center gap-2">
+        <!-- Score Badge -->
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
+             style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(34, 211, 238, 0.1) 100%);
+                    border: 1px solid rgba(6, 182, 212, 0.2);">
+          <svg class="w-3.5 h-3.5 text-cyan-400/70" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          <span class="text-lg font-black text-white" style="text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);">
+            <%= current_game_player&.score || 0 %>
+          </span>
+          <span class="text-[10px] text-white/30">/ <%= current_game.points_to_win %></span>
+        </div>
+
+        <!-- Menu Button -->
+        <button type="button"
+                class="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all"
+                data-action="click->game#toggleScoreboard">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -91,25 +117,57 @@
       <div class="lg:w-1/2 flex-grow">
 
         <!-- Status Message -->
-        <div class="text-center mb-4" data-game-target="statusMessage">
+        <div class="text-center mb-6" data-game-target="statusMessage">
           <% if is_judge %>
             <% if is_submitting_phase %>
-              <p class="text-pink-400 font-medium">Eres el Zar - Esperando cartas...</p>
-              <p class="text-white/40 text-sm mt-1" data-game-target="submissionCount">
-                <%= round.submissions_count %>/<%= round.expected_submissions_count %> jugadores
-              </p>
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-2"
+                   style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+                          border: 1px solid rgba(236, 72, 153, 0.3);">
+                <span class="text-lg">👑</span>
+                <span class="text-pink-400 font-bold text-sm">Eres el Zar</span>
+              </div>
+              <div class="flex items-center justify-center gap-3 mt-3" data-game-target="submissionCount">
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+                  <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+                  <span class="text-white/60 text-sm">Esperando cartas</span>
+                  <span class="font-bold text-cyan-400"><%= round.submissions_count %></span>
+                  <span class="text-white/30">/</span>
+                  <span class="text-white/50"><%= round.expected_submissions_count %></span>
+                </div>
+              </div>
             <% else %>
-              <p class="text-pink-400 font-medium">Toca la carta ganadora</p>
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                   style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(168, 85, 247, 0.15) 100%);
+                          border: 1px solid rgba(236, 72, 153, 0.4);
+                          animation: pulse 2s ease-in-out infinite;">
+                <span class="text-lg">👆</span>
+                <span class="text-pink-400 font-bold text-sm">Elige la carta ganadora</span>
+              </div>
             <% end %>
           <% elsif has_submitted %>
-            <p class="text-cyan-400 font-medium">Carta enviada</p>
-            <p class="text-white/40 text-sm mt-1" data-game-target="submissionCount">
-              Esperando a los demas... (<%= round.submissions_count %>/<%= round.expected_submissions_count %>)
-            </p>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-2"
+                 style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(34, 211, 238, 0.1) 100%);
+                        border: 1px solid rgba(6, 182, 212, 0.3);">
+              <span class="text-lg">✓</span>
+              <span class="text-cyan-400 font-bold text-sm">Carta enviada</span>
+            </div>
+            <div class="flex items-center justify-center gap-3 mt-3" data-game-target="submissionCount">
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+                <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+                <span class="text-white/60 text-sm">Esperando</span>
+                <span class="font-bold text-cyan-400"><%= round.submissions_count %></span>
+                <span class="text-white/30">/</span>
+                <span class="text-white/50"><%= round.expected_submissions_count %></span>
+              </div>
+            </div>
           <% elsif is_judging_phase %>
-            <p class="text-white/50">El Zar esta eligiendo...</p>
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                 style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></div>
+              <span class="text-white/60 text-sm">El Zar esta eligiendo...</span>
+            </div>
           <% else %>
-            <p class="text-white/50 text-sm">Elige tu carta</p>
+            <p class="text-white/40 text-sm">Selecciona una carta de tu mano</p>
           <% end %>
         </div>
 
@@ -206,17 +264,17 @@
 
     <!-- Player's Hand (only if can submit) -->
     <% if show_hand %>
-      <div class="mt-8 lg:mt-10" data-controller="hand" data-hand-pick-count-value="<%= round&.pick_count || 1 %>">
+      <div class="mt-8 lg:mt-10 pb-28 lg:pb-4" data-controller="hand" data-hand-pick-count-value="<%= round&.pick_count || 1 %>">
         <div class="text-center mb-4">
           <h3 class="text-lg font-bold text-white">Tu Mano</h3>
           <p class="text-xs text-white/40">Toca para seleccionar</p>
         </div>
 
         <!-- Hand Cards -->
-        <div class="flex gap-3 overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:flex-wrap lg:justify-center"
+        <div class="flex gap-3 overflow-x-auto pt-3 pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 lg:flex-wrap lg:justify-center"
              data-hand-target="cards"
              style="-webkit-overflow-scrolling: touch;">
-          <% current_game_player&.cards_in_hand&.first(10)&.each do |card| %>
+          <% current_game_player&.cards_in_hand&.first(8)&.each do |card| %>
             <div class="game-card-touch flex-shrink-0 w-[130px] h-[175px] p-3 rounded-xl cursor-pointer transition-all duration-200
                         bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30
                         hover:border-cyan-500 hover:-translate-y-2 active:scale-95"
@@ -242,21 +300,27 @@
         <% end %>
 
         <!-- Mobile Bottom Bar -->
-        <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[60] p-4 bg-black/95 backdrop-blur-md border-t border-white/10"
+        <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[60] p-4 bg-black/95 backdrop-blur-xl border-t border-white/5"
              style="padding-bottom: max(1rem, env(safe-area-inset-bottom));">
-          <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-              <span class="text-xl font-bold text-cyan-400" data-hand-target="mobileSelectedCount">0</span>
-              <span class="text-white/50">/ <%= round&.pick_count || 1 %></span>
+          <div class="flex items-center gap-3">
+            <!-- Selected Counter -->
+            <div class="flex items-center gap-1 px-3 py-2 rounded-xl"
+                 style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.1) 100%);
+                        border: 1px solid rgba(168, 85, 247, 0.25);">
+              <span class="text-xl font-black text-white tabular-nums" data-hand-target="mobileSelectedCount"
+                    style="text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);">0</span>
+              <span class="text-white/30 text-sm">/</span>
+              <span class="text-white/50 text-sm"><%= round&.pick_count || 1 %></span>
             </div>
+
             <%= form_with url: submit_cards_game_game_actions_path(current_game),
                           method: :post,
                           data: { hand_target: "mobileForm", turbo_frame: "_top" },
                           class: "flex-1" do |f| %>
               <div data-hand-target="mobileCardInputs"></div>
-              <%= f.submit "Enviar",
-                  class: "w-full py-3 rounded-xl font-bold text-white bg-pink-500
-                          disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer",
+              <%= f.submit "Enviar Carta",
+                  class: "w-full py-3 rounded-xl font-bold text-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed",
+                  style: "background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);",
                   disabled: true,
                   data: { hand_target: "mobileSubmitButton" } %>
             <% end %>
