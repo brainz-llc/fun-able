@@ -7,12 +7,14 @@ export default class extends Controller {
     "victoryModal", "victoryTitle", "victoryGif", "connectionStatus",
     "mobileScoreboardOverlay", "mobileScoreboardBackdrop", "mobileScoreboardPanel",
     "winnerOverlay", "winnerCard", "winnerName", "countdown", "submissionCard",
-    "phaseIndicator", "judgingContainer"
+    "phaseIndicator", "judgingContainer", "submissionsTable", "tableCard", "statusMessage"
   ]
   static values = {
     id: Number,
     playerId: Number,
-    isJudge: Boolean
+    isJudge: Boolean,
+    phase: String,
+    hasSubmitted: Boolean
   }
 
   connect() {
@@ -163,19 +165,56 @@ export default class extends Controller {
   }
 
   handleCardSubmitted(data) {
-    // Show submission count update
     const submittedCount = data.submissions_count
     const expectedCount = data.expected_count
 
     console.log(`Card submitted: ${submittedCount}/${expectedCount}`)
 
+    // Update submission count text
     if (this.hasSubmissionCountTarget) {
-      this.submissionCountTarget.textContent = `${submittedCount}/${expectedCount} jugadores han respondido`
+      if (this.isJudgeValue) {
+        this.submissionCountTarget.textContent = `${submittedCount}/${expectedCount} jugadores`
+      } else if (this.hasSubmittedValue) {
+        this.submissionCountTarget.textContent = `Esperando a los demas... (${submittedCount}/${expectedCount})`
+      }
+    }
+
+    // Add a new face-down card to the table if we have the table target
+    if (this.hasSubmissionsTableTarget && this.phaseValue === "submitting") {
+      this.addFaceDownCard()
     }
 
     // If all submitted, page will be refreshed by judging_started event
     if (data.all_submitted) {
       console.log("All players submitted - waiting for judging_started")
+    }
+  }
+
+  addFaceDownCard() {
+    // Find and remove an empty slot if exists
+    const emptySlot = this.submissionsTableTarget.querySelector('[data-empty-slot]')
+    if (emptySlot) {
+      emptySlot.remove()
+    }
+
+    // Create new face-down card
+    const card = document.createElement('div')
+    card.className = 'w-[100px] h-[140px] rounded-xl transition-all duration-500'
+    card.dataset.gameTarget = 'tableCard'
+    card.style.cssText = `
+      background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      animation: slideInUp 0.4s ease-out both;
+    `
+    card.innerHTML = '<div class="w-full h-full flex items-center justify-center"><span class="text-2xl opacity-30">🃏</span></div>'
+
+    // Insert before empty slots
+    const firstEmptySlot = this.submissionsTableTarget.querySelector('[data-empty-slot]')
+    if (firstEmptySlot) {
+      this.submissionsTableTarget.insertBefore(card, firstEmptySlot)
+    } else {
+      this.submissionsTableTarget.appendChild(card)
     }
   }
 

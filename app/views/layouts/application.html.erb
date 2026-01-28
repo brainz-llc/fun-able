@@ -38,9 +38,8 @@
         -webkit-tap-highlight-color: transparent;
       }
 
-      /* Prevent overscroll bounce on iOS */
+      /* Safe area padding */
       body {
-        overscroll-behavior: none;
         padding-top: var(--sat);
         padding-left: var(--sal);
         padding-right: var(--sar);
@@ -48,7 +47,7 @@
 
       /* Ensure main content accounts for fixed bars */
       main {
-        padding-bottom: calc(var(--sab) + 1rem);
+        padding-bottom: calc(var(--sab) + 0.5rem);
       }
 
       /* Mobile menu overlay animation */
@@ -69,12 +68,6 @@
         transform: translateX(-100%);
       }
 
-      /* Pull-to-refresh prevention on mobile */
-      @media (max-width: 1023px) {
-        body {
-          overscroll-behavior-y: contain;
-        }
-      }
     </style>
   </head>
 
@@ -90,6 +83,8 @@
       <%= yield %>
     </main>
 
-    <%= render 'shared/footer' %>
+    <% unless content_for?(:hide_footer) %>
+      <%= render 'shared/footer' %>
+    <% end %>
   </body>
 </html>
