@@ -1,0 +1,86 @@
+<div class="max-w-6xl mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-bold"><%= t('nav.browse_decks') %></h1>
+    <%= link_to t('deck.create_new'), new_deck_path, class: "btn btn-primary" %>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-bg-card rounded-lg p-4 mb-6">
+    <%= form_with url: decks_path, method: :get, class: "flex flex-wrap gap-4 items-end" do |f| %>
+      <div>
+        <%= f.label :region_id, t('region.select'), class: "label" %>
+        <%= f.collection_select :region_id, Region.active.sorted, :id, :display_name,
+            { include_blank: t('region.all'), selected: params[:region_id] },
+            class: "input" %>
+      </div>
+
+      <div>
+        <%= f.label :content_rating, "Clasificacion", class: "label" %>
+        <%= f.select :content_rating,
+            options_for_select([
+              [t('region.all'), ''],
+              [t('deck.content_rating.family'), 'family'],
+              [t('deck.content_rating.adult'), 'adult'],
+              [t('deck.content_rating.nsfw'), 'nsfw']
+            ], params[:content_rating]),
+            {},
+            class: "input" %>
+      </div>
+
+      <div>
+        <%= f.label :sort, "Ordenar", class: "label" %>
+        <%= f.select :sort,
+            options_for_select([
+              ['Mas populares', 'popular'],
+              ['Mas recientes', 'recent']
+            ], params[:sort] || 'popular'),
+            {},
+            class: "input" %>
+      </div>
+
+      <%= f.submit t('actions.filter'), class: "btn btn-secondary" %>
+    <% end %>
+  </div>
+
+  <!-- Decks Grid -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @decks.each do |deck| %>
+      <%= link_to deck_path(deck), class: "deck-card block" do %>
+        <div class="deck-card-header">
+          <div class="flex items-center justify-between">
+            <h2 class="font-bold text-lg"><%= deck.name %></h2>
+            <% if deck.official? %>
+              <span class="text-xs bg-terracotta px-2 py-0.5 rounded"><%= t('deck.official') %></span>
+            <% end %>
+          </div>
+          <% if deck.region %>
+            <span class="region-badge mt-2"><%= deck.region.display_name %></span>
+          <% end %>
+        </div>
+
+        <div class="deck-card-body">
+          <p class="text-text-secondary text-sm line-clamp-2"><%= deck.description %></p>
+        </div>
+
+        <div class="deck-card-footer">
+          <div class="text-sm text-text-muted">
+            <%= deck.black_cards_count %> negras &middot; <%= deck.white_cards_count %> blancas
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="rating-<%= deck.content_rating %> px-2 py-0.5 rounded text-xs">
+              <%= t("deck.content_rating.#{deck.content_rating}") %>
+            </span>
+            <span class="text-terracotta font-bold">+<%= deck.votes_count %></span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @decks.empty? %>
+    <div class="text-center py-12">
+      <p class="text-text-secondary text-lg">No se encontraron mazos</p>
+      <%= link_to t('deck.create_new'), new_deck_path, class: "btn btn-primary mt-4" %>
+    </div>
+  <% end %>
+</div>

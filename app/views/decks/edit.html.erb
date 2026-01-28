@@ -1,0 +1,13 @@
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-3xl font-bold mb-8"><%= t('deck.edit') %>: <%= @deck.name %></h1>
+
+  <%= render 'form', deck: @deck %>
+
+  <div class="mt-8 pt-8 border-t border-gray-700">
+    <%= button_to t('actions.delete'),
+        deck_path(@deck),
+        method: :delete,
+        class: "btn btn-danger",
+        data: { turbo_confirm: "Eliminar este mazo permanentemente?" } %>
+  </div>
+</div>

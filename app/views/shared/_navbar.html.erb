@@ -1,0 +1,45 @@
+<nav class="bg-bg-card border-b border-gray-800 sticky top-0 z-40">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <%= link_to root_path, class: "flex items-center gap-2 text-xl font-bold text-terracotta hover:text-terracotta-light transition" do %>
+        <span class="text-2xl">🃏</span>
+        <span class="hidden sm:inline">Cartas Contra la Formalidad</span>
+        <span class="sm:hidden">CCF</span>
+      <% end %>
+
+      <!-- Navigation -->
+      <div class="flex items-center gap-4">
+        <%= link_to t('nav.browse_decks'), decks_path, class: "btn-ghost px-3 py-2 rounded text-sm hidden md:block" %>
+
+        <% if logged_in? %>
+          <%= link_to new_game_path, class: "btn btn-primary text-sm" do %>
+            <%= t('nav.create_game') %>
+          <% end %>
+
+          <div class="relative" data-controller="dropdown">
+            <button type="button" class="player-avatar text-sm" data-action="click->dropdown#toggle">
+              <%= current_user.avatar_initials %>
+            </button>
+            <div class="absolute right-0 mt-2 w-48 bg-bg-card rounded-lg shadow-lg py-1 hidden" data-dropdown-target="menu">
+              <div class="px-4 py-2 border-b border-gray-800">
+                <div class="font-medium"><%= current_user.display_name %></div>
+                <% if guest_user? %>
+                  <div class="text-xs text-text-muted"><%= t('user.guest') %></div>
+                <% end %>
+              </div>
+              <% if guest_user? %>
+                <%= link_to t('user.upgrade_account'), new_registration_path, class: "block px-4 py-2 text-sm hover:bg-bg-surface" %>
+              <% end %>
+              <%= link_to t('nav.my_decks'), my_decks_decks_path, class: "block px-4 py-2 text-sm hover:bg-bg-surface" %>
+              <%= button_to t('nav.logout'), session_path, method: :delete, class: "w-full text-left px-4 py-2 text-sm hover:bg-bg-surface text-error" %>
+            </div>
+          </div>
+        <% else %>
+          <%= link_to t('nav.login'), new_session_path, class: "btn-ghost px-3 py-2 rounded text-sm" %>
+          <%= button_to t('home.play_as_guest'), create_guest_session_path, class: "btn btn-primary text-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,35 @@
+<%= form_with model: deck, class: "bg-bg-card rounded-xl p-8 space-y-6" do |f| %>
+  <div>
+    <%= f.label :name, t('activerecord.attributes.deck.name'), class: "label" %>
+    <%= f.text_field :name, class: "input", required: true, minlength: 3, maxlength: 100 %>
+  </div>
+
+  <div>
+    <%= f.label :description, t('activerecord.attributes.deck.description'), class: "label" %>
+    <%= f.text_area :description, class: "input", rows: 3, maxlength: 500 %>
+  </div>
+
+  <div>
+    <%= f.label :region_id, t('region.select'), class: "label" %>
+    <%= f.collection_select :region_id, @regions, :id, :display_name,
+        { include_blank: "Ninguna (Universal)" },
+        class: "input" %>
+  </div>
+
+  <div>
+    <%= f.label :content_rating, t('activerecord.attributes.deck.content_rating'), class: "label" %>
+    <%= f.select :content_rating,
+        options_for_select([
+          [t('deck.content_rating.family'), 'family'],
+          [t('deck.content_rating.adult'), 'adult'],
+          [t('deck.content_rating.nsfw'), 'nsfw']
+        ], deck.content_rating),
+        {},
+        class: "input" %>
+  </div>
+
+  <div class="flex gap-4">
+    <%= link_to t('actions.cancel'), decks_path, class: "btn btn-secondary flex-1 text-center" %>
+    <%= f.submit t('actions.save'), class: "btn btn-primary flex-1" %>
+  </div>
+<% end %>

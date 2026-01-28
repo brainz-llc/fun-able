@@ -1,0 +1,18 @@
+<div class="flex items-center gap-3 p-3 rounded-lg <%= card.black? ? 'bg-black text-white' : 'bg-white text-black' %>" id="<%= dom_id(card) %>">
+  <div class="flex-grow">
+    <p class="<%= card.black? ? '' : 'text-black' %>">
+      <%= card.content.gsub('_____', '<span class="border-b-2 border-current inline-block min-w-12"></span>').html_safe %>
+    </p>
+    <% if card.black? && card.pick_count > 1 %>
+      <span class="text-xs opacity-70">Elige <%= card.pick_count %></span>
+    <% end %>
+  </div>
+  <div class="flex gap-1">
+    <%= link_to "✏️", edit_deck_deck_card_path(@deck, card), class: "p-1 hover:opacity-70" %>
+    <%= button_to "🗑️",
+        deck_deck_card_path(@deck, card),
+        method: :delete,
+        class: "p-1 hover:opacity-70",
+        data: { turbo_confirm: "Eliminar esta carta?" } %>
+  </div>
+</div>

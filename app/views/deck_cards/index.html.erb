@@ -1,0 +1,71 @@
+<div class="max-w-6xl mx-auto">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold">Cartas de <%= @deck.name %></h1>
+      <p class="text-text-secondary"><%= @deck.black_cards.count %> negras, <%= @deck.white_cards.count %> blancas</p>
+    </div>
+    <div class="flex gap-2">
+      <%= link_to t('actions.back'), deck_path(@deck), class: "btn btn-secondary" %>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-8">
+    <!-- Black Cards -->
+    <div>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Cartas Negras (<%= @black_cards.count %>)</h2>
+        <%= link_to "+ Agregar", new_deck_deck_card_path(@deck, card_type: 'black'), class: "btn btn-secondary text-sm" %>
+      </div>
+
+      <div id="black_cards" class="space-y-3">
+        <% @black_cards.each do |card| %>
+          <%= render 'card_item', card: card %>
+        <% end %>
+      </div>
+
+      <% if @black_cards.empty? %>
+        <p class="text-text-secondary text-center py-8">No hay cartas negras</p>
+      <% end %>
+    </div>
+
+    <!-- White Cards -->
+    <div>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Cartas Blancas (<%= @white_cards.count %>)</h2>
+        <%= link_to "+ Agregar", new_deck_deck_card_path(@deck, card_type: 'white'), class: "btn btn-secondary text-sm" %>
+      </div>
+
+      <div id="white_cards" class="space-y-3">
+        <% @white_cards.each do |card| %>
+          <%= render 'card_item', card: card %>
+        <% end %>
+      </div>
+
+      <% if @white_cards.empty? %>
+        <p class="text-text-secondary text-center py-8">No hay cartas blancas</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Bulk Add -->
+  <div class="mt-12 bg-bg-card rounded-xl p-6">
+    <h2 class="text-xl font-bold mb-4">Agregar Multiples Cartas</h2>
+    <%= form_with url: bulk_create_deck_deck_cards_path(@deck), method: :post, class: "space-y-4" do |f| %>
+      <div>
+        <%= f.label :card_type, "Tipo de Carta", class: "label" %>
+        <%= f.select :card_type,
+            options_for_select([['Carta Blanca', 'white'], ['Carta Negra', 'black']]),
+            {},
+            class: "input" %>
+      </div>
+
+      <div>
+        <%= f.label :cards, "Cartas (una por linea)", class: "label" %>
+        <%= f.text_area :cards, class: "input font-mono", rows: 10, placeholder: "Escribe cada carta en una linea separada.\nUsa _____ para los espacios en blanco en cartas negras." %>
+        <p class="text-xs text-text-muted mt-1">Tip: Usa _____ (5 guiones bajos) para indicar donde van las respuestas en cartas negras</p>
+      </div>
+
+      <%= f.submit "Agregar Cartas", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

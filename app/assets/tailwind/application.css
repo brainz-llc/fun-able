@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+/* Cartas Contra la Formalidad - Custom Theme */
+
+@theme {
+  /* Color palette */
+  --color-card-black: #000000;
+  --color-card-white: #ffffff;
+  --color-terracotta: #d4a574;
+  --color-terracotta-dark: #b8956a;
+  --color-terracotta-light: #e8c9a8;
+  --color-bg-dark: #0a0a0a;
+  --color-bg-darker: #050505;
+  --color-bg-card: #1a1a1a;
+  --color-bg-surface: #2e2e2e;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-muted: #6b6b6b;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+
+  /* Card dimensions */
+  --card-width: 200px;
+  --card-height: 280px;
+  --card-width-sm: 150px;
+  --card-height-sm: 210px;
+  --card-width-xs: 120px;
+  --card-height-xs: 168px;
+}
+
+/* Base styles */
+body {
+  @apply bg-bg-dark text-text-primary;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Card component styles */
+.game-card {
+  @apply relative rounded-lg p-4 flex flex-col justify-between transition-all duration-200;
+  width: var(--card-width);
+  height: var(--card-height);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.game-card-sm {
+  width: var(--card-width-sm);
+  height: var(--card-height-sm);
+  @apply p-3 text-sm;
+}
+
+.game-card-xs {
+  width: var(--card-width-xs);
+  height: var(--card-height-xs);
+  @apply p-2 text-xs;
+}
+
+/* Black card (question) */
+.card-black {
+  @apply bg-card-black text-card-white border-2 border-gray-800;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.card-black:hover {
+  @apply border-terracotta;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* White card (answer) */
+.card-white {
+  @apply bg-card-white text-card-black border-2 border-gray-200;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card-white:hover {
+  @apply border-terracotta;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Card selection states */
+.card-selectable {
+  @apply cursor-pointer;
+}
+
+.card-selected {
+  @apply ring-4 ring-terracotta;
+  transform: translateY(-8px) scale(1.02);
+}
+
+.card-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Card content */
+.card-content {
+  @apply font-bold text-lg leading-tight flex-grow;
+}
+
+.card-content-sm {
+  @apply text-base;
+}
+
+.card-footer {
+  @apply text-xs mt-auto pt-2;
+}
+
+/* Card blank placeholder */
+.card-blank {
+  @apply inline-block border-b-2 border-current min-w-16;
+}
+
+/* Hand of cards */
+.hand-container {
+  @apply flex gap-2 overflow-x-auto pb-4;
+  scroll-snap-type: x mandatory;
+}
+
+.hand-container .game-card {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Submissions display */
+.submissions-grid {
+  @apply grid gap-4;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Player badge */
+.player-badge {
+  @apply flex items-center gap-2 px-3 py-2 rounded-lg bg-bg-surface;
+}
+
+.player-badge-czar {
+  @apply ring-2 ring-terracotta;
+}
+
+.player-avatar {
+  @apply w-10 h-10 rounded-full bg-terracotta flex items-center justify-center text-white font-bold;
+}
+
+/* Timer component */
+.timer {
+  @apply text-4xl font-mono font-bold;
+}
+
+.timer-warning {
+  @apply text-warning animate-pulse;
+}
+
+.timer-critical {
+  @apply text-error animate-pulse;
+}
+
+/* Buttons */
+.btn {
+  @apply px-6 py-3 rounded-lg font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-primary {
+  @apply bg-terracotta text-white hover:bg-terracotta-dark;
+}
+
+.btn-secondary {
+  @apply bg-bg-surface text-white hover:bg-gray-600;
+}
+
+.btn-ghost {
+  @apply bg-transparent text-text-secondary hover:text-white hover:bg-bg-surface;
+}
+
+.btn-danger {
+  @apply bg-error text-white hover:bg-red-600;
+}
+
+/* Form inputs */
+.input {
+  @apply w-full px-4 py-3 rounded-lg bg-bg-surface text-white border border-gray-700 focus:border-terracotta focus:ring-2 focus:ring-terracotta focus:outline-none;
+}
+
+.input-error {
+  @apply border-error focus:border-error focus:ring-error;
+}
+
+.label {
+  @apply block text-text-secondary text-sm mb-2;
+}
+
+/* Game code display */
+.game-code {
+  @apply font-mono text-4xl tracking-widest bg-bg-surface px-6 py-4 rounded-lg text-terracotta font-bold;
+}
+
+/* Scoreboard */
+.scoreboard {
+  @apply bg-bg-card rounded-lg p-4;
+}
+
+.scoreboard-item {
+  @apply flex items-center justify-between py-2 border-b border-gray-800 last:border-0;
+}
+
+.scoreboard-name {
+  @apply font-medium;
+}
+
+.scoreboard-score {
+  @apply font-bold text-terracotta text-xl;
+}
+
+/* Victory celebration */
+.victory-modal {
+  @apply fixed inset-0 bg-black/80 flex items-center justify-center z-50;
+}
+
+.victory-content {
+  @apply bg-bg-card rounded-2xl p-8 text-center max-w-md;
+}
+
+.victory-title {
+  @apply text-3xl font-bold text-terracotta mb-4;
+}
+
+.victory-gif {
+  @apply rounded-lg overflow-hidden mb-4;
+}
+
+/* Lobby */
+.lobby-container {
+  @apply max-w-4xl mx-auto p-6;
+}
+
+.players-list {
+  @apply grid gap-3;
+}
+
+/* Toast notifications */
+.toast {
+  @apply fixed bottom-4 right-4 px-6 py-4 rounded-lg shadow-lg z-50;
+  animation: slide-in 0.3s ease-out;
+}
+
+.toast-success {
+  @apply bg-success text-white;
+}
+
+.toast-error {
+  @apply bg-error text-white;
+}
+
+.toast-info {
+  @apply bg-terracotta text-white;
+}
+
+/* Meme picker */
+.meme-picker {
+  @apply bg-bg-surface rounded-lg p-4;
+}
+
+.meme-grid {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.meme-item {
+  @apply rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-terracotta transition-all;
+}
+
+.meme-item-selected {
+  @apply ring-2 ring-terracotta;
+}
+
+/* Responsive card sizing */
+@media (max-width: 640px) {
+  .game-card {
+    width: var(--card-width-sm);
+    height: var(--card-height-sm);
+    @apply p-3;
+  }
+
+  .card-content {
+    @apply text-base;
+  }
+
+  .game-code {
+    @apply text-2xl;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-card {
+    width: var(--card-width-xs);
+    height: var(--card-height-xs);
+    @apply p-2;
+  }
+
+  .card-content {
+    @apply text-sm;
+  }
+}
+
+/* Animations - Custom classes without @apply */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes card-flip {
+  0% {
+    transform: perspective(600px) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(600px) rotateY(90deg);
+  }
+  100% {
+    transform: perspective(600px) rotateY(0deg);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s ease-out;
+}
+
+.animate-card-flip {
+  animation: card-flip 0.6s ease-in-out;
+}
+
+/* Scrollbar styling */
+.hand-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.hand-container::-webkit-scrollbar-track {
+  @apply bg-bg-surface rounded;
+}
+
+.hand-container::-webkit-scrollbar-thumb {
+  @apply bg-terracotta rounded hover:bg-terracotta-dark;
+}
+
+/* Deck browser */
+.deck-card {
+  @apply bg-bg-card rounded-lg overflow-hidden hover:ring-2 hover:ring-terracotta transition-all;
+}
+
+.deck-card-header {
+  @apply p-4 border-b border-gray-800;
+}
+
+.deck-card-body {
+  @apply p-4;
+}
+
+.deck-card-footer {
+  @apply px-4 py-3 bg-bg-surface flex items-center justify-between;
+}
+
+/* Region badge */
+.region-badge {
+  @apply inline-flex items-center gap-1 px-2 py-1 rounded bg-bg-surface text-sm;
+}
+
+/* Content rating badges */
+.rating-family {
+  @apply bg-green-900 text-green-200;
+}
+
+.rating-adult {
+  @apply bg-yellow-900 text-yellow-200;
+}
+
+.rating-nsfw {
+  @apply bg-red-900 text-red-200;
+}

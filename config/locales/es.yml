@@ -1,0 +1,172 @@
+es:
+  # Application name
+  app_name: "Cartas Contra la Formalidad"
+  app_tagline: "El juego de cartas para gente horrible (y divertida)"
+
+  # Navigation
+  nav:
+    home: "Inicio"
+    create_game: "Crear Partida"
+    join_game: "Unirse"
+    browse_decks: "Explorar Mazos"
+    my_decks: "Mis Mazos"
+    profile: "Perfil"
+    logout: "Salir"
+    login: "Entrar"
+    register: "Registrarse"
+
+  # Home page
+  home:
+    title: "Cartas Contra la Formalidad"
+    subtitle: "El juego de cartas para gente horrible"
+    create_game: "Crear Nueva Partida"
+    join_game: "Unirse a Partida"
+    enter_code: "Ingresa el código de partida"
+    play_as_guest: "Jugar como Invitado"
+
+  # Game
+  game:
+    lobby:
+      title: "Sala de Espera"
+      waiting_for_players: "Esperando jugadores..."
+      min_players: "Mínimo %{count} jugadores para comenzar"
+      share_code: "Comparte este código"
+      start_game: "¡Iniciar Partida!"
+      select_deck: "Seleccionar Mazo"
+      settings: "Configuración"
+
+    play:
+      your_hand: "Tu Mano"
+      black_card: "Carta Negra"
+      submit_cards: "Enviar Cartas"
+      waiting_submissions: "Esperando respuestas..."
+      you_are_czar: "¡Eres el Zar de las Cartas!"
+      select_winner: "Selecciona al ganador"
+      round: "Ronda %{number}"
+      scoreboard: "Puntuación"
+
+    status:
+      submitting: "Enviando respuestas"
+      judging: "El Zar está decidiendo"
+      revealing: "Revelando respuestas"
+      complete: "Ronda completa"
+
+    winner:
+      round_winner: "¡%{name} gana la ronda!"
+      game_winner: "¡%{name} gana la partida!"
+      points: "%{count} puntos"
+
+    actions:
+      leave_game: "Abandonar Partida"
+      pause_game: "Pausar"
+      resume_game: "Reanudar"
+      end_game: "Terminar Partida"
+
+  # Decks
+  deck:
+    official: "Oficial"
+    community: "Comunidad"
+    create_new: "Crear Nuevo Mazo"
+    edit: "Editar Mazo"
+    cards_count: "%{count} cartas"
+    black_cards: "%{count} cartas negras"
+    white_cards: "%{count} cartas blancas"
+    publish: "Publicar"
+    unpublish: "Despublicar"
+    vote: "Votar"
+    content_rating:
+      family: "Familiar"
+      adult: "Adulto"
+      nsfw: "Explícito"
+    status:
+      draft: "Borrador"
+      published: "Publicado"
+      archived: "Archivado"
+
+  # Cards
+  card:
+    types:
+      black: "Carta Negra"
+      white: "Carta Blanca"
+    meme_types:
+      text_only: "Solo Texto"
+      image_meme: "Imagen/Meme"
+      gif_meme: "GIF"
+    add_card: "Agregar Carta"
+    blank_placeholder: "_____"
+
+  # Users
+  user:
+    guest: "Invitado"
+    display_name: "Nombre para mostrar"
+    email: "Correo electrónico"
+    password: "Contraseña"
+    password_confirmation: "Confirmar contraseña"
+    upgrade_account: "Crear cuenta completa"
+    stats:
+      games_played: "Partidas jugadas"
+      games_won: "Partidas ganadas"
+      rounds_won: "Rondas ganadas"
+
+  # Regions
+  region:
+    select: "Seleccionar región"
+    all: "Todas las regiones"
+    latinoamerica: "Latinoamérica"
+    espana: "España"
+
+  # Errors and validations
+  errors:
+    game:
+      not_found: "Partida no encontrada"
+      already_started: "La partida ya comenzó"
+      full: "La partida está llena"
+      invalid_code: "Código de partida inválido"
+      not_enough_players: "No hay suficientes jugadores"
+      not_your_turn: "No es tu turno"
+      already_submitted: "Ya enviaste tus cartas"
+      invalid_cards: "Selección de cartas inválida"
+
+  # Time
+  time:
+    seconds: "%{count} segundos"
+    minutes: "%{count} minutos"
+
+  # Actions
+  actions:
+    save: "Guardar"
+    cancel: "Cancelar"
+    delete: "Eliminar"
+    confirm: "Confirmar"
+    back: "Volver"
+    next: "Siguiente"
+    submit: "Enviar"
+    search: "Buscar"
+    filter: "Filtrar"
+    copy: "Copiar"
+    copied: "¡Copiado!"
+
+  # Active Record
+  activerecord:
+    models:
+      user: "Usuario"
+      game: "Partida"
+      deck: "Mazo"
+      card: "Carta"
+      region: "Región"
+    attributes:
+      user:
+        display_name: "Nombre"
+        email: "Correo electrónico"
+        password: "Contraseña"
+        password_confirmation: "Confirmar contraseña"
+      game:
+        code: "Código"
+        status: "Estado"
+      deck:
+        name: "Nombre"
+        description: "Descripción"
+        content_rating: "Clasificación"
+      card:
+        content: "Contenido"
+        card_type: "Tipo"

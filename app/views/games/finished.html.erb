@@ -1,0 +1,45 @@
+<div class="max-w-2xl mx-auto text-center py-12" data-controller="victory">
+  <div class="mb-8">
+    <div class="text-6xl mb-4">🏆</div>
+    <h1 class="text-4xl font-bold text-terracotta mb-2">Partida Terminada!</h1>
+
+    <% if current_game.winner %>
+      <p class="text-2xl">
+        <%= t('game.winner.game_winner', name: current_game.winner.display_name) %>
+      </p>
+      <p class="text-text-secondary">
+        <%= t('game.winner.points', count: current_game.winner.score) %>
+      </p>
+    <% end %>
+  </div>
+
+  <!-- Final Leaderboard -->
+  <div class="bg-bg-card rounded-xl p-6 mb-8">
+    <h2 class="text-xl font-bold mb-4">Resultados Finales</h2>
+    <div class="space-y-3">
+      <% current_game.leaderboard.each_with_index do |player, index| %>
+        <div class="flex items-center justify-between p-3 rounded-lg <%= index == 0 ? 'bg-terracotta/20' : 'bg-bg-surface' %>">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">
+              <% case index %>
+              <% when 0 %>🥇
+              <% when 1 %>🥈
+              <% when 2 %>🥉
+              <% else %><%= index + 1 %>
+              <% end %>
+            </span>
+            <div class="player-avatar"><%= player.avatar_initials %></div>
+            <span class="font-medium"><%= player.display_name %></span>
+          </div>
+          <span class="text-2xl font-bold <%= 'text-terracotta' if index == 0 %>"><%= player.score %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <%= link_to "Nueva Partida", new_game_path, class: "btn btn-primary" %>
+    <%= link_to "Volver al Inicio", root_path, class: "btn btn-secondary" %>
+  </div>
+</div>

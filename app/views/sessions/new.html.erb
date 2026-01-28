@@ -1,0 +1,42 @@
+<div class="max-w-md mx-auto mt-12">
+  <div class="bg-bg-card rounded-xl p-8">
+    <h1 class="text-2xl font-bold mb-6 text-center"><%= t('nav.login') %></h1>
+
+    <%= form_with url: session_path, method: :post, class: "space-y-4" do |f| %>
+      <div>
+        <%= f.label :email, t('user.email'), class: "label" %>
+        <%= f.email_field :email,
+            class: "input",
+            required: true,
+            autofocus: true,
+            autocomplete: "email" %>
+      </div>
+
+      <div>
+        <%= f.label :password, t('user.password'), class: "label" %>
+        <%= f.password_field :password,
+            class: "input",
+            required: true,
+            autocomplete: "current-password" %>
+      </div>
+
+      <%= f.submit t('nav.login'), class: "btn btn-primary w-full" %>
+    <% end %>
+
+    <div class="mt-6 text-center">
+      <p class="text-text-secondary text-sm mb-4">No tienes cuenta?</p>
+      <%= link_to t('nav.register'), new_registration_path, class: "text-terracotta hover:underline" %>
+    </div>
+
+    <div class="relative my-6">
+      <div class="absolute inset-0 flex items-center">
+        <div class="w-full border-t border-gray-700"></div>
+      </div>
+      <div class="relative flex justify-center text-sm">
+        <span class="px-2 bg-bg-card text-text-muted">o</span>
+      </div>
+    </div>
+
+    <%= button_to t('home.play_as_guest'), create_guest_session_path, class: "btn btn-secondary w-full" %>
+  </div>
+</div>

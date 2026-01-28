@@ -1,0 +1,55 @@
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-3xl font-bold mb-8 text-center"><%= t('home.create_game') %></h1>
+
+  <%= form_with model: @game, url: games_path, method: :post, class: "bg-bg-card rounded-xl p-8" do |f| %>
+    <!-- Deck Selection -->
+    <div class="mb-6">
+      <%= f.label :deck_id, t('game.lobby.select_deck'), class: "label text-lg" %>
+      <div class="grid gap-3 mt-2 max-h-80 overflow-y-auto">
+        <% @decks.each do |deck| %>
+          <label class="flex items-center gap-3 p-4 bg-bg-surface rounded-lg cursor-pointer hover:ring-2 hover:ring-terracotta transition <%= 'ring-2 ring-terracotta' if @game.deck_id == deck.id %>">
+            <%= f.radio_button :deck_id, deck.id, class: "hidden", data: { action: "change->form#highlight" } %>
+            <div class="flex-grow">
+              <div class="font-bold flex items-center gap-2">
+                <%= deck.name %>
+                <% if deck.official? %>
+                  <span class="text-xs bg-terracotta px-2 py-0.5 rounded"><%= t('deck.official') %></span>
+                <% end %>
+              </div>
+              <div class="text-sm text-text-secondary">
+                <%= deck.black_cards_count %> negras, <%= deck.white_cards_count %> blancas
+                <% if deck.region %>
+                  &middot; <%= deck.region.display_name %>
+                <% end %>
+              </div>
+            </div>
+            <span class="rating-<%= deck.content_rating %> px-2 py-1 rounded text-xs">
+              <%= t("deck.content_rating.#{deck.content_rating}") %>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Game Settings -->
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <div>
+        <%= f.label :points_to_win, "Puntos para ganar", class: "label" %>
+        <%= f.number_field :points_to_win, min: 3, max: 20, class: "input" %>
+      </div>
+      <div>
+        <%= f.label :turn_timer, "Tiempo por turno (seg)", class: "label" %>
+        <%= f.number_field :turn_timer, min: 30, max: 180, step: 10, class: "input" %>
+      </div>
+      <div>
+        <%= f.label :max_players, "Jugadores maximos", class: "label" %>
+        <%= f.number_field :max_players, min: 3, max: 20, class: "input" %>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      <%= link_to t('actions.cancel'), root_path, class: "btn btn-secondary flex-1 text-center" %>
+      <%= f.submit t('home.create_game'), class: "btn btn-primary flex-1" %>
+    </div>
+  <% end %>
+</div>

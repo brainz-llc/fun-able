@@ -1,0 +1,53 @@
+<%= form_with model: [@deck, card], class: "bg-bg-card rounded-xl p-6 space-y-4" do |f| %>
+  <%= f.hidden_field :card_type %>
+
+  <div>
+    <%= f.label :content, "Contenido", class: "label" %>
+    <%= f.text_area :content, class: "input", rows: 3, required: true %>
+    <% if card.black? %>
+      <p class="text-xs text-text-muted mt-1">Usa _____ (5 guiones bajos) para indicar donde van las respuestas</p>
+    <% end %>
+  </div>
+
+  <% if card.black? %>
+    <div>
+      <%= f.label :pick_count, "Cartas a elegir", class: "label" %>
+      <%= f.select :pick_count,
+          options_for_select([[1, 1], [2, 2], [3, 3]], card.pick_count),
+          {},
+          class: "input" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :meme_type, "Tipo de contenido", class: "label" %>
+    <%= f.select :meme_type,
+        options_for_select([
+          [t('card.meme_types.text_only'), 'text_only'],
+          [t('card.meme_types.image_meme'), 'image_meme'],
+          [t('card.meme_types.gif_meme'), 'gif_meme']
+        ], card.meme_type),
+        {},
+        class: "input" %>
+  </div>
+
+  <div data-controller="meme-picker" class="<%= 'hidden' if card.text_only? %>">
+    <%= f.label :meme_url, "URL del Meme/GIF", class: "label" %>
+    <%= f.url_field :meme_url, class: "input", placeholder: "https://..." %>
+  </div>
+
+  <!-- Preview -->
+  <div class="pt-4 border-t border-gray-700">
+    <p class="text-sm text-text-secondary mb-2">Vista previa:</p>
+    <div class="game-card game-card-sm <%= card.black? ? 'card-black' : 'card-white' %>">
+      <div class="card-content card-content-sm" id="card-preview">
+        <%= card.content.presence || "Tu texto aqui..." %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-4">
+    <%= link_to t('actions.cancel'), deck_deck_cards_path(@deck), class: "btn btn-secondary flex-1 text-center" %>
+    <%= f.submit t('actions.save'), class: "btn btn-primary flex-1" %>
+  </div>
+<% end %>

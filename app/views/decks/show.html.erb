@@ -1,0 +1,112 @@
+<div class="max-w-4xl mx-auto">
+  <!-- Header -->
+  <div class="bg-bg-card rounded-xl p-6 mb-6">
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <h1 class="text-3xl font-bold"><%= @deck.name %></h1>
+          <% if @deck.official? %>
+            <span class="bg-terracotta px-3 py-1 rounded text-sm"><%= t('deck.official') %></span>
+          <% end %>
+          <span class="rating-<%= @deck.content_rating %> px-3 py-1 rounded text-sm">
+            <%= t("deck.content_rating.#{@deck.content_rating}") %>
+          </span>
+        </div>
+
+        <% if @deck.region %>
+          <span class="region-badge"><%= @deck.region.display_name %></span>
+        <% end %>
+
+        <p class="text-text-secondary mt-4"><%= @deck.description %></p>
+
+        <div class="flex items-center gap-6 mt-4 text-sm text-text-muted">
+          <span><%= @deck.black_cards_count %> cartas negras</span>
+          <span><%= @deck.white_cards_count %> cartas blancas</span>
+          <% if @deck.creator %>
+            <span>Por <%= @deck.creator.display_name %></span>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Vote & Actions -->
+      <div class="flex flex-col items-end gap-4">
+        <% if logged_in? && @deck.creator_id != current_user.id %>
+          <div class="flex items-center gap-2">
+            <%= button_to vote_deck_path(@deck, value: 1),
+                method: :post,
+                class: "btn-ghost p-2 #{'text-terracotta' if @deck.vote_value_by(current_user) == 1}" do %>
+              👍
+            <% end %>
+            <span class="text-2xl font-bold text-terracotta"><%= @deck.votes_count %></span>
+            <%= button_to vote_deck_path(@deck, value: -1),
+                method: :post,
+                class: "btn-ghost p-2 #{'text-error' if @deck.vote_value_by(current_user) == -1}" do %>
+              👎
+            <% end %>
+          </div>
+        <% else %>
+          <span class="text-2xl font-bold text-terracotta">+<%= @deck.votes_count %></span>
+        <% end %>
+
+        <% if @deck.creator_id == current_user&.id %>
+          <div class="flex gap-2">
+            <%= link_to t('deck.edit'), edit_deck_path(@deck), class: "btn btn-secondary text-sm" %>
+            <%= link_to "Cartas", deck_deck_cards_path(@deck), class: "btn btn-secondary text-sm" %>
+            <% if @deck.draft? && @deck.playable? %>
+              <%= button_to t('deck.publish'), publish_deck_path(@deck), method: :post, class: "btn btn-primary text-sm" %>
+            <% elsif @deck.published? %>
+              <%= button_to t('deck.unpublish'), unpublish_deck_path(@deck), method: :post, class: "btn btn-ghost text-sm" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sample Cards -->
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- Black Cards -->
+    <div>
+      <h2 class="text-xl font-bold mb-4">Cartas Negras</h2>
+      <div class="space-y-3">
+        <% @black_cards.each do |card| %>
+          <div class="game-card game-card-sm card-black">
+            <div class="card-content card-content-sm">
+              <%= card.display_content_with_blanks.gsub('_____', '<span class="card-blank"></span>').html_safe %>
+            </div>
+            <% if card.pick_count > 1 %>
+              <div class="card-footer">Elige <%= card.pick_count %></div>
+            <% end %>
+          </div>
+        <% end %>
+        <% if @deck.black_cards_count > 10 %>
+          <p class="text-text-muted text-sm">Y <%= @deck.black_cards_count - 10 %> cartas mas...</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- White Cards -->
+    <div>
+      <h2 class="text-xl font-bold mb-4">Cartas Blancas</h2>
+      <div class="space-y-3">
+        <% @white_cards.each do |card| %>
+          <div class="game-card game-card-sm card-white">
+            <div class="card-content card-content-sm"><%= card.content %></div>
+          </div>
+        <% end %>
+        <% if @deck.white_cards_count > 20 %>
+          <p class="text-text-muted text-sm">Y <%= @deck.white_cards_count - 20 %> cartas mas...</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Play with this deck -->
+  <div class="mt-8 text-center">
+    <% if @deck.playable? %>
+      <%= link_to "Jugar con este Mazo", new_game_path(deck_id: @deck.id), class: "btn btn-primary btn-lg" %>
+    <% else %>
+      <p class="text-text-secondary">Este mazo no tiene suficientes cartas para jugar</p>
+    <% end %>
+  </div>
+</div>
