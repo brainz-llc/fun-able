@@ -1,3 +1,4 @@
+<% content_for :hide_footer, true %>
 <div class="min-h-screen relative overflow-hidden"
      data-controller="game"
      data-game-id-value="<%= current_game.id %>"
@@ -95,32 +96,42 @@
 
       <!-- Judging Phase -->
       <% if current_game.current_round&.judging? || current_game.current_round&.revealing? %>
-        <% if current_game_player&.current_judge? %>
-          <div class="text-center mb-6 p-4 rounded-xl bg-pink-500/10 border border-pink-500/30">
-            <p class="text-lg font-bold text-pink-400">&#x1F451; Eres el Zar</p>
-            <p class="text-sm text-white/50 mt-1">Toca la carta ganadora</p>
+        <div data-game-target="judgingContainer">
+          <!-- Phase Indicator -->
+          <div class="text-center mb-4">
+            <p class="text-sm text-cyan-400 font-medium transition-all"
+               data-game-target="phaseIndicator">
+              <%= current_game_player&.current_judge? ? "Elige la carta ganadora" : "El Zar decide..." %>
+            </p>
           </div>
-        <% else %>
-          <div class="text-center mb-6 p-4 rounded-xl bg-white/5 border border-white/10">
-            <p class="text-white/60">Esperando al Zar...</p>
-          </div>
-        <% end %>
 
-        <!-- Submissions as Cards -->
-        <div class="flex flex-nowrap lg:flex-wrap lg:justify-center gap-4 overflow-x-auto lg:overflow-visible pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
-             data-game-target="submissions"
-             style="-webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;">
-          <% current_game.current_round.submissions_for_display.each_with_index do |submission, idx| %>
-            <div class="flex-shrink-0 w-[160px] min-h-[220px] p-4 rounded-2xl transition-all duration-500 flex flex-col
-                        <%= submission.winner? ? '' : 'bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30' %>
-                        <%= 'cursor-pointer hover:border-cyan-500 hover:-translate-y-2 active:scale-95' if current_game_player&.current_judge? && !submission.winner? %>"
-                 style="scroll-snap-align: center;
-                        box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-                        animation: slideInUp 0.5s ease-out <%= idx * 0.1 %>s both;
-                        <%= 'background: linear-gradient(145deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%); border: 2px solid #fbbf24; box-shadow: 0 0 40px rgba(251, 191, 36, 0.4), 0 8px 30px rgba(0,0,0,0.4);' if submission.winner? %>"
-                 data-submission-id="<%= submission.id %>"
-                 data-game-target="submissionCard"
-                 <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
+          <% if current_game_player&.current_judge? %>
+            <div class="text-center mb-6 p-4 rounded-xl bg-pink-500/10 border border-pink-500/30">
+              <p class="text-lg font-bold text-pink-400">&#x1F451; Eres el Zar</p>
+              <p class="text-sm text-white/50 mt-1">Toca la carta ganadora</p>
+            </div>
+          <% else %>
+            <div class="text-center mb-6 p-4 rounded-xl bg-white/5 border border-white/10">
+              <p class="text-white/60" data-game-target="phaseIndicator">Esperando al Zar...</p>
+            </div>
+          <% end %>
+
+          <!-- Submissions as Cards -->
+          <div class="flex flex-nowrap lg:flex-wrap lg:justify-center gap-4 overflow-x-auto lg:overflow-visible pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
+               data-game-target="submissions"
+               style="-webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;">
+            <% current_game.current_round.submissions_for_display.each_with_index do |submission, idx| %>
+              <div class="flex-shrink-0 w-[160px] min-h-[220px] p-4 rounded-2xl flex flex-col relative
+                          opacity-0 scale-75
+                          <%= submission.winner? ? '' : 'bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30' %>
+                          <%= 'cursor-pointer hover:border-cyan-500 hover:-translate-y-2 active:scale-95' if current_game_player&.current_judge? && !submission.winner? %>"
+                   style="scroll-snap-align: center;
+                          box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+                          <%= 'background: linear-gradient(145deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%); border: 2px solid #fbbf24; box-shadow: 0 0 40px rgba(251, 191, 36, 0.4), 0 8px 30px rgba(0,0,0,0.4);' if submission.winner? %>"
+                   data-submission-id="<%= submission.id %>"
+                   data-game-target="submissionCard"
+                   data-card-index="<%= idx %>"
+                   <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
 
               <% if submission.winner? %>
                 <div class="text-center mb-3">
@@ -143,6 +154,7 @@
               <% end %>
             </div>
           <% end %>
+          </div>
         </div>
       <% end %>
 
@@ -164,9 +176,9 @@
             </div>
           <% else %>
             <!-- Hand Cards -->
-            <div class="flex gap-3 overflow-x-auto pt-3 pb-6 -mx-4 px-6 lg:mx-0 lg:px-0 lg:pt-0 lg:pb-4 lg:flex-wrap lg:overflow-visible"
+            <div class="flex gap-3 overflow-x-auto pt-1 pb-3 -mx-4 px-4 lg:mx-0 lg:px-0 lg:pt-0 lg:pb-4 lg:flex-wrap lg:overflow-visible"
                  data-hand-target="cards"
-                 style="-webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; scroll-padding-left: 1.5rem;">
+                 style="-webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; scroll-padding-left: 1rem;">
               <% current_game_player&.cards_in_hand&.each do |card| %>
                 <div class="game-card-touch flex-shrink-0 w-[140px] h-[190px] p-4 rounded-xl cursor-pointer transition-all duration-200
                             bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30
