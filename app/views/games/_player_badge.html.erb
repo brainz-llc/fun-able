@@ -1,0 +1,29 @@
+<div class="player-badge <%= 'player-badge-czar' if player.current_judge? %>" id="player_<%= player.id %>">
+  <div class="player-avatar">
+    <%= player.avatar_initials %>
+  </div>
+  <div class="flex-grow">
+    <div class="font-medium flex items-center gap-2">
+      <%= player.display_name %>
+      <% if player.host? %>
+        <span class="text-xs bg-terracotta px-1.5 py-0.5 rounded">Host</span>
+      <% end %>
+      <% if player.current_judge? %>
+        <span class="text-xs bg-yellow-600 px-1.5 py-0.5 rounded">Zar</span>
+      <% end %>
+    </div>
+    <div class="text-sm text-text-muted">
+      <%= player.score %> puntos
+      <% unless player.connected? %>
+        <span class="text-error">&middot; Desconectado</span>
+      <% end %>
+    </div>
+  </div>
+  <% if local_assigns[:show_kick] && show_kick %>
+    <%= button_to "Expulsar",
+        kick_game_game_actions_path(player.game, player_id: player.id),
+        method: :post,
+        class: "btn-ghost text-sm text-error",
+        data: { turbo_confirm: "Expulsar a #{player.display_name}?" } %>
+  <% end %>
+</div>

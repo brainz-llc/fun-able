@@ -1,0 +1,29 @@
+<% if notice.present? %>
+  <div class="toast toast-success animate-slide-in" data-controller="flash" data-flash-dismiss-after-value="5000">
+    <div class="flex items-center gap-2">
+      <span>✓</span>
+      <span><%= notice %></span>
+      <button type="button" class="ml-2" data-action="click->flash#dismiss">×</button>
+    </div>
+  </div>
+<% end %>
+
+<% if alert.present? %>
+  <div class="toast toast-error animate-slide-in" data-controller="flash" data-flash-dismiss-after-value="5000">
+    <div class="flex items-center gap-2">
+      <span>!</span>
+      <span><%= alert %></span>
+      <button type="button" class="ml-2" data-action="click->flash#dismiss">×</button>
+    </div>
+  </div>
+<% end %>
+
+<% flash.each do |type, message| %>
+  <% next if type.to_s.in?(%w[notice alert]) %>
+  <div class="toast toast-info animate-slide-in" data-controller="flash" data-flash-dismiss-after-value="5000">
+    <div class="flex items-center gap-2">
+      <span><%= message %></span>
+      <button type="button" class="ml-2" data-action="click->flash#dismiss">×</button>
+    </div>
+  </div>
+<% end %>

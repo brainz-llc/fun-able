@@ -1,0 +1,87 @@
+<div class="lobby-container" data-controller="lobby" data-lobby-game-id-value="<%= current_game.id %>">
+  <!-- Game Code -->
+  <div class="text-center mb-8">
+    <h1 class="text-2xl font-bold mb-4"><%= t('game.lobby.title') %></h1>
+    <p class="text-text-secondary mb-2"><%= t('game.lobby.share_code') %>:</p>
+    <div class="game-code inline-block cursor-pointer" data-action="click->lobby#copyCode" data-lobby-target="code">
+      <%= current_game.code %>
+    </div>
+    <p class="text-sm text-text-muted mt-2" data-lobby-target="copyFeedback"></p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <!-- Players List -->
+    <div class="md:col-span-2">
+      <h2 class="text-xl font-bold mb-4">
+        Jugadores (<span data-lobby-target="playerCount"><%= current_game.player_count %></span>/<%= current_game.max_players %>)
+      </h2>
+
+      <div class="players-list" data-lobby-target="playersList">
+        <% @players.each do |player| %>
+          <%= render 'games/player_badge', player: player, show_kick: game_host? && player.user_id != current_user.id %>
+        <% end %>
+      </div>
+
+      <p class="text-text-secondary mt-4">
+        <% if current_game.player_count < 3 %>
+          <%= t('game.lobby.min_players', count: 3) %>
+        <% else %>
+          Listo para comenzar!
+        <% end %>
+      </p>
+    </div>
+
+    <!-- Settings (Host only) -->
+    <div class="bg-bg-card rounded-lg p-4">
+      <h2 class="text-xl font-bold mb-4"><%= t('game.lobby.settings') %></h2>
+
+      <% if game_host? %>
+        <%= form_with url: update_settings_game_game_actions_path(current_game), method: :patch, data: { turbo_frame: "_top" } do |f| %>
+          <div class="space-y-4">
+            <div>
+              <%= f.label :deck_id, t('game.lobby.select_deck'), class: "label" %>
+              <%= f.collection_select :deck_id, @decks, :id, :name, { selected: current_game.deck_id }, class: "input" %>
+            </div>
+
+            <div>
+              <%= f.label :points_to_win, "Puntos para ganar", class: "label" %>
+              <%= f.number_field :points_to_win, value: current_game.points_to_win, min: 3, max: 20, class: "input" %>
+            </div>
+
+            <div>
+              <%= f.label :turn_timer, "Tiempo (seg)", class: "label" %>
+              <%= f.number_field :turn_timer, value: current_game.turn_timer, min: 30, max: 180, step: 10, class: "input" %>
+            </div>
+
+            <%= f.submit "Actualizar", class: "btn btn-secondary w-full" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="space-y-2 text-sm">
+          <p><strong>Mazo:</strong> <%= current_game.deck&.name || "No seleccionado" %></p>
+          <p><strong>Puntos:</strong> <%= current_game.points_to_win %></p>
+          <p><strong>Tiempo:</strong> <%= current_game.turn_timer %>s</p>
+        </div>
+      <% end %>
+
+      <hr class="my-4 border-gray-700">
+
+      <% if game_host? %>
+        <%= button_to t('game.lobby.start_game'),
+            start_game_game_actions_path(current_game),
+            method: :post,
+            class: "btn btn-primary w-full",
+            disabled: !current_game.can_start?,
+            data: { turbo_confirm: "Iniciar la partida?" } %>
+      <% else %>
+        <p class="text-center text-text-secondary">Esperando que el anfitrion inicie...</p>
+      <% end %>
+
+      <%= button_to t('game.actions.leave_game'),
+          leave_game_game_actions_path(current_game),
+          method: :post,
+          class: "btn btn-danger w-full mt-4",
+          data: { turbo_confirm: "Seguro que quieres abandonar?" } %>
+    </div>
+  </div>
+</div>

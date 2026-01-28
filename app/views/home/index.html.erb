@@ -1,0 +1,89 @@
+<div class="max-w-4xl mx-auto py-12">
+  <!-- Hero Section -->
+  <div class="text-center mb-12">
+    <h1 class="text-5xl md:text-7xl font-bold mb-4">
+      <span class="text-terracotta">Cartas</span> Contra la <span class="text-terracotta">Formalidad</span>
+    </h1>
+    <p class="text-xl text-text-secondary mb-8"><%= t('app_tagline') %></p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+      <%= link_to new_game_path, class: "btn btn-primary text-lg px-8 py-4" do %>
+        🎮 <%= t('home.create_game') %>
+      <% end %>
+
+      <!-- Join Game Form -->
+      <%= form_with url: join_game_by_code_path, method: :post, class: "flex gap-2" do %>
+        <input type="text"
+               name="code"
+               placeholder="CODIGO"
+               maxlength="6"
+               class="input w-32 text-center uppercase tracking-widest font-mono"
+               autocomplete="off"
+               style="text-transform: uppercase">
+        <button type="submit" class="btn btn-secondary"><%= t('home.join_game') %></button>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Sample Cards Display -->
+  <div class="flex justify-center gap-4 mb-12 overflow-hidden">
+    <div class="game-card card-black transform -rotate-6 hover:rotate-0 transition-transform">
+      <div class="card-content">
+      Durante mi primera cita, descubri que mi acompanante era adicto/a a <span class="card-blank"></span>.
+      </div>
+      <div class="card-footer">Mazo Base</div>
+    </div>
+    <div class="game-card card-white transform rotate-3 hover:rotate-0 transition-transform">
+      <div class="card-content">
+        Los memes de WhatsApp de tu tia.
+      </div>
+    </div>
+    <div class="game-card card-white transform -rotate-2 hover:rotate-0 transition-transform hidden sm:flex">
+      <div class="card-content">
+        Llorar en el bano del trabajo.
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Play -->
+  <div class="bg-bg-card rounded-xl p-8 mb-12">
+    <h2 class="text-2xl font-bold mb-6 text-center">Como Jugar</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="text-center">
+        <div class="text-4xl mb-3">1️⃣</div>
+        <h3 class="font-bold mb-2">Crea o Unete</h3>
+        <p class="text-text-secondary text-sm">Crea una partida y comparte el codigo con tus amigos, o unete con un codigo existente.</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl mb-3">2️⃣</div>
+        <h3 class="font-bold mb-2">Responde</h3>
+        <p class="text-text-secondary text-sm">El Zar lee la carta negra. Los demas jugadores eligen sus mejores cartas blancas.</p>
+      </div>
+      <div class="text-center">
+        <div class="text-4xl mb-3">3️⃣</div>
+        <h3 class="font-bold mb-2">Gana Puntos</h3>
+        <p class="text-text-secondary text-sm">El Zar elige la respuesta mas graciosa. Gana quien llegue primero a los puntos objetivo.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="bg-bg-surface rounded-lg p-6">
+      <h3 class="font-bold text-lg mb-2">🌎 Mazos Regionales</h3>
+      <p class="text-text-secondary">Cartas con humor local de Mexico, Colombia, Argentina, Espana y mas.</p>
+    </div>
+    <div class="bg-bg-surface rounded-lg p-6">
+      <h3 class="font-bold text-lg mb-2">😂 Memes y GIFs</h3>
+      <p class="text-text-secondary">Cartas con imagenes y GIFs para respuestas aun mas epicas.</p>
+    </div>
+    <div class="bg-bg-surface rounded-lg p-6">
+      <h3 class="font-bold text-lg mb-2">🎨 Crea tus Mazos</h3>
+      <p class="text-text-secondary">Disena tus propios mazos y compartelos con la comunidad.</p>
+    </div>
+    <div class="bg-bg-surface rounded-lg p-6">
+      <h3 class="font-bold text-lg mb-2">⚡ Tiempo Real</h3>
+      <p class="text-text-secondary">Juego fluido con WebSockets para una experiencia instantanea.</p>
+    </div>
+  </div>
+</div>

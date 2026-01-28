@@ -1,0 +1,156 @@
+<div class="min-h-screen"
+     data-controller="game"
+     data-game-id-value="<%= current_game.id %>"
+     data-game-player-id-value="<%= current_game_player&.id %>"
+     data-game-is-judge-value="<%= current_game_player&.current_judge? %>">
+
+  <!-- Top Bar: Round Info & Timer -->
+  <div class="bg-bg-card border-b border-gray-800 py-3 px-4 flex items-center justify-between sticky top-16 z-30">
+    <div class="flex items-center gap-4">
+      <span class="text-terracotta font-bold">
+        <%= t('game.play.round', number: current_game.current_round&.round_number || 1) %>
+      </span>
+      <span class="text-text-secondary">
+        <%= t("game.status.#{current_game.current_round&.phase || 'submitting'}") %>
+      </span>
+    </div>
+
+    <!-- Timer -->
+    <div class="timer" data-game-target="timer" data-controller="timer"
+         data-timer-expires-at-value="<%= current_game.current_round&.timer_expires_at&.iso8601 %>">
+      <span data-timer-target="display">--</span>
+    </div>
+
+    <!-- Score Toggle -->
+    <button type="button" class="btn-ghost" data-action="click->game#toggleScoreboard">
+      <%= t('game.play.scoreboard') %>
+    </button>
+  </div>
+
+  <div class="container mx-auto px-4 py-6">
+    <div class="grid lg:grid-cols-4 gap-6">
+      <!-- Main Game Area -->
+      <div class="lg:col-span-3">
+        <!-- Black Card -->
+        <div class="flex justify-center mb-8">
+          <% if current_game.current_round&.black_card %>
+            <div class="game-card card-black" data-game-target="blackCard">
+              <div class="card-content">
+                <%= current_game.current_round.black_card.display_content_with_blanks.html_safe.gsub('_____', '<span class="card-blank"></span>').html_safe %>
+              </div>
+              <div class="card-footer">
+                <% if current_game.current_round.pick_count > 1 %>
+                  Elige <%= current_game.current_round.pick_count %> cartas
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Judge Message or Submissions -->
+        <% if current_game_player&.current_judge? %>
+          <div class="text-center mb-8" data-game-target="judgeMessage">
+            <div class="text-2xl mb-2">👑</div>
+            <p class="text-xl font-bold text-terracotta"><%= t('game.play.you_are_czar') %></p>
+            <p class="text-text-secondary">
+              <% if current_game.current_round&.submitting? %>
+                <%= t('game.play.waiting_submissions') %>
+              <% else %>
+                <%= t('game.play.select_winner') %>
+              <% end %>
+            </p>
+          </div>
+        <% end %>
+
+        <!-- Submissions Area (for judging phase) -->
+        <% if current_game.current_round&.judging? || current_game.current_round&.revealing? %>
+          <div class="submissions-grid mb-8" data-game-target="submissions">
+            <% current_game.current_round.submissions_for_display.each do |submission| %>
+              <div class="bg-bg-surface rounded-lg p-4 cursor-pointer hover:ring-2 hover:ring-terracotta transition <%= 'ring-2 ring-success' if submission.winner? %>"
+                   data-submission-id="<%= submission.id %>"
+                   <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
+                <div class="flex flex-wrap gap-2">
+                  <% submission.cards_in_order.each do |card| %>
+                    <div class="game-card game-card-sm card-white">
+                      <div class="card-content card-content-sm"><%= card.content %></div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- Player's Hand -->
+        <% unless current_game_player&.current_judge? %>
+          <div class="mt-8" data-controller="hand" data-hand-pick-count-value="<%= current_game.current_round&.pick_count || 1 %>">
+            <h3 class="text-lg font-bold mb-4"><%= t('game.play.your_hand') %></h3>
+
+            <% if current_game_player&.submitted_for_round?(current_game.current_round) %>
+              <p class="text-text-secondary text-center py-8">Ya enviaste tus cartas. Esperando a los demas...</p>
+            <% else %>
+              <div class="hand-container" data-hand-target="cards">
+                <% current_game_player&.cards_in_hand&.each do |card| %>
+                  <div class="game-card card-white card-selectable"
+                       data-card-id="<%= card.id %>"
+                       data-action="click->hand#toggleCard">
+                    <div class="card-content"><%= card.content %></div>
+                  </div>
+                <% end %>
+              </div>
+
+              <%= form_with url: submit_cards_game_game_actions_path(current_game),
+                            method: :post,
+                            data: { hand_target: "form", turbo_frame: "_top" },
+                            class: "mt-4" do |f| %>
+                <div data-hand-target="cardInputs"></div>
+                <%= f.submit t('game.play.submit_cards'),
+                    class: "btn btn-primary w-full",
+                    disabled: true,
+                    data: { hand_target: "submitButton" } %>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Sidebar: Scoreboard -->
+      <div class="lg:col-span-1">
+        <div class="scoreboard sticky top-40" data-game-target="scoreboard">
+          <h3 class="font-bold mb-4"><%= t('game.play.scoreboard') %></h3>
+          <% current_game.leaderboard.each do |player| %>
+            <div class="scoreboard-item <%= 'bg-terracotta/20' if player.current_judge? %>">
+              <div class="flex items-center gap-2">
+                <div class="player-avatar w-8 h-8 text-xs"><%= player.avatar_initials %></div>
+                <span class="scoreboard-name <%= 'text-terracotta' if player.current_judge? %>">
+                  <%= player.display_name %>
+                  <%= "👑" if player.current_judge? %>
+                </span>
+              </div>
+              <span class="scoreboard-score"><%= player.score %></span>
+            </div>
+          <% end %>
+
+          <div class="mt-4 pt-4 border-t border-gray-700 text-sm text-text-secondary">
+            <p>Meta: <%= current_game.points_to_win %> puntos</p>
+          </div>
+
+          <%= button_to t('game.actions.leave_game'),
+              leave_game_game_actions_path(current_game),
+              method: :post,
+              class: "btn btn-danger w-full mt-4 text-sm",
+              data: { turbo_confirm: "Abandonar la partida?" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Modal (hidden by default) -->
+  <div class="victory-modal hidden" data-game-target="victoryModal">
+    <div class="victory-content animate-bounce-in">
+      <div class="victory-title" data-game-target="victoryTitle"></div>
+      <div class="victory-gif" data-game-target="victoryGif"></div>
+      <button type="button" class="btn btn-primary" data-action="click->game#closeVictory">Continuar</button>
+    </div>
+  </div>
+</div>

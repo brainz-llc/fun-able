@@ -1,0 +1,24 @@
+{
+  "name": "cartas-contra-la-formalidad-video",
+  "version": "1.0.0",
+  "description": "Promotional video for Cartas Contra la Formalidad",
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion render src/index.ts AppPromo out/promo.mp4",
+    "upgrade": "npx remotion upgrade"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.410",
+    "@remotion/transitions": "^4.0.410",
+    "remotion": "^4.0.410",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.0.0"
+  }
+}
