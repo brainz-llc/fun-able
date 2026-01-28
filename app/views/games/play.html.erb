@@ -58,13 +58,13 @@
     <!-- Left Column: Black Card -->
     <div class="lg:w-1/3 flex flex-col items-center mb-6 lg:mb-0 lg:sticky lg:top-24 lg:self-start">
       <% if current_game.current_round&.black_card %>
-        <!-- Black Card -->
-        <div class="w-full max-w-[280px] aspect-[3/4] rounded-2xl p-5 flex flex-col justify-between"
+        <!-- Black Card (smaller) -->
+        <div class="w-full max-w-[200px] lg:max-w-[240px] aspect-[3/4] rounded-2xl p-4 flex flex-col justify-between transition-all duration-500"
              data-game-target="blackCard"
              style="background: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 100%);
                     border: 2px solid rgba(236, 72, 153, 0.4);
-                    box-shadow: 0 0 40px rgba(236, 72, 153, 0.2), 0 20px 40px rgba(0,0,0,0.5);">
-          <p class="text-white text-base md:text-lg leading-relaxed font-medium">
+                    box-shadow: 0 0 30px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.5);">
+          <p class="text-white text-sm md:text-base leading-relaxed font-medium">
             <%= current_game.current_round.black_card.display_content_with_blanks.gsub('_____', '<span class="inline-block w-16 md:w-20 border-b-2 border-pink-400" style="box-shadow: 0 0 8px #ec4899, 0 0 16px rgba(236, 72, 153, 0.5);"></span>').html_safe %>
           </p>
           <div class="flex items-center justify-between mt-4">
@@ -121,21 +121,28 @@
                data-game-target="submissions"
                style="-webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;">
             <% current_game.current_round.submissions_for_display.each_with_index do |submission, idx| %>
-              <div class="flex-shrink-0 w-[160px] min-h-[220px] p-4 rounded-2xl flex flex-col relative
+              <% is_mine = submission.player_id == current_game_player&.id %>
+              <div class="flex-shrink-0 p-4 rounded-2xl flex flex-col relative
                           opacity-0 scale-75
-                          <%= submission.winner? ? '' : 'bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30' %>
+                          <%= is_mine ? 'w-[180px] min-h-[240px] border-2 border-purple-500/60 bg-gradient-to-b from-purple-500/15 to-purple-500/5' : 'w-[160px] min-h-[220px]' %>
+                          <%= submission.winner? ? '' : (is_mine ? '' : 'bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30') %>
                           <%= 'cursor-pointer hover:border-cyan-500 hover:-translate-y-2 active:scale-95' if current_game_player&.current_judge? && !submission.winner? %>"
                    style="scroll-snap-align: center;
-                          box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+                          box-shadow: <%= is_mine ? '0 0 25px rgba(168, 85, 247, 0.3), 0 8px 30px rgba(0,0,0,0.4)' : '0 8px 30px rgba(0,0,0,0.4)' %>;
                           <%= 'background: linear-gradient(145deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%); border: 2px solid #fbbf24; box-shadow: 0 0 40px rgba(251, 191, 36, 0.4), 0 8px 30px rgba(0,0,0,0.4);' if submission.winner? %>"
                    data-submission-id="<%= submission.id %>"
                    data-game-target="submissionCard"
                    data-card-index="<%= idx %>"
+                   data-is-mine="<%= is_mine %>"
                    <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
 
               <% if submission.winner? %>
                 <div class="text-center mb-3">
                   <span class="text-2xl">&#x1F3C6;</span>
+                </div>
+              <% elsif is_mine %>
+                <div class="text-center mb-2">
+                  <span class="text-xs font-bold text-purple-400 uppercase tracking-wide">Tu carta</span>
                 </div>
               <% end %>
 
@@ -158,8 +165,8 @@
         </div>
       <% end %>
 
-      <!-- Player's Hand (not judge) -->
-      <% unless current_game_player&.current_judge? %>
+      <!-- Player's Hand (not judge, not submitted) -->
+      <% unless current_game_player&.current_judge? || current_game_player&.submitted_for_round?(current_game.current_round) %>
         <div id="hand-controller-wrapper"
              class="mt-8 lg:mt-6"
              data-controller="hand"
@@ -169,13 +176,6 @@
             <h3 class="text-lg font-bold text-white"><%= t('game.play.your_hand') %></h3>
             <span class="text-xs text-white/40 lg:hidden">Desliza &rarr;</span>
           </div>
-
-          <% if current_game_player&.submitted_for_round?(current_game.current_round) %>
-            <!-- Already submitted -->
-            <div class="text-center py-6 rounded-xl bg-white/5 border border-white/10">
-              <p class="text-white/60">Esperando a los demas jugadores...</p>
-            </div>
-          <% else %>
             <!-- Hand Cards -->
             <div class="flex gap-3 overflow-x-auto pt-1 pb-3 -mx-4 px-4 lg:mx-0 lg:px-0 lg:pt-0 lg:pb-4 lg:flex-wrap lg:overflow-visible"
                  data-hand-target="cards"
@@ -206,11 +206,9 @@
                   disabled: true,
                   data: { hand_target: "submitButton" } %>
             <% end %>
-          <% end %>
 
           <!-- Mobile Bottom Bar -->
-          <% unless current_game_player&.submitted_for_round?(current_game.current_round) %>
-            <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[60] p-4 bg-black/95 backdrop-blur-md border-t border-white/10"
+          <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[60] p-4 bg-black/95 backdrop-blur-md border-t border-white/10"
                  style="padding-bottom: max(1rem, env(safe-area-inset-bottom));">
               <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
@@ -233,7 +231,6 @@
                 <% end %>
               </div>
             </div>
-          <% end %>
 
         </div>
       <% end %>
