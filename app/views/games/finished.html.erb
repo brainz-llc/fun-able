@@ -1,155 +1,160 @@
-<div class="max-w-2xl mx-auto text-center py-12 tokyo-street-bg min-h-screen relative overflow-hidden" data-controller="victory">
-  <!-- Animated background particles -->
-  <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute top-10 left-10 w-3 h-3 rounded-full animate-ping" style="background: #ff2d95; box-shadow: 0 0 20px #ff2d95;"></div>
-    <div class="absolute top-20 right-20 w-2 h-2 rounded-full animate-ping" style="background: #00f5ff; box-shadow: 0 0 15px #00f5ff; animation-delay: 0.3s;"></div>
-    <div class="absolute top-1/3 left-5 w-2 h-2 rounded-full animate-ping" style="background: #bf00ff; box-shadow: 0 0 15px #bf00ff; animation-delay: 0.6s;"></div>
-    <div class="absolute top-1/2 right-10 w-3 h-3 rounded-full animate-ping" style="background: #ff2d95; box-shadow: 0 0 20px #ff2d95; animation-delay: 0.9s;"></div>
-    <div class="absolute bottom-1/3 left-20 w-2 h-2 rounded-full animate-ping" style="background: #00f5ff; box-shadow: 0 0 15px #00f5ff; animation-delay: 1.2s;"></div>
-    <div class="absolute bottom-20 right-1/4 w-2 h-2 rounded-full animate-ping" style="background: #bf00ff; box-shadow: 0 0 15px #bf00ff; animation-delay: 1.5s;"></div>
+<% content_for :hide_footer, true %>
+
+<div class="min-h-screen relative overflow-hidden" data-controller="victory">
+  <!-- Animated Background Gradients (like landing page) -->
+  <div class="absolute inset-0 pointer-events-none" style="clip-path: inset(0);">
+    <div class="absolute top-0 left-0 -translate-x-1/2 w-64 h-64 md:w-[500px] md:h-[500px] bg-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[500px] md:h-[500px] bg-cyan-500/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-96 h-96 md:w-[600px] md:h-[600px] bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <!-- Winner celebration glow -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-yellow-500/10 rounded-full blur-3xl animate-pulse"></div>
   </div>
 
-  <!-- Victory Header -->
-  <div class="mb-10 relative">
-    <!-- Glowing trophy -->
-    <div class="text-8xl mb-6 animate-bounce-in"
-         style="filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 60px rgba(255, 45, 149, 0.5));">
-      &#x1F3C6;
-    </div>
+  <!-- Main Content -->
+  <div class="relative z-10 max-w-2xl mx-auto px-4 py-12 md:py-16">
 
-    <h1 class="text-5xl font-black mb-4 animate-neon-flicker"
-        style="color: #ff2d95;
-               text-shadow: 0 0 10px #ff2d95,
-                            0 0 20px #ff2d95,
-                            0 0 40px #ff2d95,
-                            0 0 80px #ff2d95;">
-      Partida Terminada!
-    </h1>
-
-    <% if current_game.winner %>
-      <div class="relative inline-block">
-        <div class="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-500/20 blur-2xl rounded-3xl"></div>
-        <div class="relative px-8 py-4 rounded-2xl"
-             style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 0, 30, 0.9) 100%);
-                    border: 2px solid #00f5ff;
-                    box-shadow: 0 0 20px rgba(0, 245, 255, 0.5), 0 0 40px rgba(0, 245, 255, 0.3);">
-          <p class="text-3xl font-bold neon-cyan animate-neon-pulse">
-            <%= t('game.winner.game_winner', name: current_game.winner.display_name) %>
-          </p>
-          <p class="neon-purple text-lg mt-2">
-            <%= t('game.winner.points', count: current_game.winner.score) %>
-          </p>
-        </div>
+    <!-- Victory Header -->
+    <div class="text-center mb-10">
+      <!-- Trophy with glow -->
+      <div class="inline-flex items-center justify-center w-24 h-24 md:w-32 md:h-32 rounded-full mb-6"
+           style="background: linear-gradient(145deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%);
+                  border: 2px solid rgba(251, 191, 36, 0.4);
+                  box-shadow: 0 0 60px rgba(251, 191, 36, 0.4), 0 0 120px rgba(251, 191, 36, 0.2);">
+        <span class="text-5xl md:text-6xl">🏆</span>
       </div>
-    <% end %>
-  </div>
 
-  <!-- Final Leaderboard -->
-  <div class="rounded-2xl p-8 mb-10 relative"
-       style="background: linear-gradient(180deg, rgba(191, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%);
-              border: 1px solid rgba(191, 0, 255, 0.4);
-              box-shadow: 0 0 40px rgba(191, 0, 255, 0.3), inset 0 0 60px rgba(0, 0, 0, 0.5);">
+      <!-- Title -->
+      <h1 class="text-3xl md:text-4xl font-black text-white mb-4">
+        Partida Terminada
+      </h1>
 
-    <h2 class="text-2xl font-bold mb-6 neon-purple animate-neon-pulse">Resultados Finales</h2>
-
-    <div class="space-y-4">
-      <% current_game.leaderboard.each_with_index do |player, index| %>
-        <div class="flex items-center justify-between p-4 rounded-xl transition-all duration-300
-                    <%= 'animate-bounce-in' if index == 0 %>"
-             style="<% if index == 0 %>
-                      background: linear-gradient(135deg, rgba(255, 45, 149, 0.2) 0%, rgba(191, 0, 255, 0.1) 100%);
-                      border: 2px solid #ff2d95;
-                      box-shadow: 0 0 25px rgba(255, 45, 149, 0.4), 0 0 50px rgba(255, 45, 149, 0.2);
-                    <% elsif index == 1 %>
-                      background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
-                      border: 1px solid rgba(0, 245, 255, 0.4);
-                      box-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
-                    <% elsif index == 2 %>
-                      background: linear-gradient(135deg, rgba(191, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
-                      border: 1px solid rgba(191, 0, 255, 0.3);
-                      box-shadow: 0 0 10px rgba(191, 0, 255, 0.2);
-                    <% else %>
-                      background: rgba(30, 30, 30, 0.6);
-                      border: 1px solid rgba(100, 100, 100, 0.2);
-                    <% end %>"
-             <% if index < 3 %>
-             onmouseover="this.style.transform='scale(1.02)'"
-             onmouseout="this.style.transform='scale(1)'"
-             <% end %>>
-
-          <div class="flex items-center gap-4">
-            <!-- Position Medal/Number -->
-            <span class="text-3xl <%= 'animate-neon-pulse' if index == 0 %>"
-                  style="<% case index
-                         when 0 %>filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
-                         <% when 1 %>filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6));
-                         <% when 2 %>filter: drop-shadow(0 0 6px rgba(205, 127, 50, 0.6));
-                         <% end %>">
-              <%= case index
-                  when 0 then '&#x1F947;'.html_safe
-                  when 1 then '&#x1F948;'.html_safe
-                  when 2 then '&#x1F949;'.html_safe
-                  else "<span class='text-text-muted font-bold'>#{index + 1}</span>".html_safe
-                  end %>
-            </span>
-
-            <!-- Player Avatar -->
-            <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white"
-                 style="background: linear-gradient(135deg, #ff2d95 0%, #bf00ff 100%);
-                        box-shadow: 0 0 15px rgba(255, 45, 149, 0.5);">
-              <%= player.avatar_initials %>
-            </div>
-
-            <!-- Player Name -->
-            <span class="font-bold text-lg <%= index == 0 ? 'neon-pink' : 'text-white' %>">
-              <%= player.display_name %>
-            </span>
-          </div>
-
-          <!-- Score -->
-          <span class="text-3xl font-black <%= index == 0 ? 'neon-cyan animate-neon-pulse' : 'neon-purple' %>">
-            <%= player.score %>
-          </span>
+      <!-- Winner announcement -->
+      <% if current_game.winner %>
+        <div class="inline-block px-6 py-3 rounded-2xl"
+             style="background: linear-gradient(145deg, rgba(236, 72, 153, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+                    border: 1px solid rgba(236, 72, 153, 0.3);
+                    box-shadow: 0 0 30px rgba(236, 72, 153, 0.2);">
+          <p class="text-xl md:text-2xl font-bold text-pink-400">
+            <%= current_game.winner.display_name %> gana!
+          </p>
+          <p class="text-sm text-white/50 mt-1">
+            con <%= current_game.winner.score %> puntos
+          </p>
         </div>
       <% end %>
     </div>
+
+    <!-- Final Leaderboard -->
+    <div class="rounded-2xl p-6 md:p-8 mb-8"
+         style="background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
+
+      <h2 class="text-lg font-bold text-white/80 mb-6 text-center">Resultados Finales</h2>
+
+      <div class="space-y-3">
+        <% current_game.leaderboard.each_with_index do |player, index| %>
+          <%
+            # Determine styling based on position
+            is_winner = index == 0
+            is_podium = index < 3
+            medal = case index
+                    when 0 then '🥇'
+                    when 1 then '🥈'
+                    when 2 then '🥉'
+                    else nil
+                    end
+          %>
+          <div class="flex items-center justify-between p-4 rounded-xl transition-all duration-300
+                      <%= 'hover:scale-[1.02]' if is_podium %>"
+               style="<% if is_winner %>
+                        background: linear-gradient(145deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0.05) 100%);
+                        border: 2px solid rgba(251, 191, 36, 0.4);
+                        box-shadow: 0 0 30px rgba(251, 191, 36, 0.2);
+                      <% elsif index == 1 %>
+                        background: linear-gradient(145deg, rgba(192, 192, 192, 0.1) 0%, rgba(192, 192, 192, 0.03) 100%);
+                        border: 1px solid rgba(192, 192, 192, 0.3);
+                      <% elsif index == 2 %>
+                        background: linear-gradient(145deg, rgba(205, 127, 50, 0.1) 0%, rgba(205, 127, 50, 0.03) 100%);
+                        border: 1px solid rgba(205, 127, 50, 0.3);
+                      <% else %>
+                        background: rgba(255,255,255,0.03);
+                        border: 1px solid rgba(255,255,255,0.05);
+                      <% end %>">
+
+            <div class="flex items-center gap-4">
+              <!-- Position -->
+              <div class="w-10 h-10 flex items-center justify-center">
+                <% if medal %>
+                  <span class="text-2xl"><%= medal %></span>
+                <% else %>
+                  <span class="text-lg font-bold text-white/30"><%= index + 1 %></span>
+                <% end %>
+              </div>
+
+              <!-- Avatar -->
+              <div class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white text-sm"
+                   style="background: linear-gradient(135deg, <%= is_winner ? '#fbbf24' : '#ec4899' %> 0%, <%= is_winner ? '#f59e0b' : '#a855f7' %> 100%);
+                          box-shadow: 0 4px 15px <%= is_winner ? 'rgba(251, 191, 36, 0.4)' : 'rgba(236, 72, 153, 0.3)' %>;">
+                <%= player.avatar_initials %>
+              </div>
+
+              <!-- Name -->
+              <span class="font-bold text-lg <%= is_winner ? 'text-yellow-400' : 'text-white' %>">
+                <%= player.display_name %>
+              </span>
+            </div>
+
+            <!-- Score -->
+            <div class="text-right">
+              <span class="text-2xl font-black <%= is_winner ? 'text-yellow-400' : 'text-cyan-400' %>">
+                <%= player.score %>
+              </span>
+              <span class="text-xs text-white/40 block">pts</span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Game Stats (optional quick stats) -->
+    <div class="grid grid-cols-2 gap-4 mb-8">
+      <div class="p-4 rounded-xl text-center"
+           style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+        <span class="text-2xl font-bold text-cyan-400"><%= current_game.rounds.complete.count %></span>
+        <span class="block text-xs text-white/40 mt-1">Rondas jugadas</span>
+      </div>
+      <div class="p-4 rounded-xl text-center"
+           style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);">
+        <span class="text-2xl font-bold text-pink-400"><%= current_game.player_count %></span>
+        <span class="block text-xs text-white/40 mt-1">Jugadores</span>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="space-y-4">
+      <!-- New Game Button -->
+      <%= link_to new_game_path, class: "block w-full" do %>
+        <div class="flex items-center justify-center gap-3 py-4 px-8 rounded-xl bg-pink-500 transition-all duration-300 hover:bg-pink-400 active:scale-[0.98]"
+             style="box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);">
+          <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span class="text-lg font-bold text-white">Nueva Partida</span>
+        </div>
+      <% end %>
+
+      <!-- Back to Home -->
+      <%= link_to root_path, class: "block w-full" do %>
+        <div class="flex items-center justify-center gap-3 py-4 px-8 rounded-xl transition-all duration-300 hover:bg-white/5"
+             style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
+          <svg class="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          <span class="text-lg font-medium text-white/60">Volver al Inicio</span>
+        </div>
+      <% end %>
+    </div>
+
   </div>
-
-  <!-- Action Buttons -->
-  <div class="flex flex-col sm:flex-row gap-4 justify-center">
-    <%= link_to "Nueva Partida", new_game_path,
-                class: "neon-btn neon-btn-pink text-lg px-8 py-4 animate-neon-pulse" %>
-    <%= link_to "Volver al Inicio", root_path,
-                class: "px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300",
-                style: "background: rgba(0, 245, 255, 0.1);
-                        border: 1px solid rgba(0, 245, 255, 0.4);
-                        color: #00f5ff;
-                        box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);",
-                onmouseover: "this.style.background='rgba(0, 245, 255, 0.2)'; this.style.boxShadow='0 0 25px rgba(0, 245, 255, 0.4)';",
-                onmouseout: "this.style.background='rgba(0, 245, 255, 0.1)'; this.style.boxShadow='0 0 15px rgba(0, 245, 255, 0.2)';" %>
-  </div>
-
-  <!-- Neon floor reflection -->
-  <div class="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-       style="background: linear-gradient(180deg, transparent 0%, rgba(191, 0, 255, 0.1) 50%, rgba(255, 45, 149, 0.15) 100%);
-              filter: blur(20px);"></div>
-
-  <!-- Animated bottom line -->
-  <div class="absolute bottom-0 left-0 right-0 h-1"
-       style="background: linear-gradient(90deg, #ff2d95, #bf00ff, #00f5ff, #bf00ff, #ff2d95);
-              background-size: 200% 100%;
-              animation: gradient-shift 3s linear infinite;
-              box-shadow: 0 0 30px rgba(191, 0, 255, 0.6);"></div>
 </div>
-
-<style>
-  @keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 200% 50%; }
-  }
-
-  @keyframes confetti-fall {
-    0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
-</style>
