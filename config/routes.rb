@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   end
 
   # Join game by code
+  get "join", to: "games#join_by_code_link", as: :join_game_by_code_link
   post "join", to: "games#join_by_code", as: :join_game_by_code
 
   # Decks
