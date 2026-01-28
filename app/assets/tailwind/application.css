@@ -295,6 +295,79 @@
 }
 
 /* ============================================
+   NEON LOGO STYLES (Header & Homepage)
+   ============================================ */
+
+/* Homepage large logo */
+.neon-pink {
+  color: #fff;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px #ff2d95,
+    0 0 25px rgba(255, 45, 149, 0.6),
+    0 0 45px rgba(255, 45, 149, 0.35);
+  animation: neon-logo-flicker 4s infinite;
+}
+
+.neon-dash {
+  color: #fff;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px #22d3ee,
+    0 0 25px rgba(34, 211, 238, 0.5);
+  animation: neon-logo-flicker-subtle 5s infinite;
+}
+
+.neon-flicker-delayed {
+  animation: neon-logo-flicker 4s infinite 0.3s;
+}
+
+/* Header smaller logo */
+.neon-logo-pink {
+  color: #fff;
+  text-shadow:
+    0 0 3px #fff,
+    0 0 8px #ff2d95,
+    0 0 18px rgba(255, 45, 149, 0.5),
+    0 0 30px rgba(255, 45, 149, 0.25);
+  animation: neon-logo-flicker 4s infinite;
+}
+
+.neon-logo-dash {
+  color: #fff;
+  text-shadow:
+    0 0 3px #fff,
+    0 0 8px #22d3ee,
+    0 0 18px rgba(34, 211, 238, 0.4);
+  animation: neon-logo-flicker-subtle 5s infinite;
+}
+
+.neon-logo-flicker-delayed {
+  animation: neon-logo-flicker 4s infinite 0.3s;
+}
+
+@keyframes neon-logo-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.92;
+  }
+  22% {
+    opacity: 0.88;
+  }
+}
+
+@keyframes neon-logo-flicker-subtle {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.95;
+  }
+}
+
+/* ============================================
    BASE STYLES - MOBILE FIRST
    ============================================ */
 

@@ -270,69 +270,6 @@
   </div>
 
   <style>
-    /* Neon Sign Styles */
-    .neon-sign {
-      position: relative;
-    }
-
-    .neon-pink {
-      color: #ff6eb8;
-      text-shadow:
-        0 0 4px rgba(255, 110, 184, 0.6),
-        0 0 12px rgba(255, 45, 149, 0.4),
-        0 0 24px rgba(255, 45, 149, 0.2);
-      animation: neon-flicker 4s infinite;
-    }
-
-    .neon-dash {
-      color: #67e8f9;
-      text-shadow:
-        0 0 4px rgba(103, 232, 249, 0.5),
-        0 0 12px rgba(34, 211, 238, 0.3);
-      animation: neon-flicker-subtle 5s infinite;
-    }
-
-    .neon-flicker-delayed {
-      animation: neon-flicker 4s infinite 0.3s;
-    }
-
-    @keyframes neon-flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        text-shadow:
-          0 0 4px rgba(255, 110, 184, 0.6),
-          0 0 12px rgba(255, 45, 149, 0.4),
-          0 0 24px rgba(255, 45, 149, 0.2);
-        opacity: 1;
-      }
-      20%, 24%, 55% {
-        text-shadow:
-          0 0 2px rgba(255, 110, 184, 0.4),
-          0 0 8px rgba(255, 45, 149, 0.2);
-        opacity: 0.9;
-      }
-      22% {
-        text-shadow:
-          0 0 2px rgba(255, 110, 184, 0.3),
-          0 0 6px rgba(255, 45, 149, 0.15);
-        opacity: 0.85;
-      }
-    }
-
-    @keyframes neon-flicker-subtle {
-      0%, 18%, 22%, 25%, 53%, 57%, 100% {
-        text-shadow:
-          0 0 4px rgba(103, 232, 249, 0.5),
-          0 0 12px rgba(34, 211, 238, 0.3);
-        opacity: 1;
-      }
-      20%, 24%, 55% {
-        text-shadow:
-          0 0 3px rgba(103, 232, 249, 0.3),
-          0 0 8px rgba(34, 211, 238, 0.2);
-        opacity: 0.95;
-      }
-    }
-
     @keyframes float {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50% { transform: translateX(-50%) translateY(-8px); }
