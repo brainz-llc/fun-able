@@ -14,6 +14,41 @@ export default class extends Controller {
     if (this.hasFormTarget) {
       this.formTarget.addEventListener("submit", (e) => this.handleSubmit(e))
     }
+
+    this.setupMobileAutoScroll()
+  }
+
+  setupMobileAutoScroll() {
+    // Only run on mobile devices (max-width: 768px)
+    if (!window.matchMedia("(max-width: 768px)").matches) {
+      return
+    }
+
+    // Check if user is not the judge (has cards to select)
+    const hasCards = this.hasCardsTarget && this.cardsTarget.querySelectorAll(".game-card").length > 0
+    if (!hasCards) {
+      return
+    }
+
+    // Get round identifier from URL
+    const roundMatch = window.location.pathname.match(/\/rounds\/(\d+)/)
+    if (!roundMatch) {
+      return
+    }
+
+    const roundId = roundMatch[1]
+    const storageKey = `hand_scrolled_round_${roundId}`
+
+    // Check if already scrolled this round
+    if (sessionStorage.getItem(storageKey)) {
+      return
+    }
+
+    // Mark as scrolled and scroll after 3 seconds
+    sessionStorage.setItem(storageKey, "true")
+    setTimeout(() => {
+      this.element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 3000)
   }
 
   handleSubmit(event) {

@@ -212,7 +212,7 @@ export default class extends Controller {
     // Wait longer so players can see the celebration
     setTimeout(() => {
       window.Turbo.visit(window.location.href)
-    }, 10000)
+    }, 4000)
   }
 
   handleGameEnded(data) {
@@ -224,7 +224,7 @@ export default class extends Controller {
     // Wait even longer for game winner celebration
     setTimeout(() => {
       window.Turbo.visit(window.location.href)
-    }, 15000)
+    }, 6000)
   }
 
   updateTimer(data) {

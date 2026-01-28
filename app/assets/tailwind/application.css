@@ -410,3 +410,28 @@ body {
 .rating-nsfw {
   @apply bg-red-900 text-red-200;
 }
+
+/* Mobile black card focus */
+@media (max-width: 768px) {
+  .black-card-section {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .hand-section {
+    scroll-margin-top: 80px;
+  }
+
+  /* Larger touch targets for mobile cards */
+  .hand-container .game-card {
+    min-width: 140px;
+  }
+
+  .card-selectable:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+  }
+}
