@@ -39,32 +39,28 @@ export default class extends Controller {
   handleConnected() {
     console.log("Connected to GameChannel")
     this.reconnectAttempts = 0
-    this.hideConnectionStatus()
 
     // Request fresh state on reconnection
     this.subscription.perform("request_state")
 
-    // If this is a reconnection, refresh the page to get latest UI
+    // If this is a reconnection, silently refresh the page
     if (this.wasConnected) {
       console.log("Reconnected - refreshing page")
-      this.showConnectionStatus("Reconectado", "success")
-      setTimeout(() => {
-        this.hideConnectionStatus()
-        window.Turbo.visit(window.location.href, { action: "replace" })
-      }, 500)
+      window.Turbo.visit(window.location.href, { action: "replace" })
     }
     this.wasConnected = true
   }
 
   handleDisconnected() {
     console.log("Disconnected from GameChannel")
-    this.showConnectionStatus("Conexión perdida. Reconectando...", "error")
+    // Don't show error toast - reconnections are normal during page transitions
     this.attemptReconnect()
   }
 
   attemptReconnect() {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      this.showConnectionStatus("No se pudo reconectar. Recarga la página.", "error")
+      // Only show error after many failed attempts - this is a real problem
+      this.showToast("Conexión perdida. Recarga la página.", "error")
       return
     }
 
@@ -78,28 +74,6 @@ export default class extends Controller {
         this.subscription.perform("request_state")
       }
     }, delay)
-  }
-
-  showConnectionStatus(message, type) {
-    // Create status element if it doesn't exist
-    let statusEl = document.getElementById("connection-status")
-    if (!statusEl) {
-      statusEl = document.createElement("div")
-      statusEl.id = "connection-status"
-      statusEl.className = "fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg z-50 transition-all"
-      document.body.appendChild(statusEl)
-    }
-
-    statusEl.textContent = message
-    statusEl.classList.remove("bg-red-500", "bg-green-500", "hidden")
-    statusEl.classList.add(type === "error" ? "bg-red-500" : "bg-green-500", "text-white")
-  }
-
-  hideConnectionStatus() {
-    const statusEl = document.getElementById("connection-status")
-    if (statusEl) {
-      statusEl.classList.add("hidden")
-    }
   }
 
   showToast(message, type = "info") {
