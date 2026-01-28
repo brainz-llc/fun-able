@@ -8,6 +8,31 @@ export default class extends Controller {
 
   connect() {
     this.selectedCards = []
+    this.isSubmitting = false
+
+    // Add submit handler for feedback
+    if (this.hasFormTarget) {
+      this.formTarget.addEventListener("submit", (e) => this.handleSubmit(e))
+    }
+  }
+
+  handleSubmit(event) {
+    if (this.isSubmitting) {
+      event.preventDefault()
+      return
+    }
+
+    this.isSubmitting = true
+
+    // Show loading state
+    this.submitButtonTarget.disabled = true
+    this.submitButtonTarget.textContent = "Enviando..."
+    this.submitButtonTarget.classList.add("animate-pulse")
+
+    // Disable card selection
+    this.cardsTarget.querySelectorAll(".game-card").forEach(card => {
+      card.classList.add("pointer-events-none", "opacity-50")
+    })
   }
 
   toggleCard(event) {
