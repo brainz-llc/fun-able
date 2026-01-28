@@ -1,40 +1,128 @@
-<div class="max-w-4xl mx-auto">
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-3xl font-bold"><%= t('nav.my_decks') %></h1>
-    <%= link_to t('deck.create_new'), new_deck_path, class: "btn btn-primary" %>
+<div class="min-h-screen -mt-16 pt-16 relative overflow-hidden">
+  <!-- Animated Background Gradients -->
+  <div class="absolute inset-0 pointer-events-none" style="clip-path: inset(0);">
+    <div class="absolute top-1/4 left-0 -translate-x-1/2 w-64 h-64 md:w-[500px] md:h-[500px] bg-pink-500/20 md:bg-pink-500/15 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[600px] md:h-[600px] bg-cyan-500/15 md:bg-cyan-500/12 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-48 h-48 md:w-[400px] md:h-[400px] bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
   </div>
 
-  <% if @decks.any? %>
-    <div class="space-y-4">
-      <% @decks.each do |deck| %>
-        <div class="bg-bg-card rounded-lg p-4 flex items-center justify-between">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <%= link_to deck.name, deck_path(deck), class: "font-bold text-lg hover:text-terracotta" %>
-              <span class="text-xs px-2 py-0.5 rounded <%= deck.published? ? 'bg-success' : 'bg-gray-600' %>">
-                <%= t("deck.status.#{deck.status}") %>
-              </span>
-              <span class="rating-<%= deck.content_rating %> px-2 py-0.5 rounded text-xs">
-                <%= t("deck.content_rating.#{deck.content_rating}") %>
-              </span>
-            </div>
-            <div class="text-sm text-text-muted">
-              <%= deck.black_cards_count %> negras &middot; <%= deck.white_cards_count %> blancas
-              &middot; +<%= deck.votes_count %> votos
-            </div>
-          </div>
-
-          <div class="flex gap-2">
-            <%= link_to "Cartas", deck_deck_cards_path(deck), class: "btn btn-secondary text-sm" %>
-            <%= link_to t('deck.edit'), edit_deck_path(deck), class: "btn btn-ghost text-sm" %>
-          </div>
-        </div>
+  <div class="relative z-10 max-w-4xl mx-auto px-4 py-8 md:py-12">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2"><%= t('nav.my_decks') %></h1>
+        <p class="text-white/50 text-sm md:text-base">Gestiona tus mazos de cartas</p>
+      </div>
+      <%= link_to new_deck_path,
+          class: "w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white transition-all duration-300 active:scale-[0.98] hover:scale-[1.02]",
+          style: "background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 25px rgba(236, 72, 153, 0.4);" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <%= t('deck.create_new') %>
       <% end %>
     </div>
-  <% else %>
-    <div class="text-center py-12 bg-bg-card rounded-xl">
-      <p class="text-text-secondary text-lg mb-4">No has creado ningun mazo todavia</p>
-      <%= link_to t('deck.create_new'), new_deck_path, class: "btn btn-primary" %>
-    </div>
-  <% end %>
+
+    <% if @decks.any? %>
+      <div class="space-y-4">
+        <% @decks.each do |deck| %>
+          <div class="group rounded-2xl p-5 transition-all duration-300 hover:scale-[1.01]"
+               style="background: linear-gradient(145deg, rgba(15, 15, 20, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+                      border: 1px solid rgba(255, 255, 255, 0.08);
+                      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <!-- Deck Info -->
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                  <%= link_to deck_path(deck), class: "font-bold text-lg text-white hover:text-pink-400 transition-colors truncate" do %>
+                    <%= deck.name %>
+                  <% end %>
+
+                  <!-- Status Badge -->
+                  <span class="text-[10px] md:text-xs px-2.5 py-1 rounded-full font-medium
+                        <%= deck.published? ? 'text-green-400' : 'text-white/50' %>"
+                        style="background: <%= deck.published? ? 'rgba(34, 197, 94, 0.15)' : 'rgba(255, 255, 255, 0.05)' %>;
+                               border: 1px solid <%= deck.published? ? 'rgba(34, 197, 94, 0.3)' : 'rgba(255, 255, 255, 0.1)' %>;">
+                    <%= t("deck.status.#{deck.status}") %>
+                  </span>
+
+                  <!-- Content Rating Badge -->
+                  <span class="text-[10px] md:text-xs px-2.5 py-1 rounded-full font-medium
+                        <%= case deck.content_rating
+                            when 'family' then 'text-green-400'
+                            when 'adult' then 'text-yellow-400'
+                            when 'nsfw' then 'text-red-400'
+                            end %>"
+                        style="background: <%= case deck.content_rating
+                            when 'family' then 'rgba(34, 197, 94, 0.15)'
+                            when 'adult' then 'rgba(250, 204, 21, 0.15)'
+                            when 'nsfw' then 'rgba(239, 68, 68, 0.15)'
+                            end %>;">
+                    <%= t("deck.content_rating.#{deck.content_rating}") %>
+                  </span>
+                </div>
+
+                <!-- Stats -->
+                <div class="flex flex-wrap items-center gap-4 text-sm">
+                  <span class="flex items-center gap-1.5">
+                    <span class="text-pink-400 font-bold"><%= deck.black_cards_count %></span>
+                    <span class="text-white/40">negras</span>
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="text-cyan-400 font-bold"><%= deck.white_cards_count %></span>
+                    <span class="text-white/40">blancas</span>
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="text-purple-400 font-bold">+<%= deck.votes_count %></span>
+                    <span class="text-white/40">votos</span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="flex gap-2 flex-shrink-0">
+                <%= link_to deck_deck_cards_path(deck),
+                    class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white transition-all",
+                    style: "background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.3);" do %>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                  Cartas
+                <% end %>
+                <%= link_to edit_deck_path(deck),
+                    class: "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white transition-all",
+                    style: "background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3);" do %>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                  <%= t('deck.edit') %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Empty State -->
+      <div class="text-center py-16 rounded-2xl"
+           style="background: rgba(10, 10, 15, 0.6); border: 1px dashed rgba(236, 72, 153, 0.3);">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
+             style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(236, 72, 153, 0.05) 100%);">
+          <svg class="w-10 h-10 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-2">No tienes mazos todavia</h3>
+        <p class="text-white/40 mb-8">Crea tu primer mazo y comparte tus cartas con la comunidad</p>
+        <%= link_to new_deck_path,
+            class: "inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all duration-300 hover:scale-[1.02]",
+            style: "background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <%= t('deck.create_new') %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
