@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["cards", "form", "cardInputs", "submitButton", "mobileForm", "mobileCardInputs", "mobileSubmitButton", "mobileSelectedCount"]
+  static targets = ["cards", "form", "cardInputs"]
   static values = {
     pickCount: { type: Number, default: 1 }
   }
@@ -13,11 +13,6 @@ export default class extends Controller {
     // Add submit handler for feedback
     if (this.hasFormTarget) {
       this.formTarget.addEventListener("submit", (e) => this.handleSubmit(e))
-    }
-
-    // Add submit handler for mobile form
-    if (this.hasMobileFormTarget) {
-      this.mobileFormTarget.addEventListener("submit", (e) => this.handleSubmit(e))
     }
 
     this.setupMobileAutoScroll()
@@ -64,21 +59,7 @@ export default class extends Controller {
 
     this.isSubmitting = true
 
-    // Show loading state on desktop button
-    if (this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.disabled = true
-      this.submitButtonTarget.textContent = "Enviando..."
-      this.submitButtonTarget.classList.add("animate-pulse")
-    }
-
-    // Show loading state on mobile button
-    if (this.hasMobileSubmitButtonTarget) {
-      this.mobileSubmitButtonTarget.disabled = true
-      this.mobileSubmitButtonTarget.textContent = "Enviando..."
-      this.mobileSubmitButtonTarget.classList.add("animate-pulse")
-    }
-
-    // Disable card selection
+    // Disable card selection and show submitting state
     if (this.hasCardsTarget) {
       this.cardsTarget.querySelectorAll(".game-card, .game-card-touch").forEach(card => {
         card.classList.add("pointer-events-none", "opacity-50")
@@ -124,47 +105,18 @@ export default class extends Controller {
       .map(id => `<input type="hidden" name="card_ids[]" value="${id}">`)
       .join("")
 
-    // Update hidden inputs for desktop form
+    // Update hidden inputs
     if (this.hasCardInputsTarget) {
       this.cardInputsTarget.innerHTML = hiddenInputsHtml
     }
 
-    // Update hidden inputs for mobile form
-    if (this.hasMobileCardInputsTarget) {
-      this.mobileCardInputsTarget.innerHTML = hiddenInputsHtml
-    }
-
-    // Update button state
+    // Auto-submit when required cards are selected
     const isValid = this.selectedCards.length === this.pickCountValue
-
-    // Update desktop button
-    if (this.hasSubmitButtonTarget) {
-      this.submitButtonTarget.disabled = !isValid
-      if (this.pickCountValue > 1) {
-        this.submitButtonTarget.textContent = isValid
-          ? "Enviar Cartas"
-          : `Selecciona ${this.pickCountValue - this.selectedCards.length} carta(s) mas`
-      }
-    }
-
-    // Update mobile button
-    if (this.hasMobileSubmitButtonTarget) {
-      this.mobileSubmitButtonTarget.disabled = !isValid
-    }
-
-    // Update mobile selected count
-    if (this.hasMobileSelectedCountTarget) {
-      this.mobileSelectedCountTarget.textContent = this.selectedCards.length
-    }
-
-    // Auto-submit when required cards are selected (both desktop and mobile)
     if (isValid && !this.isSubmitting) {
       // Small delay for visual feedback before submitting
       setTimeout(() => {
         if (this.hasFormTarget && !this.isSubmitting) {
           this.formTarget.requestSubmit()
-        } else if (this.hasMobileFormTarget && !this.isSubmitting) {
-          this.mobileFormTarget.requestSubmit()
         }
       }, 150)
     }

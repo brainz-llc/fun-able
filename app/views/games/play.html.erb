@@ -264,7 +264,7 @@
 
     <!-- Player's Hand (only if can submit) -->
     <% if show_hand %>
-      <div class="mt-8 lg:mt-10 pb-28 lg:pb-4" data-controller="hand" data-hand-pick-count-value="<%= round&.pick_count || 1 %>">
+      <div class="mt-8 lg:mt-10 pb-4" data-controller="hand" data-hand-pick-count-value="<%= round&.pick_count || 1 %>">
         <div class="text-center mb-4">
           <h3 class="text-lg font-bold text-white">Tu Mano</h3>
           <p class="text-xs text-white/40">Toca para seleccionar</p>
@@ -286,46 +286,13 @@
           <% end %>
         </div>
 
-        <!-- Submit Button (Desktop) -->
+        <!-- Hidden form for auto-submit -->
         <%= form_with url: submit_cards_game_game_actions_path(current_game),
                       method: :post,
                       data: { hand_target: "form", turbo_frame: "_top" },
-                      class: "hidden lg:block mt-6 max-w-xs mx-auto" do |f| %>
+                      class: "hidden" do |f| %>
           <div data-hand-target="cardInputs"></div>
-          <%= f.submit "Enviar Carta",
-              class: "w-full py-3 rounded-xl font-bold text-white bg-pink-500 hover:bg-pink-400
-                      disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer",
-              disabled: true,
-              data: { hand_target: "submitButton" } %>
         <% end %>
-
-        <!-- Mobile Bottom Bar -->
-        <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[60] p-4 bg-black/95 backdrop-blur-xl border-t border-white/5"
-             style="padding-bottom: max(1rem, env(safe-area-inset-bottom));">
-          <div class="flex items-center gap-3">
-            <!-- Selected Counter -->
-            <div class="flex items-center gap-1 px-3 py-2 rounded-xl"
-                 style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(236, 72, 153, 0.1) 100%);
-                        border: 1px solid rgba(168, 85, 247, 0.25);">
-              <span class="text-xl font-black text-white tabular-nums" data-hand-target="mobileSelectedCount"
-                    style="text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);">0</span>
-              <span class="text-white/30 text-sm">/</span>
-              <span class="text-white/50 text-sm"><%= round&.pick_count || 1 %></span>
-            </div>
-
-            <%= form_with url: submit_cards_game_game_actions_path(current_game),
-                          method: :post,
-                          data: { hand_target: "mobileForm", turbo_frame: "_top" },
-                          class: "flex-1" do |f| %>
-              <div data-hand-target="mobileCardInputs"></div>
-              <%= f.submit "Enviar Carta",
-                  class: "w-full py-3 rounded-xl font-bold text-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed",
-                  style: "background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);",
-                  disabled: true,
-                  data: { hand_target: "mobileSubmitButton" } %>
-            <% end %>
-          </div>
-        </div>
       </div>
     <% end %>
 
