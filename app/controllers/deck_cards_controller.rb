@@ -52,7 +52,8 @@ class DeckCardsController < ApplicationController
   end
 
   def bulk_create
-    cards_data = params[:cards] || []
+    cards_text = params[:cards] || ''
+    cards_data = cards_text.split("\n").map(&:strip).reject(&:blank?)
     card_type = params[:card_type] || 'white'
 
     created_count = 0

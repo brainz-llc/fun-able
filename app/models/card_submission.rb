@@ -7,8 +7,8 @@ class CardSubmission < ApplicationRecord
 
   # Validations
   validates :round_id, uniqueness: { scope: :player_id, message: 'Ya enviaste cartas en esta ronda' }
-  validate :correct_number_of_cards
-  validate :player_has_cards
+  validate :correct_number_of_cards, on: :create
+  validate :player_has_cards, on: :create
 
   # Scopes
   scope :winners, -> { where(is_winner: true) }

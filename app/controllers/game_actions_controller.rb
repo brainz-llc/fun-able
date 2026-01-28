@@ -54,11 +54,17 @@ class GameActionsController < ApplicationController
 
     if submission.save
       current_game_player.remove_cards_from_hand!(card_ids)
-      GameChannel.broadcast_card_submitted(current_game, round)
 
+      # Check if all submitted and advance to judging
+      round.reload
       if round.all_submitted?
         round.advance_to_judging!
+        # Schedule timer for judging phase
+        RoundTimerExpiredJob.set(wait_until: round.timer_expires_at).perform_later(current_game.id, round.id)
+        # Broadcast after commit to ensure data is saved
         GameChannel.broadcast_judging_started(current_game, round)
+      else
+        GameChannel.broadcast_card_submitted(current_game, round)
       end
 
       respond_to do |format|
@@ -98,6 +104,7 @@ class GameActionsController < ApplicationController
 
       respond_to do |format|
         format.html { redirect_to game_path(current_game) }
+        format.json { render json: { success: true, winner_id: submission.player_id } }
         format.turbo_stream
       end
     else

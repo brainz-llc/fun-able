@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import consumer from "channels/consumer"
 
 export default class extends Controller {
-  static targets = ["timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "victoryModal", "victoryTitle", "victoryGif"]
+  static targets = ["timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount", "victoryModal", "victoryTitle", "victoryGif", "connectionStatus"]
   static values = {
     id: Number,
     playerId: Number,
@@ -10,12 +10,18 @@ export default class extends Controller {
   }
 
   connect() {
+    this.reconnectAttempts = 0
+    this.maxReconnectAttempts = 10
+    this.wasConnected = false
     this.subscribeToChannel()
   }
 
   disconnect() {
     if (this.subscription) {
       this.subscription.unsubscribe()
+    }
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer)
     }
   }
 
@@ -32,11 +38,68 @@ export default class extends Controller {
 
   handleConnected() {
     console.log("Connected to GameChannel")
+    this.reconnectAttempts = 0
+    this.hideConnectionStatus()
+
+    // Request fresh state on reconnection
     this.subscription.perform("request_state")
+
+    // If this is a reconnection, refresh the page to get latest UI
+    if (this.wasConnected) {
+      console.log("Reconnected - refreshing page")
+      this.showConnectionStatus("Reconectado", "success")
+      setTimeout(() => {
+        this.hideConnectionStatus()
+        window.Turbo.visit(window.location.href, { action: "replace" })
+      }, 500)
+    }
+    this.wasConnected = true
   }
 
   handleDisconnected() {
     console.log("Disconnected from GameChannel")
+    this.showConnectionStatus("Conexión perdida. Reconectando...", "error")
+    this.attemptReconnect()
+  }
+
+  attemptReconnect() {
+    if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+      this.showConnectionStatus("No se pudo reconectar. Recarga la página.", "error")
+      return
+    }
+
+    this.reconnectAttempts++
+    const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts - 1), 30000)
+
+    console.log(`Reconnect attempt ${this.reconnectAttempts} in ${delay}ms`)
+
+    this.reconnectTimer = setTimeout(() => {
+      if (consumer.connection.isOpen()) {
+        this.subscription.perform("request_state")
+      }
+    }, delay)
+  }
+
+  showConnectionStatus(message, type) {
+    // Create status element if it doesn't exist
+    let statusEl = document.getElementById("connection-status")
+    if (!statusEl) {
+      statusEl = document.createElement("div")
+      statusEl.id = "connection-status"
+      statusEl.className = "fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg z-50 transition-all"
+      document.body.appendChild(statusEl)
+    }
+
+    statusEl.textContent = message
+    statusEl.classList.remove("bg-red-500", "bg-green-500", "hidden")
+    statusEl.classList.add(type === "error" ? "bg-red-500" : "bg-green-500", "text-white")
+  }
+
+  hideConnectionStatus() {
+    const statusEl = document.getElementById("connection-status")
+    if (statusEl) {
+      statusEl.classList.add("hidden")
+    }
   }
 
   handleReceived(data) {
@@ -94,15 +157,24 @@ export default class extends Controller {
     const submittedCount = data.submissions_count
     const expectedCount = data.expected_count
 
-    if (this.hasJudgeMessageTarget) {
-      this.judgeMessageTarget.querySelector("p:last-child").textContent =
-        `${submittedCount}/${expectedCount} jugadores han respondido`
+    console.log(`Card submitted: ${submittedCount}/${expectedCount}`)
+
+    if (this.hasSubmissionCountTarget) {
+      this.submissionCountTarget.textContent = `${submittedCount}/${expectedCount} jugadores han respondido`
+    }
+
+    // If all submitted, page will be refreshed by judging_started event
+    if (data.all_submitted) {
+      console.log("All players submitted - waiting for judging_started")
     }
   }
 
   handleJudgingStarted(data) {
-    // Refresh to show submissions
-    window.Turbo.visit(window.location.href)
+    // Small delay to ensure server has committed changes, then refresh
+    console.log("Judging started - refreshing page")
+    setTimeout(() => {
+      window.Turbo.visit(window.location.href, { action: "replace" })
+    }, 300)
   }
 
   handleWinnerSelected(data) {
@@ -134,14 +206,29 @@ export default class extends Controller {
 
   selectWinner(event) {
     const submissionId = event.currentTarget.dataset.submissionId
+    console.log("Selecting winner:", submissionId)
+
+    // Disable further clicks
+    event.currentTarget.style.pointerEvents = "none"
 
     fetch(`/games/${this.idValue}/actions/select_winner`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json",
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
       },
       body: JSON.stringify({ submission_id: submissionId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Winner selected:", data)
+      if (data.error) {
+        alert(data.error)
+      }
+    })
+    .catch(error => {
+      console.error("Error selecting winner:", error)
     })
   }
 
@@ -168,11 +255,11 @@ export default class extends Controller {
         }
       })
 
-    this.victoryModalTarget.classList.remove("hidden")
+    this.victoryModalTarget.style.display = "flex"
 
     // Trigger confetti if available
-    if (typeof confetti === "function") {
-      confetti({
+    if (typeof window.confetti === "function") {
+      window.confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 }
@@ -182,7 +269,7 @@ export default class extends Controller {
 
   closeVictory() {
     if (this.hasVictoryModalTarget) {
-      this.victoryModalTarget.classList.add("hidden")
+      this.victoryModalTarget.style.display = "none"
     }
   }
 }
