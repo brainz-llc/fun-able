@@ -42,7 +42,10 @@ class Game < ApplicationRecord
   end
 
   def active_players
-    game_players.active.playing
+    # Include both active AND disconnected players - disconnected players are still
+    # part of the game until they leave/get kicked. Brief disconnections happen during
+    # page refreshes via Turbo, so we shouldn't exclude them from game logic.
+    game_players.where(status: [:active, :disconnected]).playing
   end
 
   def spectators
