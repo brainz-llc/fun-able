@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :games, only: [:new, :create, :show] do
     member do
       get :lobby
-      post :join
+      get :join
     end
 
     resource :game_actions, only: [], path: "actions" do

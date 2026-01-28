@@ -47,29 +47,36 @@
           <% end %>
         </div>
 
-        <!-- Judge Message or Submissions -->
-        <% if current_game_player&.current_judge? %>
+        <!-- Judge Message (only during submission phase) -->
+        <% if current_game_player&.current_judge? && current_game.current_round&.submitting? %>
           <div class="text-center mb-8" data-game-target="judgeMessage">
             <div class="text-2xl mb-2">👑</div>
             <p class="text-xl font-bold text-terracotta"><%= t('game.play.you_are_czar') %></p>
-            <p class="text-text-secondary">
-              <% if current_game.current_round&.submitting? %>
-                <%= t('game.play.waiting_submissions') %>
-              <% else %>
-                <%= t('game.play.select_winner') %>
-              <% end %>
+            <p class="text-text-secondary" data-game-target="submissionCount">
+              <%= current_game.current_round.submissions_count %>/<%= current_game.current_round.expected_submissions_count %> jugadores han respondido
             </p>
           </div>
         <% end %>
 
         <!-- Submissions Area (for judging phase) -->
         <% if current_game.current_round&.judging? || current_game.current_round&.revealing? %>
+          <% if current_game_player&.current_judge? %>
+            <div class="text-center mb-6 p-4 bg-terracotta/20 rounded-lg">
+              <p class="text-xl font-bold text-terracotta">Elige la mejor respuesta</p>
+              <p class="text-text-secondary">Haz clic en la respuesta ganadora</p>
+            </div>
+          <% else %>
+            <div class="text-center mb-6">
+              <p class="text-text-secondary">Esperando a que el Zar elija al ganador...</p>
+            </div>
+          <% end %>
+
           <div class="submissions-grid mb-8" data-game-target="submissions">
             <% current_game.current_round.submissions_for_display.each do |submission| %>
-              <div class="bg-bg-surface rounded-lg p-4 cursor-pointer hover:ring-2 hover:ring-terracotta transition <%= 'ring-2 ring-success' if submission.winner? %>"
+              <div class="bg-bg-surface rounded-lg p-4 transition <%= 'ring-2 ring-success' if submission.winner? %> <%= 'cursor-pointer hover:ring-2 hover:ring-terracotta hover:scale-105' if current_game_player&.current_judge? && !submission.winner? %>"
                    data-submission-id="<%= submission.id %>"
                    <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 justify-center">
                   <% submission.cards_in_order.each do |card| %>
                     <div class="game-card game-card-sm card-white">
                       <div class="card-content card-content-sm"><%= card.content %></div>
@@ -146,7 +153,7 @@
   </div>
 
   <!-- Victory Modal (hidden by default) -->
-  <div class="victory-modal hidden" data-game-target="victoryModal">
+  <div class="victory-modal" style="display: none;" data-game-target="victoryModal">
     <div class="victory-content animate-bounce-in">
       <div class="victory-title" data-game-target="victoryTitle"></div>
       <div class="victory-gif" data-game-target="victoryGif"></div>

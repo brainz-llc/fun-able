@@ -70,13 +70,17 @@ class GamesController < ApplicationController
   end
 
   def join_by_code
-    code = params[:code]&.upcase&.strip
+    raw_code = params[:code]
+    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
+
+    Rails.logger.info "JOIN_BY_CODE: raw='#{raw_code.inspect}' cleaned='#{code}'"
+
     game = Game.find_by_code(code)
 
     if game
       redirect_to join_game_path(game)
     else
-      redirect_to root_path, alert: 'Código de partida inválido'
+      redirect_to root_path, alert: "Código de partida inválido: #{code}"
     end
   end
 
