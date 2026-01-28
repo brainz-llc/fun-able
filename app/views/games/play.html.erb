@@ -64,7 +64,7 @@
                     border: 2px solid rgba(236, 72, 153, 0.4);
                     box-shadow: 0 0 40px rgba(236, 72, 153, 0.2), 0 20px 40px rgba(0,0,0,0.5);">
           <p class="text-white text-base md:text-lg leading-relaxed font-medium">
-            <%= current_game.current_round.black_card.display_content_with_blanks.gsub('_____', '<span class="inline-block w-16 md:w-20 border-b-2 border-pink-500" style="box-shadow: 0 2px 0 rgba(236, 72, 153, 0.5);"></span>').html_safe %>
+            <%= current_game.current_round.black_card.display_content_with_blanks.gsub('_____', '<span class="inline-block w-16 md:w-20 border-b-2 border-pink-400" style="box-shadow: 0 0 8px #ec4899, 0 0 16px rgba(236, 72, 153, 0.5);"></span>').html_safe %>
           </p>
           <div class="flex items-center justify-between mt-4">
             <span class="text-xs text-pink-500/60">Fun-able</span>
