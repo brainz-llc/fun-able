@@ -10,30 +10,71 @@
   <div class="relative z-10 flex flex-col items-center justify-center min-h-[85vh] px-6 text-center">
 
     <!-- Floating Cards Preview (top on mobile, bottom on desktop) -->
-    <div class="relative w-full max-w-sm md:max-w-4xl h-44 md:h-64 mb-6 md:mb-0 md:mt-10 order-1 md:order-3">
+    <div class="relative w-full max-w-sm md:max-w-6xl h-44 md:h-72 mb-6 md:mb-0 md:mt-10 order-1 md:order-3">
+
+      <!-- Desktop Only: Extra White Card (far left) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-18deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+           style="left: 2%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4"
+             style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Llorar en el bano del trabajo.</p>
+        </div>
+      </div>
+
       <!-- White Card 1 (left) -->
       <div class="absolute top-1/2 -translate-y-1/2 rotate-[-12deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
            style="left: 5%; width: 130px; height: 175px;">
-        <div class="w-full h-full md:w-[180px] md:h-[240px] rounded-xl p-3 md:p-4"
+        <div class="w-full h-full md:w-[160px] md:h-[210px] rounded-xl p-3 md:p-4 md:absolute md:left-[80px]"
              style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
           <p class="text-white text-xs md:text-sm leading-relaxed">Tu tio borracho en la boda.</p>
         </div>
       </div>
+
       <!-- Black Card (center) -->
       <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-3 transition-transform hover:rotate-0 hover:scale-110 duration-300 z-10"
            style="width: 140px; height: 190px;">
-        <div class="w-full h-full md:w-[200px] md:h-[270px] rounded-xl p-4 md:p-5 flex flex-col justify-between"
+        <div class="w-full h-full md:w-[180px] md:h-[240px] rounded-xl p-4 md:p-5 flex flex-col justify-between"
              style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 40px rgba(236, 72, 153, 0.3), 0 20px 40px rgba(0,0,0,0.5);">
           <p class="text-white text-xs md:text-sm leading-relaxed">Lo peor de las reuniones familiares es <span class="border-b-2 border-pink-500 inline-block w-12 md:w-16"></span>.</p>
           <span class="text-[10px] md:text-xs text-pink-500/60">Fun-able</span>
         </div>
       </div>
+
       <!-- White Card 2 (right) -->
       <div class="absolute top-1/2 -translate-y-1/2 rotate-[10deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
            style="right: 5%; width: 130px; height: 175px;">
-        <div class="w-full h-full md:w-[180px] md:h-[240px] rounded-xl p-3 md:p-4"
+        <div class="w-full h-full md:w-[160px] md:h-[210px] rounded-xl p-3 md:p-4 md:absolute md:right-[80px]"
              style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
           <p class="text-white text-xs md:text-sm leading-relaxed">Los memes de WhatsApp de tu mama.</p>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra White Card (far right) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[15deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+           style="right: 2%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4"
+             style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">La foto de perfil de tu ex.</p>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Black Card (left of center) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-8deg] transition-transform hover:rotate-0 hover:scale-110 duration-300 z-[5]"
+           style="left: 28%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 30px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Mi vida amorosa es como <span class="border-b-2 border-pink-500 inline-block w-14"></span>.</p>
+          <span class="text-[10px] text-pink-500/60">Fun-able</span>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Black Card (right of center) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[6deg] transition-transform hover:rotate-0 hover:scale-110 duration-300 z-[5]"
+           style="right: 28%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 1px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 30px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">En mi tiempo libre me gusta <span class="border-b-2 border-pink-500 inline-block w-14"></span>.</p>
+          <span class="text-[10px] text-pink-500/60">Fun-able</span>
         </div>
       </div>
     </div>
@@ -47,12 +88,14 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="w-full max-w-md space-y-5 order-3 md:order-2">
-      <!-- Create Game Button -->
+    <div class="w-full max-w-md md:max-w-2xl space-y-5 order-3 md:order-2">
+      <!-- Create Game Button - Different on mobile vs desktop -->
       <%= link_to new_game_path, class: "group relative block w-full overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]" do %>
         <div class="absolute inset-0 bg-gradient-to-r from-pink-600 via-pink-500 to-purple-500"></div>
         <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 bg-[length:200%_100%] animate-gradient"></div>
-        <div class="relative flex items-center justify-center gap-4 py-5 px-8">
+
+        <!-- Mobile Layout -->
+        <div class="relative md:hidden flex items-center justify-center gap-4 py-5 px-8">
           <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
@@ -63,6 +106,28 @@
             <span class="block text-sm text-white/70">Invita a tus amigos</span>
           </div>
         </div>
+
+        <!-- Desktop Layout -->
+        <div class="relative hidden md:flex items-center justify-between py-4 px-8">
+          <div class="flex items-center gap-5">
+            <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/20">
+              <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+            <div class="text-left">
+              <span class="block text-2xl font-black text-white tracking-wide"><%= t('home.create_game') %></span>
+              <span class="block text-sm text-white/60">Crea una sala y comparte el codigo con tus amigos</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 text-white/80 group-hover:text-white transition-colors">
+            <span class="text-sm font-medium">Comenzar</span>
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </div>
+        </div>
+
         <div class="absolute inset-0 rounded-2xl" style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 0 40px rgba(236, 72, 153, 0.4);"></div>
       <% end %>
 
