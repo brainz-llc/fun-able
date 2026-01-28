@@ -161,6 +161,7 @@
       <!-- Player's Hand (not judge) -->
       <% unless current_game_player&.current_judge? %>
         <div id="hand-controller-wrapper"
+             class="mt-8 lg:mt-6"
              data-controller="hand"
              data-hand-pick-count-value="<%= current_game.current_round&.pick_count || 1 %>">
 
