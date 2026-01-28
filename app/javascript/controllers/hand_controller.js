@@ -156,6 +156,18 @@ export default class extends Controller {
     if (this.hasMobileSelectedCountTarget) {
       this.mobileSelectedCountTarget.textContent = this.selectedCards.length
     }
+
+    // Auto-submit when required cards are selected (both desktop and mobile)
+    if (isValid && !this.isSubmitting) {
+      // Small delay for visual feedback before submitting
+      setTimeout(() => {
+        if (this.hasFormTarget && !this.isSubmitting) {
+          this.formTarget.requestSubmit()
+        } else if (this.hasMobileFormTarget && !this.isSubmitting) {
+          this.mobileFormTarget.requestSubmit()
+        }
+      }, 150)
+    }
   }
 
   // Keyboard navigation
