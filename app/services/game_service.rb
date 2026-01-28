@@ -119,12 +119,11 @@ class GameService
 
     GameChannel.broadcast_winner_selected(game, round, submission)
 
+    # Use delayed broadcast to allow winner animation to play
     if game.finished?
-      GameChannel.broadcast_game_ended(game)
+      BroadcastNewRoundJob.set(wait: 6.seconds).perform_later(game.id, :game_ended)
     else
-      # New round was created in select_winner!
-      new_round = game.current_round
-      GameChannel.broadcast_new_round(game, new_round)
+      BroadcastNewRoundJob.set(wait: 7.seconds).perform_later(game.id, :new_round)
       schedule_timer!
     end
 
@@ -215,9 +214,9 @@ class GameService
 
     # Start new round
     game.start_new_round!
-    new_round = game.current_round
 
-    GameChannel.broadcast_new_round(game, new_round)
+    # Small delay to prevent rapid page refreshes
+    BroadcastNewRoundJob.set(wait: 2.seconds).perform_later(game.id, :new_round)
     schedule_timer!
   end
 
@@ -234,11 +233,12 @@ class GameService
 
     GameChannel.broadcast_winner_selected(game, round, random_submission)
 
+    # Use delayed broadcast to allow winner animation to play
     if game.finished?
-      GameChannel.broadcast_game_ended(game)
+      BroadcastNewRoundJob.set(wait: 6.seconds).perform_later(game.id, :game_ended)
     else
-      new_round = game.current_round
-      GameChannel.broadcast_new_round(game, new_round)
+      BroadcastNewRoundJob.set(wait: 7.seconds).perform_later(game.id, :new_round)
+      # Schedule timer for the new round (will start after broadcast)
       schedule_timer!
     end
   end
