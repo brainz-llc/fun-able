@@ -103,7 +103,38 @@ class Game < ApplicationRecord
       update!(host: new_host) if new_host
     end
 
+    # Handle if leaving player is the current judge
+    if playing? && current_round&.judge_id == player.id
+      handle_judge_leaving!(player)
+    end
+
+    # Check if enough players remain
+    remaining_count = player_count - 1
+    if playing? && remaining_count < 3
+      finish!
+      GameChannel.broadcast_game_ended(self)
+    end
+
     player.destroy
+  end
+
+  def handle_judge_leaving!(judge_player)
+    round = current_round
+    return unless round
+
+    if round.judging? || round.revealing?
+      # Auto-select random winner if in judging phase
+      random_submission = round.card_submissions.sample
+      if random_submission
+        round.select_winner!(random_submission)
+        GameChannel.broadcast_winner_selected(self, round, random_submission)
+      else
+        round.update!(phase: :complete)
+      end
+    elsif round.submitting?
+      # Complete the round without a winner
+      round.update!(phase: :complete)
+    end
   end
 
   def start!
