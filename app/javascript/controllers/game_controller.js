@@ -6,7 +6,8 @@ export default class extends Controller {
     "timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount",
     "victoryModal", "victoryTitle", "victoryGif", "connectionStatus",
     "mobileScoreboardOverlay", "mobileScoreboardBackdrop", "mobileScoreboardPanel",
-    "winnerOverlay", "winnerCard", "winnerName", "countdown", "submissionCard"
+    "winnerOverlay", "winnerCard", "winnerName", "countdown", "submissionCard",
+    "phaseIndicator", "judgingContainer"
   ]
   static values = {
     id: Number,
@@ -19,6 +20,11 @@ export default class extends Controller {
     this.maxReconnectAttempts = 10
     this.wasConnected = false
     this.subscribeToChannel()
+
+    // Animate submissions in if we're in judging phase on page load
+    if (this.hasJudgingContainerTarget && this.hasSubmissionCardTarget) {
+      this.animateSubmissionsIn()
+    }
   }
 
   disconnect() {
@@ -169,36 +175,146 @@ export default class extends Controller {
   }
 
   handleJudgingStarted(data) {
-    // Small delay to ensure server has committed changes, then refresh
-    console.log("Judging started - refreshing page")
-    setTimeout(() => {
-      window.Turbo.visit(window.location.href, { action: "replace" })
-    }, 300)
+    console.log("Judging started - animating cards in")
+
+    // Check if we're already on the judging phase view
+    if (this.hasSubmissionCardTarget) {
+      // Already have submissions rendered, animate them
+      this.animateSubmissionsIn()
+    } else {
+      // Need to refresh to get submissions, then animate
+      setTimeout(() => {
+        window.Turbo.visit(window.location.href, { action: "replace" })
+      }, 300)
+    }
+  }
+
+  animateSubmissionsIn() {
+    // Shrink the black card
+    if (this.hasBlackCardTarget) {
+      this.blackCardTarget.classList.add("scale-90", "transition-all", "duration-500")
+    }
+
+    // Hide all submission cards initially
+    const cards = this.submissionCardTargets
+    cards.forEach(card => {
+      card.classList.add("opacity-0", "scale-75")
+      card.style.transition = "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)"
+    })
+
+    // Animate cards in one by one with different directions
+    cards.forEach((card, idx) => {
+      const directions = ["-translate-x-full", "translate-y-full", "translate-x-full", "-translate-y-full"]
+      const direction = directions[idx % directions.length]
+      card.classList.add(direction)
+
+      setTimeout(() => {
+        card.classList.remove("opacity-0", "scale-75", direction)
+      }, 300 + (idx * 200))
+    })
   }
 
   handleWinnerSelected(data) {
     console.log("Winner selected:", data)
 
-    // Step 1: Fade out non-winning cards
     const allCards = this.submissionCardTargets
-    const winningEl = document.querySelector(`[data-submission-id="${data.winning_submission_id}"]`)
+    const winningIdx = allCards.findIndex(card =>
+      card.dataset.submissionId === String(data.winning_submission_id)
+    )
 
-    allCards.forEach(card => {
-      if (card.dataset.submissionId !== String(data.winning_submission_id)) {
-        card.classList.add("opacity-30", "scale-95", "pointer-events-none")
+    // Phase 1: Czar is deciding - highlight cards in sequence
+    this.runJudgeHighlightSequence(allCards, winningIdx, () => {
+      // Phase 2: Reveal winner
+      this.revealWinner(data, allCards, winningIdx)
+    })
+  }
+
+  runJudgeHighlightSequence(cards, winningIdx, onComplete) {
+    if (cards.length === 0) {
+      onComplete()
+      return
+    }
+
+    // Update phase indicator if exists
+    if (this.hasPhaseIndicatorTarget) {
+      this.phaseIndicatorTarget.textContent = "El Zar decide..."
+    }
+
+    // Create a sequence that ends on the winning card
+    let sequence = []
+    const numHighlights = Math.min(cards.length * 2, 6) // Highlight a few cards
+
+    for (let i = 0; i < numHighlights - 1; i++) {
+      sequence.push(i % cards.length)
+    }
+    sequence.push(winningIdx) // End on winner
+
+    let i = 0
+    const highlightNext = () => {
+      // Remove previous highlight
+      if (i > 0) {
+        const prevCard = cards[sequence[i - 1]]
+        if (prevCard) {
+          prevCard.classList.remove("ring-2", "ring-purple-400", "scale-105")
+        }
+      }
+
+      if (i < sequence.length) {
+        const currentCard = cards[sequence[i]]
+        if (currentCard) {
+          currentCard.classList.add("ring-2", "ring-purple-400", "scale-105")
+        }
+        i++
+        setTimeout(highlightNext, 400)
+      } else {
+        // Remove last highlight before revealing winner
+        const lastCard = cards[sequence[sequence.length - 1]]
+        if (lastCard) {
+          lastCard.classList.remove("ring-2", "ring-purple-400", "scale-105")
+        }
+        setTimeout(onComplete, 300)
+      }
+    }
+
+    setTimeout(highlightNext, 500)
+  }
+
+  revealWinner(data, allCards, winningIdx) {
+    const winningCard = allCards[winningIdx]
+
+    // Fade out non-winning cards
+    allCards.forEach((card, idx) => {
+      if (idx !== winningIdx) {
         card.style.transition = "all 0.5s ease-out"
+        card.classList.add("opacity-20", "scale-90", "blur-sm")
       }
     })
 
-    // Step 2: After a moment, show the winner overlay
+    // Highlight winning card with golden glow
+    if (winningCard) {
+      winningCard.style.transition = "all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)"
+      winningCard.classList.add("ring-4", "ring-yellow-400", "scale-110", "shadow-winner", "z-10")
+    }
+
+    // Fire confetti
+    if (typeof window.confetti === "function") {
+      setTimeout(() => {
+        window.confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        })
+      }, 300)
+    }
+
+    // Show winner overlay after celebration
     setTimeout(() => {
-      this.showWinnerOverlay(data, winningEl)
-    }, 800)
+      this.showWinnerOverlay(data)
+    }, 1200)
   }
 
-  showWinnerOverlay(data, winningEl) {
+  showWinnerOverlay(data) {
     if (!this.hasWinnerOverlayTarget) {
-      // Fallback if no overlay target - just refresh
       setTimeout(() => window.Turbo.visit(window.location.href), 2000)
       return
     }
@@ -210,13 +326,10 @@ export default class extends Controller {
       </p>
     `).join('')
 
-    // Set winner card content
     this.winnerCardTarget.innerHTML = cardsHtml
-
-    // Set winner name
     this.winnerNameTarget.textContent = `🏆 ${data.winner_name} gana la ronda!`
 
-    // Show overlay with animation
+    // Show overlay
     this.winnerOverlayTarget.classList.remove("hidden")
     this.winnerOverlayTarget.classList.add("flex")
 
@@ -225,19 +338,16 @@ export default class extends Controller {
       this.winnerOverlayTarget.querySelector('[data-animate-in]')?.classList.remove("opacity-0", "scale-90")
     }, 50)
 
-    // Fire confetti
+    // More confetti
     if (typeof window.confetti === "function") {
-      window.confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      })
+      setTimeout(() => {
+        window.confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } })
+        window.confetti({ particleCount: 50, angle: 120, spread: 55, origin: { x: 1 } })
+      }, 400)
     }
 
-    // Start countdown after celebration
-    setTimeout(() => {
-      this.startCountdown()
-    }, 1500)
+    // Start countdown
+    setTimeout(() => this.startCountdown(), 1500)
   }
 
   startCountdown() {
@@ -258,10 +368,8 @@ export default class extends Controller {
         setTimeout(() => this.countdownTarget.classList.remove("scale-125"), 200)
       } else {
         clearInterval(countInterval)
-        this.countdownTarget.textContent = "¡Siguiente ronda!"
-        setTimeout(() => {
-          window.Turbo.visit(window.location.href)
-        }, 500)
+        this.countdownTarget.textContent = "¡Vamos!"
+        setTimeout(() => window.Turbo.visit(window.location.href), 500)
       }
     }, 1000)
   }
