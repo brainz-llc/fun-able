@@ -198,21 +198,16 @@ export default class extends Controller {
   }
 
   handleWinnerSelected(data) {
-    // First highlight the winning submission
+    // Highlight the winning submission briefly
     const winningEl = document.querySelector(`[data-submission-id="${data.winning_submission_id}"]`)
     if (winningEl) {
-      winningEl.classList.add("ring-4", "ring-green-500", "scale-105")
+      winningEl.classList.add("ring-4", "ring-yellow-400", "scale-105")
     }
 
-    // Show victory modal after a short delay to see the winning cards
-    setTimeout(() => {
-      this.showVictory(data.winner_name, "round_win")
-    }, 1500)
-
-    // Wait longer so players can see the celebration
+    // Quick refresh to next round
     setTimeout(() => {
       window.Turbo.visit(window.location.href)
-    }, 4000)
+    }, 2000)
   }
 
   handleGameEnded(data) {
