@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import consumer from "channels/consumer"
 
 export default class extends Controller {
-  static targets = ["timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount", "victoryModal", "victoryTitle", "victoryGif", "connectionStatus"]
+  static targets = ["timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount", "victoryModal", "victoryTitle", "victoryGif", "connectionStatus", "mobileScoreboardOverlay", "mobileScoreboardBackdrop", "mobileScoreboardPanel"]
   static values = {
     id: Number,
     playerId: Number,
@@ -266,8 +266,33 @@ export default class extends Controller {
   }
 
   toggleScoreboard() {
-    if (this.hasScoreboardTarget) {
+    // Check if we're on mobile (has mobile scoreboard overlay)
+    if (this.hasMobileScoreboardOverlayTarget) {
+      this.toggleMobileScoreboard()
+    } else if (this.hasScoreboardTarget) {
       this.scoreboardTarget.classList.toggle("hidden")
+    }
+  }
+
+  toggleMobileScoreboard() {
+    const overlay = this.mobileScoreboardOverlayTarget
+    const backdrop = this.mobileScoreboardBackdropTarget
+    const panel = this.mobileScoreboardPanelTarget
+
+    const isOpen = !panel.classList.contains("translate-x-full")
+
+    if (isOpen) {
+      // Close
+      panel.classList.add("translate-x-full")
+      backdrop.classList.add("opacity-0", "pointer-events-none")
+      overlay.classList.add("pointer-events-none")
+      document.body.style.overflow = ""
+    } else {
+      // Open
+      overlay.classList.remove("pointer-events-none")
+      backdrop.classList.remove("opacity-0", "pointer-events-none")
+      panel.classList.remove("translate-x-full")
+      document.body.style.overflow = "hidden"
     }
   }
 

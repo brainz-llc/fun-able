@@ -1,87 +1,251 @@
-<div class="lobby-container" data-controller="lobby" data-lobby-game-id-value="<%= current_game.id %>">
-  <!-- Game Code -->
-  <div class="text-center mb-8">
-    <h1 class="text-2xl font-bold mb-4"><%= t('game.lobby.title') %></h1>
-    <p class="text-text-secondary mb-2"><%= t('game.lobby.share_code') %>:</p>
-    <div class="game-code inline-block cursor-pointer" data-action="click->lobby#copyCode" data-lobby-target="code">
-      <%= current_game.code %>
+<div class="lobby-container tokyo-street-bg min-h-screen pb-24 lg:pb-6" data-controller="lobby" data-lobby-game-id-value="<%= current_game.id %>">
+  <!-- Header: Game Title & Code -->
+  <div class="text-center pt-6 pb-4 px-4">
+    <h1 class="text-2xl lg:text-3xl font-bold mb-4 neon-purple animate-neon-pulse">Fun-able</h1>
+
+    <!-- Game Code - HUGE on mobile, tappable -->
+    <div class="inline-block cursor-pointer group relative active:scale-95 transition-transform"
+         data-action="click->lobby#copyCode"
+         data-lobby-target="code">
+      <div class="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-500/20 blur-3xl rounded-3xl"></div>
+      <div class="relative px-6 sm:px-10 py-4 sm:py-6 rounded-2xl transition-all duration-300"
+           style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(20, 0, 30, 0.95) 100%);
+                  border: 3px solid #ff2d95;
+                  box-shadow: 0 0 20px rgba(255, 45, 149, 0.6),
+                              0 0 40px rgba(255, 45, 149, 0.4),
+                              0 0 60px rgba(255, 45, 149, 0.2),
+                              inset 0 0 30px rgba(255, 45, 149, 0.1);">
+        <p class="text-xs uppercase tracking-widest neon-cyan mb-2 opacity-80">Codigo de partida</p>
+        <span class="font-mono text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-[0.2em] sm:tracking-[0.3em] font-black animate-neon-flicker block"
+              data-lobby-target="codeValue"
+              style="color: #ff2d95;
+                     text-shadow: 0 0 10px #ff2d95,
+                                  0 0 20px #ff2d95,
+                                  0 0 40px #ff2d95,
+                                  0 0 80px #ff2d95;">
+          <%= current_game.code %>
+        </span>
+      </div>
+      <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3/4 h-1 rounded-full"
+           style="background: linear-gradient(90deg, transparent, #ff2d95, transparent);
+                  box-shadow: 0 0 10px #ff2d95;"></div>
     </div>
-    <p class="text-sm text-text-muted mt-2" data-lobby-target="copyFeedback"></p>
+
+    <p class="text-sm mt-4 neon-cyan opacity-70 transition-opacity" data-lobby-target="copyFeedback">
+      Toca para copiar
+    </p>
+
+    <!-- Share Button - Prominent on mobile -->
+    <button type="button"
+            data-action="click->lobby#shareGame"
+            class="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all duration-300 active:scale-95"
+            style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                   box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), 0 4px 15px rgba(0, 0, 0, 0.3);">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+      </svg>
+      Invitar amigos
+    </button>
   </div>
 
-  <div class="grid md:grid-cols-3 gap-6">
-    <!-- Players List -->
-    <div class="md:col-span-2">
-      <h2 class="text-xl font-bold mb-4">
-        Jugadores (<span data-lobby-target="playerCount"><%= current_game.player_count %></span>/<%= current_game.max_players %>)
+  <!-- Main Content -->
+  <div class="px-4 lg:px-6 space-y-6 lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0 max-w-6xl mx-auto">
+    <!-- Players Section -->
+    <div class="lg:col-span-2">
+      <h2 class="text-lg lg:text-xl font-bold mb-4 flex items-center justify-between">
+        <span>
+          <span class="neon-cyan">Jugadores</span>
+          <span class="neon-pink ml-2">(<span data-lobby-target="playerCount"><%= current_game.player_count %></span>/<%= current_game.max_players %>)</span>
+        </span>
       </h2>
 
-      <div class="players-list" data-lobby-target="playersList">
+      <!-- Player Grid - 3 cols mobile, 4 sm, 6 lg -->
+      <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3" data-lobby-target="playersList">
         <% @players.each do |player| %>
-          <%= render 'games/player_badge', player: player, show_kick: game_host? && player.user_id != current_user.id %>
+          <%= render 'games/lobby_player_avatar', player: player, show_kick: game_host? && player.user_id != current_user.id %>
+        <% end %>
+
+        <!-- Empty slots with loading animation -->
+        <% (current_game.max_players - current_game.player_count).times do |i| %>
+          <div class="lobby-player-slot-empty aspect-square rounded-xl flex flex-col items-center justify-center p-2 animate-pulse"
+               style="background: rgba(15, 15, 15, 0.6);
+                      border: 2px dashed rgba(168, 85, 247, 0.3);">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-1"
+                 style="background: rgba(168, 85, 247, 0.1);">
+              <svg class="w-6 h-6 text-neon-purple/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span class="text-xs text-text-muted">Esperando...</span>
+          </div>
         <% end %>
       </div>
 
-      <p class="text-text-secondary mt-4">
+      <!-- Status Message -->
+      <div class="mt-4 p-3 rounded-xl text-center"
+           style="background: radial-gradient(ellipse at center, rgba(191, 0, 255, 0.1) 0%, transparent 70%);">
         <% if current_game.player_count < 3 %>
-          <%= t('game.lobby.min_players', count: 3) %>
+          <div class="flex items-center justify-center gap-2">
+            <span class="inline-block animate-bounce">&#x23F3;</span>
+            <p class="neon-purple animate-neon-pulse text-sm sm:text-base">
+              <%= t('game.lobby.min_players', count: 3) %>
+            </p>
+          </div>
         <% else %>
-          Listo para comenzar!
-        <% end %>
-      </p>
-    </div>
-
-    <!-- Settings (Host only) -->
-    <div class="bg-bg-card rounded-lg p-4">
-      <h2 class="text-xl font-bold mb-4"><%= t('game.lobby.settings') %></h2>
-
-      <% if game_host? %>
-        <%= form_with url: update_settings_game_game_actions_path(current_game), method: :patch, data: { turbo_frame: "_top" } do |f| %>
-          <div class="space-y-4">
-            <div>
-              <%= f.label :deck_id, t('game.lobby.select_deck'), class: "label" %>
-              <%= f.collection_select :deck_id, @decks, :id, :name, { selected: current_game.deck_id }, class: "input" %>
-            </div>
-
-            <div>
-              <%= f.label :points_to_win, "Puntos para ganar", class: "label" %>
-              <%= f.number_field :points_to_win, value: current_game.points_to_win, min: 3, max: 20, class: "input" %>
-            </div>
-
-            <div>
-              <%= f.label :turn_timer, "Tiempo (seg)", class: "label" %>
-              <%= f.number_field :turn_timer, value: current_game.turn_timer, min: 30, max: 180, step: 10, class: "input" %>
-            </div>
-
-            <%= f.submit "Actualizar", class: "btn btn-secondary w-full" %>
+          <div class="flex items-center justify-center gap-2">
+            <span class="inline-block text-xl">&#x2705;</span>
+            <p class="neon-cyan font-bold text-sm sm:text-base">
+              Listo para comenzar!
+            </p>
           </div>
         <% end %>
-      <% else %>
-        <div class="space-y-2 text-sm">
-          <p><strong>Mazo:</strong> <%= current_game.deck&.name || "No seleccionado" %></p>
-          <p><strong>Puntos:</strong> <%= current_game.points_to_win %></p>
-          <p><strong>Tiempo:</strong> <%= current_game.turn_timer %>s</p>
+      </div>
+    </div>
+
+    <!-- Settings Section - Collapsible on mobile -->
+    <div class="lg:block">
+      <details class="group rounded-xl overflow-hidden"
+               style="background: linear-gradient(180deg, rgba(191, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+                      border: 1px solid rgba(191, 0, 255, 0.3);
+                      box-shadow: 0 0 30px rgba(191, 0, 255, 0.2);"
+               open>
+        <summary class="lg:pointer-events-none flex items-center justify-between p-4 cursor-pointer select-none">
+          <h2 class="text-lg lg:text-xl font-bold neon-purple flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <%= t('game.lobby.settings') %>
+          </h2>
+          <svg class="w-5 h-5 lg:hidden transition-transform group-open:rotate-180 neon-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+
+        <div class="px-4 pb-4 space-y-4">
+          <% if game_host? %>
+            <%= form_with url: update_settings_game_game_actions_path(current_game), method: :patch, data: { turbo_frame: "_top" } do |f| %>
+              <div class="space-y-4">
+                <div>
+                  <%= f.label :deck_id, t('game.lobby.select_deck'), class: "block text-sm mb-2 neon-purple" %>
+                  <%= f.collection_select :deck_id, @decks, :id, :name, { selected: current_game.deck_id }, class: "w-full px-4 py-3 rounded-lg text-white bg-bg-dark border border-neon-purple/30 focus:border-neon-purple focus:outline-none focus:ring-1 focus:ring-neon-purple/50" %>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <%= f.label :points_to_win, "Puntos", class: "block text-sm mb-2 neon-purple" %>
+                    <%= f.number_field :points_to_win, value: current_game.points_to_win, min: 3, max: 20, class: "w-full px-4 py-3 rounded-lg text-white bg-bg-dark border border-neon-purple/30 focus:border-neon-purple focus:outline-none focus:ring-1 focus:ring-neon-purple/50" %>
+                  </div>
+
+                  <div>
+                    <%= f.label :turn_timer, "Tiempo", class: "block text-sm mb-2 neon-purple" %>
+                    <%= f.number_field :turn_timer, value: current_game.turn_timer, min: 30, max: 180, step: 10, class: "w-full px-4 py-3 rounded-lg text-white bg-bg-dark border border-neon-purple/30 focus:border-neon-purple focus:outline-none focus:ring-1 focus:ring-neon-purple/50", placeholder: "seg" %>
+                  </div>
+                </div>
+
+                <%= f.submit "Actualizar", class: "w-full px-4 py-3 rounded-lg font-bold text-white transition-all duration-300 active:scale-95", style: "background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);" %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between items-center py-2 border-b border-neon-purple/20">
+                <span class="neon-purple">Mazo:</span>
+                <span class="neon-cyan text-right truncate ml-2"><%= current_game.deck&.name || "No seleccionado" %></span>
+              </div>
+              <div class="flex justify-between items-center py-2 border-b border-neon-purple/20">
+                <span class="neon-purple">Puntos:</span>
+                <span class="neon-cyan"><%= current_game.points_to_win %></span>
+              </div>
+              <div class="flex justify-between items-center py-2">
+                <span class="neon-purple">Tiempo:</span>
+                <span class="neon-cyan"><%= current_game.turn_timer %>s</span>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Leave Game Button - Inside settings on desktop -->
+          <div class="hidden lg:block pt-4 border-t border-neon-purple/20">
+            <% if !game_host? %>
+              <div class="text-center py-3 rounded-xl mb-3"
+                   style="background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.1) 0%, transparent 70%);">
+                <p class="neon-cyan animate-neon-pulse text-sm">Esperando que el anfitrion inicie...</p>
+              </div>
+            <% end %>
+
+            <%= button_to t('game.actions.leave_game'),
+                leave_game_game_actions_path(current_game),
+                method: :post,
+                class: "w-full px-4 py-3 rounded-lg font-bold transition-all duration-300 bg-red-900/50 text-red-300 border border-red-500/50 hover:bg-red-800/70 hover:border-red-400",
+                style: "box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);",
+                data: { turbo_confirm: "Seguro que quieres abandonar?" } %>
+          </div>
         </div>
-      <% end %>
+      </details>
 
-      <hr class="my-4 border-gray-700">
-
-      <% if game_host? %>
-        <%= button_to t('game.lobby.start_game'),
-            start_game_game_actions_path(current_game),
+      <!-- Leave button for mobile (outside accordion) -->
+      <div class="lg:hidden mt-4">
+        <%= button_to t('game.actions.leave_game'),
+            leave_game_game_actions_path(current_game),
             method: :post,
-            class: "btn btn-primary w-full",
-            disabled: !current_game.can_start?,
-            data: { turbo_confirm: "Iniciar la partida?" } %>
-      <% else %>
-        <p class="text-center text-text-secondary">Esperando que el anfitrion inicie...</p>
-      <% end %>
-
-      <%= button_to t('game.actions.leave_game'),
-          leave_game_game_actions_path(current_game),
-          method: :post,
-          class: "btn btn-danger w-full mt-4",
-          data: { turbo_confirm: "Seguro que quieres abandonar?" } %>
+            class: "w-full px-4 py-3 rounded-lg font-bold transition-all duration-300 bg-red-900/50 text-red-300 border border-red-500/50 hover:bg-red-800/70 hover:border-red-400 active:scale-95",
+            style: "box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);",
+            data: { turbo_confirm: "Seguro que quieres abandonar?" } %>
+      </div>
     </div>
   </div>
+
+  <!-- Fixed Bottom Start Button - Mobile only -->
+  <div class="fixed bottom-0 left-0 right-0 p-4 lg:hidden z-50"
+       style="background: linear-gradient(to top, rgba(5, 5, 5, 0.98) 0%, rgba(5, 5, 5, 0.95) 70%, transparent 100%);">
+    <% if game_host? %>
+      <%= button_to t('game.lobby.start_game'),
+          start_game_game_actions_path(current_game),
+          method: :post,
+          class: "w-full py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed",
+          style: current_game.can_start? ? "background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(236, 72, 153, 0.3); animation: neon-pulse 2s ease-in-out infinite;" : "background: rgba(100, 100, 100, 0.5);",
+          disabled: !current_game.can_start?,
+          data: { turbo_confirm: "Iniciar la partida?" } %>
+    <% else %>
+      <div class="text-center py-4 rounded-xl"
+           style="background: rgba(15, 15, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3);">
+        <div class="flex items-center justify-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-neon-cyan animate-pulse"></div>
+          <p class="neon-cyan text-sm">Esperando al anfitrion...</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Desktop Start Button (inside flow) -->
+  <div class="hidden lg:block max-w-6xl mx-auto px-6 mt-6">
+    <% if game_host? %>
+      <%= button_to t('game.lobby.start_game'),
+          start_game_game_actions_path(current_game),
+          method: :post,
+          class: "w-full py-4 rounded-xl font-bold text-xl text-white transition-all duration-300 hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100",
+          style: current_game.can_start? ? "background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(236, 72, 153, 0.3); animation: neon-pulse 2s ease-in-out infinite;" : "background: rgba(100, 100, 100, 0.5);",
+          disabled: !current_game.can_start?,
+          data: { turbo_confirm: "Iniciar la partida?" } %>
+    <% else %>
+      <div class="text-center py-4 rounded-xl"
+           style="background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.1) 0%, transparent 70%);">
+        <p class="neon-cyan animate-neon-pulse">Esperando que el anfitrion inicie...</p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Animated neon lines decoration -->
+  <div class="fixed bottom-0 left-0 right-0 h-1 pointer-events-none z-40"
+       style="background: linear-gradient(90deg, #ff2d95, #bf00ff, #00f5ff, #bf00ff, #ff2d95);
+              background-size: 200% 100%;
+              animation: gradient-shift 3s linear infinite;
+              box-shadow: 0 0 20px rgba(191, 0, 255, 0.5);">
+  </div>
+
+  <style>
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+  </style>
 </div>

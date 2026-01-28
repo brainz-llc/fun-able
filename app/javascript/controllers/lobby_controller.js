@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import consumer from "channels/consumer"
 
 export default class extends Controller {
-  static targets = ["code", "copyFeedback", "playersList", "playerCount"]
+  static targets = ["code", "codeValue", "copyFeedback", "playersList", "playerCount"]
   static values = {
     gameId: Number
   }
@@ -67,13 +67,51 @@ export default class extends Controller {
   }
 
   copyCode() {
-    const code = this.codeTarget.textContent.trim()
+    const code = this.codeValueTarget.textContent.trim()
 
     navigator.clipboard.writeText(code).then(() => {
       if (this.hasCopyFeedbackTarget) {
         this.copyFeedbackTarget.textContent = "Copiado!"
+        this.copyFeedbackTarget.classList.add("animate-bounce-in")
         setTimeout(() => {
-          this.copyFeedbackTarget.textContent = ""
+          this.copyFeedbackTarget.textContent = "Toca para copiar"
+          this.copyFeedbackTarget.classList.remove("animate-bounce-in")
+        }, 2000)
+      }
+    })
+  }
+
+  shareGame() {
+    const code = this.codeValueTarget.textContent.trim()
+    const shareUrl = window.location.origin + "/join?code=" + encodeURIComponent(code)
+    const shareText = `Unete a mi partida de Fun-able! Codigo: ${code}`
+
+    // Use Web Share API if available (mobile)
+    if (navigator.share) {
+      navigator.share({
+        title: "Fun-able - Unete a la partida!",
+        text: shareText,
+        url: shareUrl
+      }).catch((err) => {
+        // User cancelled or error, fallback to copy
+        if (err.name !== "AbortError") {
+          this.copyShareLink(shareUrl)
+        }
+      })
+    } else {
+      // Fallback: copy link to clipboard
+      this.copyShareLink(shareUrl)
+    }
+  }
+
+  copyShareLink(url) {
+    navigator.clipboard.writeText(url).then(() => {
+      if (this.hasCopyFeedbackTarget) {
+        this.copyFeedbackTarget.textContent = "Enlace copiado!"
+        this.copyFeedbackTarget.classList.add("animate-bounce-in")
+        setTimeout(() => {
+          this.copyFeedbackTarget.textContent = "Toca para copiar"
+          this.copyFeedbackTarget.classList.remove("animate-bounce-in")
         }, 2000)
       }
     })
