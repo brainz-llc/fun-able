@@ -70,6 +70,17 @@ class GamesController < ApplicationController
   end
 
   def join_by_code
+    find_and_join_by_code
+  end
+
+  # GET /join?code=ABC123 - for shared links
+  def join_by_code_link
+    find_and_join_by_code
+  end
+
+  private
+
+  def find_and_join_by_code
     raw_code = params[:code]
     code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
 
@@ -83,8 +94,6 @@ class GamesController < ApplicationController
       redirect_to root_path, alert: "Código de partida inválido: #{code}"
     end
   end
-
-  private
 
   def set_game
     @current_game = Game.find(params[:id])
