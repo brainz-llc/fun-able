@@ -1,9 +1,11 @@
 class GameChannel < ApplicationCable::Channel
   def subscribed
-    @game = Game.find(params[:game_id])
+    @game = Game.find_by(id: params[:game_id])
+    return reject unless @game
+
     @game_player = @game.player_for(current_user)
 
-    if @game_player
+    if @game_player && !@game_player.left? && !@game_player.kicked?
       stream_from broadcast_channel
       @game_player.mark_connected!
       broadcast_player_status_changed
@@ -15,12 +17,15 @@ class GameChannel < ApplicationCable::Channel
   def unsubscribed
     return unless @game_player
 
-    @game_player.mark_disconnected!
-    broadcast_player_status_changed
-
-    # Schedule disconnection handling if game is in progress
+    # Don't immediately mark as disconnected - use a delayed job to check
+    # This prevents brief disconnections during Turbo page transitions from
+    # affecting game state. The job will verify if still disconnected before acting.
     if @game.playing?
-      HandleDisconnectionJob.set(wait: 30.seconds).perform_later(@game_player.id)
+      MarkDisconnectedJob.set(wait: 3.seconds).perform_later(@game_player.id)
+    else
+      # In lobby, mark immediately for UI updates
+      @game_player.mark_disconnected!
+      broadcast_player_status_changed
     end
   end
 

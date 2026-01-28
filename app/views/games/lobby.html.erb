@@ -130,7 +130,7 @@
 
             <div class="px-3 pb-3">
               <% if game_host? %>
-                <%= form_with url: update_settings_game_game_actions_path(current_game), method: :patch, data: { turbo_frame: "_top" } do |f| %>
+                <%= form_with url: update_settings_game_game_actions_path(current_game), scope: :game, method: :patch, data: { turbo_frame: "_top" } do |f| %>
                   <div class="flex items-end gap-2">
                     <!-- Deck -->
                     <div class="flex-1 min-w-0">
@@ -195,6 +195,15 @@
             </div>
           </details>
         </div>
+
+        <!-- Warning if no deck selected -->
+        <% unless current_game.deck&.playable? %>
+          <div class="p-3 rounded-xl mb-4 flex items-center gap-3"
+               style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3);">
+            <span class="text-xl">⚠️</span>
+            <p class="text-sm text-yellow-400">Selecciona un mazo en la configuracion para poder iniciar</p>
+          </div>
+        <% end %>
 
         <!-- Desktop Start Button - Right here, not at the bottom! -->
         <div class="hidden lg:block">

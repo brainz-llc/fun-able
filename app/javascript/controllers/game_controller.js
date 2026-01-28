@@ -4,7 +4,7 @@ import consumer from "channels/consumer"
 export default class extends Controller {
   static targets = [
     "timer", "blackCard", "submissions", "scoreboard", "judgeMessage", "submissionCount",
-    "victoryModal", "victoryTitle", "victoryGif", "connectionStatus",
+    "victoryModal", "victoryTitle", "connectionStatus",
     "mobileScoreboardOverlay", "mobileScoreboardBackdrop", "mobileScoreboardPanel",
     "winnerOverlay", "winnerCard", "winnerName", "countdown", "submissionCard",
     "phaseIndicator", "judgingContainer", "submissionsTable", "tableCard", "statusMessage"
@@ -56,11 +56,9 @@ export default class extends Controller {
     // Request fresh state on reconnection
     this.subscription.perform("request_state")
 
-    // If this is a reconnection, silently refresh the page
-    if (this.wasConnected) {
-      console.log("Reconnected - refreshing page")
-      window.Turbo.visit(window.location.href, { action: "replace" })
-    }
+    // Don't auto-refresh on reconnection - the game flow handles refreshes explicitly
+    // (via countdown after winner, new_round events, etc.)
+    // Auto-refresh was causing conflicts with Turbo navigation
     this.wasConnected = true
   }
 
@@ -161,7 +159,8 @@ export default class extends Controller {
       return
     }
     // Refresh the page to get new round state
-    window.Turbo.visit(window.location.href)
+    console.log("New round received, refreshing...")
+    this.forceRefresh()
   }
 
   handleCardSubmitted(data) {
@@ -263,6 +262,22 @@ export default class extends Controller {
 
     // Prevent new_round from interrupting animation
     this.showingWinnerAnimation = true
+
+    // Hide the timer immediately
+    if (this.hasTimerTarget) {
+      this.timerTarget.style.display = "none"
+    }
+
+    // Update phase indicator
+    if (this.hasPhaseIndicatorTarget) {
+      this.phaseIndicatorTarget.textContent = "🏆 Ganador seleccionado!"
+      this.phaseIndicatorTarget.classList.add("text-yellow-400")
+    }
+
+    // Update status message if exists
+    if (this.hasStatusMessageTarget) {
+      this.statusMessageTarget.textContent = "Preparando siguiente ronda..."
+    }
 
     const allCards = this.submissionCardTargets
     const winningIdx = allCards.findIndex(card =>
@@ -399,7 +414,8 @@ export default class extends Controller {
 
   startCountdown() {
     if (!this.hasCountdownTarget) {
-      setTimeout(() => window.Turbo.visit(window.location.href), 3000)
+      console.log("No countdown target, refreshing in 3s")
+      setTimeout(() => this.forceRefresh(), 3000)
       return
     }
 
@@ -416,9 +432,16 @@ export default class extends Controller {
       } else {
         clearInterval(countInterval)
         this.countdownTarget.textContent = "¡Vamos!"
-        setTimeout(() => window.Turbo.visit(window.location.href), 500)
+        console.log("Countdown complete, refreshing...")
+        setTimeout(() => this.forceRefresh(), 500)
       }
     }, 1000)
+  }
+
+  forceRefresh() {
+    // Use location.reload for more reliable refresh than Turbo.visit
+    // This ensures the page fully reloads with fresh server state
+    window.location.reload()
   }
 
   handleGameEnded(data) {
@@ -512,29 +535,6 @@ export default class extends Controller {
       category === "game_win"
         ? `🏆 ${winnerName} gana la partida! 🏆`
         : `🎉 ${winnerName} gana la ronda!`
-
-    // Show loading placeholder
-    this.victoryGifTarget.innerHTML = `
-      <div class="w-full h-48 bg-bg-surface rounded flex items-center justify-center">
-        <div class="animate-pulse text-text-secondary">Cargando...</div>
-      </div>
-    `
-
-    // Fetch victory GIF
-    fetch(`/api/v1/memes/victory?category=${category}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success && data.data.url) {
-          const img = new Image()
-          img.onload = () => {
-            this.victoryGifTarget.innerHTML = `<img src="${data.data.url}" class="w-full rounded max-h-64 object-contain">`
-          }
-          img.src = data.data.url
-        }
-      })
-      .catch(() => {
-        this.victoryGifTarget.innerHTML = ""
-      })
 
     this.victoryModalTarget.style.display = "flex"
 

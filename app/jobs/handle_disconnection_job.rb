@@ -4,15 +4,25 @@ class HandleDisconnectionJob < ApplicationJob
   def perform(game_player_id)
     player = GamePlayer.find_by(id: game_player_id)
     return unless player
-    return if player.connected?
-    return unless player.game.playing?
+    return unless player.game&.playing?
 
-    # Check if still disconnected after grace period
-    if player.disconnected_at && player.disconnected_at < 25.seconds.ago
-      service = GameService.new(player.game)
-      service.player_disconnected!(player)
-    end
+    # If player reconnected, skip entirely
+    return if player.connected?
+
+    # If player already left or was kicked, skip
+    return if player.left? || player.kicked?
+
+    # Only proceed if player has been disconnected for a significant time
+    # This prevents race conditions with brief disconnections
+    return unless player.disconnected?
+    return unless player.disconnected_at
+    return unless player.disconnected_at < 25.seconds.ago
+
+    Rails.logger.info("HandleDisconnectionJob: Removing player #{player.id} (#{player.display_name}) - disconnected since #{player.disconnected_at}")
+
+    service = GameService.new(player.game)
+    service.player_disconnected!(player)
   rescue => e
-    Rails.logger.error("HandleDisconnectionJob failed: #{e.message}")
+    Rails.logger.error("HandleDisconnectionJob failed for player #{game_player_id}: #{e.message}")
   end
 end
