@@ -32,7 +32,7 @@
       <!-- Main Game Area -->
       <div class="lg:col-span-3">
         <!-- Black Card -->
-        <div class="flex justify-center mb-8">
+        <div class="flex justify-center mb-8 black-card-section">
           <% if current_game.current_round&.black_card %>
             <div class="game-card card-black" data-game-target="blackCard">
               <div class="card-content">
@@ -90,7 +90,7 @@
 
         <!-- Player's Hand -->
         <% unless current_game_player&.current_judge? %>
-          <div class="mt-8" data-controller="hand" data-hand-pick-count-value="<%= current_game.current_round&.pick_count || 1 %>">
+          <div class="mt-8 hand-section" id="player-hand" data-controller="hand" data-hand-pick-count-value="<%= current_game.current_round&.pick_count || 1 %>">
             <h3 class="text-lg font-bold mb-4"><%= t('game.play.your_hand') %></h3>
 
             <% if current_game_player&.submitted_for_round?(current_game.current_round) %>
