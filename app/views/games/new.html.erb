@@ -1,29 +1,54 @@
-<div class="max-w-2xl mx-auto">
-  <h1 class="text-3xl font-bold mb-8 text-center"><%= t('home.create_game') %></h1>
+<div class="max-w-2xl mx-auto min-h-screen py-8 px-4">
+  <!-- Neon Title -->
+  <div class="text-center mb-10">
+    <h1 class="text-4xl font-black mb-2 neon-pink animate-neon-flicker"><%= t('home.create_game') %></h1>
+    <div class="h-1 w-32 mx-auto rounded-full"
+         style="background: linear-gradient(90deg, #ff2d95, #bf00ff, #00f5ff);
+                box-shadow: 0 0 15px rgba(191, 0, 255, 0.6);"></div>
+  </div>
 
-  <%= form_with model: @game, url: games_path, method: :post, class: "bg-bg-card rounded-xl p-8" do |f| %>
+  <%= form_with model: @game, url: games_path, method: :post,
+                class: "rounded-2xl p-8",
+                style: "background: linear-gradient(180deg, rgba(191, 0, 255, 0.08) 0%, rgba(0, 0, 0, 0.9) 100%);
+                        border: 1px solid rgba(191, 0, 255, 0.3);
+                        box-shadow: 0 0 40px rgba(191, 0, 255, 0.2), inset 0 0 60px rgba(0, 0, 0, 0.5);" do |f| %>
+
     <!-- Deck Selection -->
-    <div class="mb-6">
-      <%= f.label :deck_id, t('game.lobby.select_deck'), class: "label text-lg" %>
-      <div class="grid gap-3 mt-2 max-h-80 overflow-y-auto">
+    <div class="mb-8">
+      <%= f.label :deck_id, t('game.lobby.select_deck'), class: "block text-lg font-bold mb-4 neon-cyan" %>
+      <div class="grid gap-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
         <% @decks.each do |deck| %>
-          <label class="flex items-center gap-3 p-4 bg-bg-surface rounded-lg cursor-pointer hover:ring-2 hover:ring-terracotta transition <%= 'ring-2 ring-terracotta' if @game.deck_id == deck.id %>">
+          <label class="flex items-center gap-4 p-5 rounded-xl cursor-pointer transition-all duration-300 group relative overflow-hidden
+                        <%= 'neon-border-pink' if @game.deck_id == deck.id %>"
+                 style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(20, 0, 30, 0.8) 100%);
+                        border: 1px solid rgba(191, 0, 255, 0.2);"
+                 onmouseover="this.style.borderColor='#bf00ff'; this.style.boxShadow='0 0 20px rgba(191, 0, 255, 0.4)';"
+                 onmouseout="this.style.borderColor='rgba(191, 0, 255, 0.2)'; this.style.boxShadow='none';">
+
+            <!-- Shimmer effect on hover -->
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+
             <%= f.radio_button :deck_id, deck.id, class: "hidden", data: { action: "change->form#highlight" } %>
-            <div class="flex-grow">
-              <div class="font-bold flex items-center gap-2">
-                <%= deck.name %>
+            <div class="flex-grow relative">
+              <div class="font-bold flex items-center gap-3 mb-1">
+                <span class="neon-purple"><%= deck.name %></span>
                 <% if deck.official? %>
-                  <span class="text-xs bg-terracotta px-2 py-0.5 rounded"><%= t('deck.official') %></span>
+                  <span class="text-xs px-2 py-0.5 rounded-full neon-btn-pink text-white"
+                        style="font-size: 10px;"><%= t('deck.official') %></span>
                 <% end %>
               </div>
-              <div class="text-sm text-text-secondary">
-                <%= deck.black_cards_count %> negras, <%= deck.white_cards_count %> blancas
+              <div class="text-sm flex items-center gap-2">
+                <span class="neon-pink"><%= deck.black_cards_count %> negras</span>
+                <span class="text-text-muted">|</span>
+                <span class="neon-cyan"><%= deck.white_cards_count %> blancas</span>
                 <% if deck.region %>
-                  &middot; <%= deck.region.display_name %>
+                  <span class="text-text-muted">|</span>
+                  <span class="text-text-secondary"><%= deck.region.display_name %></span>
                 <% end %>
               </div>
             </div>
-            <span class="rating-<%= deck.content_rating %> px-2 py-1 rounded text-xs">
+            <span class="rating-<%= deck.content_rating %> px-3 py-1 rounded-full text-xs font-bold"
+                  style="box-shadow: 0 0 10px currentColor;">
               <%= t("deck.content_rating.#{deck.content_rating}") %>
             </span>
           </label>
@@ -32,24 +57,62 @@
     </div>
 
     <!-- Game Settings -->
-    <div class="grid md:grid-cols-3 gap-4 mb-6">
-      <div>
-        <%= f.label :points_to_win, "Puntos para ganar", class: "label" %>
-        <%= f.number_field :points_to_win, min: 3, max: 20, class: "input" %>
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="p-4 rounded-xl"
+           style="background: rgba(255, 45, 149, 0.05); border: 1px solid rgba(255, 45, 149, 0.2);">
+        <%= f.label :points_to_win, "Puntos para ganar", class: "neon-label" %>
+        <%= f.number_field :points_to_win, min: 3, max: 20, class: "neon-input text-center text-xl font-bold" %>
       </div>
-      <div>
-        <%= f.label :turn_timer, "Tiempo por turno (seg)", class: "label" %>
-        <%= f.number_field :turn_timer, min: 30, max: 180, step: 10, class: "input" %>
+      <div class="p-4 rounded-xl"
+           style="background: rgba(191, 0, 255, 0.05); border: 1px solid rgba(191, 0, 255, 0.2);">
+        <%= f.label :turn_timer, "Tiempo por turno (seg)", class: "neon-label" %>
+        <%= f.number_field :turn_timer, min: 30, max: 180, step: 10, class: "neon-input text-center text-xl font-bold" %>
       </div>
-      <div>
-        <%= f.label :max_players, "Jugadores maximos", class: "label" %>
-        <%= f.number_field :max_players, min: 3, max: 20, class: "input" %>
+      <div class="p-4 rounded-xl"
+           style="background: rgba(0, 245, 255, 0.05); border: 1px solid rgba(0, 245, 255, 0.2);">
+        <%= f.label :max_players, "Jugadores maximos", class: "neon-label" %>
+        <%= f.number_field :max_players, min: 3, max: 20, class: "neon-input text-center text-xl font-bold" %>
       </div>
     </div>
 
+    <!-- Action Buttons -->
     <div class="flex gap-4">
-      <%= link_to t('actions.cancel'), root_path, class: "btn btn-secondary flex-1 text-center" %>
-      <%= f.submit t('home.create_game'), class: "btn btn-primary flex-1" %>
+      <%= link_to t('actions.cancel'), root_path,
+                  class: "flex-1 text-center px-6 py-4 rounded-xl font-bold transition-all duration-300",
+                  style: "background: rgba(107, 107, 107, 0.2);
+                          border: 1px solid rgba(160, 160, 160, 0.3);
+                          color: #a0a0a0;
+                          box-shadow: 0 0 10px rgba(160, 160, 160, 0.1);",
+                  onmouseover: "this.style.background='rgba(107, 107, 107, 0.4)'; this.style.borderColor='rgba(160, 160, 160, 0.5)';",
+                  onmouseout: "this.style.background='rgba(107, 107, 107, 0.2)'; this.style.borderColor='rgba(160, 160, 160, 0.3)';" %>
+      <%= f.submit t('home.create_game'),
+                   class: "flex-1 neon-btn neon-btn-pink text-lg animate-neon-pulse cursor-pointer" %>
     </div>
   <% end %>
+
+  <!-- Decorative elements -->
+  <div class="absolute top-20 left-10 w-2 h-2 rounded-full animate-ping"
+       style="background: #ff2d95; box-shadow: 0 0 10px #ff2d95;"></div>
+  <div class="absolute top-40 right-20 w-2 h-2 rounded-full animate-ping"
+       style="background: #00f5ff; box-shadow: 0 0 10px #00f5ff; animation-delay: 0.5s;"></div>
+  <div class="absolute bottom-40 left-20 w-2 h-2 rounded-full animate-ping"
+       style="background: #bf00ff; box-shadow: 0 0 10px #bf00ff; animation-delay: 1s;"></div>
 </div>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(191, 0, 255, 0.1);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff2d95, #bf00ff);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(191, 0, 255, 0.5);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff5db1, #d24dff);
+  }
+</style>

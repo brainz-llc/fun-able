@@ -1,21 +1,75 @@
-<div class="max-w-6xl mx-auto">
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-3xl font-bold"><%= t('nav.browse_decks') %></h1>
-    <%= link_to t('deck.create_new'), new_deck_path, class: "btn btn-primary" %>
+<div class="min-h-screen container mx-auto px-4 py-6 md:py-8">
+  <!-- Header - Mobile optimized -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-10">
+    <h1 class="text-2xl md:text-4xl font-bold text-white">
+      <%= t('nav.browse_decks') %>
+    </h1>
+    <%= link_to t('deck.create_new'), new_deck_path, class: "w-full sm:w-auto text-center neon-btn neon-btn-pink" %>
   </div>
 
-  <!-- Filters -->
-  <div class="bg-bg-card rounded-lg p-4 mb-6">
-    <%= form_with url: decks_path, method: :get, class: "flex flex-wrap gap-4 items-end" do |f| %>
-      <div>
-        <%= f.label :region_id, t('region.select'), class: "label" %>
+  <!-- Filters - Collapsible on mobile -->
+  <div class="neon-filter-container mb-6 md:mb-8">
+    <details class="md:hidden group" open>
+      <summary class="flex items-center justify-between cursor-pointer list-none py-2 text-purple-300 font-medium">
+        <span class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+          </svg>
+          Filtros
+        </span>
+        <svg class="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </summary>
+      <div class="pt-4">
+        <%= form_with url: decks_path, method: :get, class: "flex flex-col gap-4" do |f| %>
+          <div>
+            <%= f.label :region_id, t('region.select'), class: "neon-label" %>
+            <%= f.collection_select :region_id, Region.active.sorted, :id, :display_name,
+                { include_blank: t('region.all'), selected: params[:region_id] },
+                class: "neon-select w-full py-3" %>
+          </div>
+
+          <div>
+            <%= f.label :content_rating, "Clasificacion", class: "neon-label" %>
+            <%= f.select :content_rating,
+                options_for_select([
+                  [t('region.all'), ''],
+                  [t('deck.content_rating.family'), 'family'],
+                  [t('deck.content_rating.adult'), 'adult'],
+                  [t('deck.content_rating.nsfw'), 'nsfw']
+                ], params[:content_rating]),
+                {},
+                class: "neon-select w-full py-3" %>
+          </div>
+
+          <div>
+            <%= f.label :sort, "Ordenar", class: "neon-label" %>
+            <%= f.select :sort,
+                options_for_select([
+                  ['Mas populares', 'popular'],
+                  ['Mas recientes', 'recent']
+                ], params[:sort] || 'popular'),
+                {},
+                class: "neon-select w-full py-3" %>
+          </div>
+
+          <%= f.submit t('actions.filter'), class: "neon-btn neon-btn-purple w-full py-3" %>
+        <% end %>
+      </div>
+    </details>
+
+    <!-- Desktop filters - always visible -->
+    <%= form_with url: decks_path, method: :get, class: "hidden md:flex flex-wrap gap-6 items-end" do |f| %>
+      <div class="flex-1 min-w-48">
+        <%= f.label :region_id, t('region.select'), class: "neon-label" %>
         <%= f.collection_select :region_id, Region.active.sorted, :id, :display_name,
             { include_blank: t('region.all'), selected: params[:region_id] },
-            class: "input" %>
+            class: "neon-select" %>
       </div>
 
-      <div>
-        <%= f.label :content_rating, "Clasificacion", class: "label" %>
+      <div class="flex-1 min-w-48">
+        <%= f.label :content_rating, "Clasificacion", class: "neon-label" %>
         <%= f.select :content_rating,
             options_for_select([
               [t('region.all'), ''],
@@ -24,53 +78,64 @@
               [t('deck.content_rating.nsfw'), 'nsfw']
             ], params[:content_rating]),
             {},
-            class: "input" %>
+            class: "neon-select" %>
       </div>
 
-      <div>
-        <%= f.label :sort, "Ordenar", class: "label" %>
+      <div class="flex-1 min-w-48">
+        <%= f.label :sort, "Ordenar", class: "neon-label" %>
         <%= f.select :sort,
             options_for_select([
               ['Mas populares', 'popular'],
               ['Mas recientes', 'recent']
             ], params[:sort] || 'popular'),
             {},
-            class: "input" %>
+            class: "neon-select" %>
       </div>
 
-      <%= f.submit t('actions.filter'), class: "btn btn-secondary" %>
+      <%= f.submit t('actions.filter'), class: "neon-btn neon-btn-purple" %>
     <% end %>
   </div>
 
-  <!-- Decks Grid -->
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- Decks Grid - 2 columns mobile, 3 tablet, 4 desktop -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
     <% @decks.each do |deck| %>
-      <%= link_to deck_path(deck), class: "deck-card block" do %>
-        <div class="deck-card-header">
-          <div class="flex items-center justify-between">
-            <h2 class="font-bold text-lg"><%= deck.name %></h2>
-            <% if deck.official? %>
-              <span class="text-xs bg-terracotta px-2 py-0.5 rounded"><%= t('deck.official') %></span>
-            <% end %>
+      <%= link_to deck_path(deck), class: "neon-deck-card neon-gradient-overlay block group rounded-xl overflow-hidden" do %>
+        <!-- Card Header -->
+        <div class="p-3 md:p-5 border-b border-white/10">
+          <div class="flex flex-col gap-2">
+            <h2 class="font-bold text-sm md:text-xl text-white group-hover:neon-cyan transition-all duration-300 line-clamp-2"><%= deck.name %></h2>
+            <div class="flex flex-wrap items-center gap-1 md:gap-2">
+              <% if deck.official? %>
+                <span class="text-[10px] md:text-xs bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full border border-pink-500/30"><%= t('deck.official') %></span>
+              <% end %>
+              <% if deck.region %>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/5 text-[10px] md:text-sm text-gray-400 truncate max-w-[100px] md:max-w-none">
+                  <%= deck.region.display_name %>
+                </span>
+              <% end %>
+            </div>
           </div>
-          <% if deck.region %>
-            <span class="region-badge mt-2"><%= deck.region.display_name %></span>
-          <% end %>
         </div>
 
-        <div class="deck-card-body">
-          <p class="text-text-secondary text-sm line-clamp-2"><%= deck.description %></p>
+        <!-- Card Body - Hidden on mobile for compactness -->
+        <div class="hidden md:block p-5">
+          <p class="text-text-secondary text-sm line-clamp-2 leading-relaxed"><%= deck.description %></p>
         </div>
 
-        <div class="deck-card-footer">
-          <div class="text-sm text-text-muted">
-            <%= deck.black_cards_count %> negras &middot; <%= deck.white_cards_count %> blancas
+        <!-- Card Footer -->
+        <div class="px-3 md:px-5 py-2 md:py-4 bg-bg-darker/50 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div class="text-xs md:text-sm flex items-center gap-2">
+            <span class="neon-pink font-bold"><%= deck.black_cards_count %></span>
+            <span class="text-text-muted hidden md:inline">negras</span>
+            <span class="text-text-muted">/</span>
+            <span class="neon-cyan font-bold"><%= deck.white_cards_count %></span>
+            <span class="text-text-muted hidden md:inline">blancas</span>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="rating-<%= deck.content_rating %> px-2 py-0.5 rounded text-xs">
+          <div class="flex items-center justify-between md:justify-end gap-2 md:gap-3">
+            <span class="rating-<%= deck.content_rating %> px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium">
               <%= t("deck.content_rating.#{deck.content_rating}") %>
             </span>
-            <span class="text-terracotta font-bold">+<%= deck.votes_count %></span>
+            <span class="neon-purple font-bold text-sm md:text-lg">+<%= deck.votes_count %></span>
           </div>
         </div>
       <% end %>
@@ -78,9 +143,9 @@
   </div>
 
   <% if @decks.empty? %>
-    <div class="text-center py-12">
-      <p class="text-text-secondary text-lg">No se encontraron mazos</p>
-      <%= link_to t('deck.create_new'), new_deck_path, class: "btn btn-primary mt-4" %>
+    <div class="neon-empty-state text-center py-12">
+      <p class="text-text-secondary text-lg md:text-xl mb-6">No se encontraron mazos</p>
+      <%= link_to t('deck.create_new'), new_deck_path, class: "neon-btn neon-btn-cyan" %>
     </div>
   <% end %>
 </div>

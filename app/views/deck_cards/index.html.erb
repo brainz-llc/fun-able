@@ -1,71 +1,105 @@
-<div class="max-w-6xl mx-auto">
-  <div class="flex items-center justify-between mb-8">
+<div class="max-w-6xl mx-auto tokyo-street-bg min-h-screen px-4 py-8">
+  <!-- Header with neon styling -->
+  <div class="flex items-center justify-between mb-10 flex-wrap gap-4">
     <div>
-      <h1 class="text-3xl font-bold">Cartas de <%= @deck.name %></h1>
-      <p class="text-text-secondary"><%= @deck.black_cards.count %> negras, <%= @deck.white_cards.count %> blancas</p>
+      <h1 class="text-3xl font-bold neon-section-header mb-2">
+        <span class="neon-purple animate-neon-pulse">Cartas de <%= @deck.name %></span>
+      </h1>
+      <p class="text-text-secondary mt-4">
+        <span class="neon-pink font-bold"><%= @deck.black_cards.count %></span>
+        <span class="text-text-muted">negras</span>
+        <span class="text-text-muted mx-2">&middot;</span>
+        <span class="neon-cyan font-bold"><%= @deck.white_cards.count %></span>
+        <span class="text-text-muted">blancas</span>
+      </p>
     </div>
-    <div class="flex gap-2">
-      <%= link_to t('actions.back'), deck_path(@deck), class: "btn btn-secondary" %>
+    <div class="flex gap-3">
+      <%= link_to t('actions.back'), deck_path(@deck), class: "neon-btn neon-btn-purple" %>
     </div>
   </div>
 
-  <div class="grid lg:grid-cols-2 gap-8">
-    <!-- Black Cards -->
+  <div class="grid lg:grid-cols-2 gap-10">
+    <!-- Black Cards Section -->
     <div>
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold">Cartas Negras (<%= @black_cards.count %>)</h2>
-        <%= link_to "+ Agregar", new_deck_deck_card_path(@deck, card_type: 'black'), class: "btn btn-secondary text-sm" %>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold neon-pink flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-pink-500 animate-neon-pulse"></span>
+          Cartas Negras (<%= @black_cards.count %>)
+        </h2>
+        <%= link_to "+ Agregar", new_deck_deck_card_path(@deck, card_type: 'black'), class: "neon-btn neon-btn-pink text-sm" %>
       </div>
 
-      <div id="black_cards" class="space-y-3">
+      <div id="black_cards" class="space-y-4">
         <% @black_cards.each do |card| %>
           <%= render 'card_item', card: card %>
         <% end %>
       </div>
 
       <% if @black_cards.empty? %>
-        <p class="text-text-secondary text-center py-8">No hay cartas negras</p>
+        <div class="neon-empty-state">
+          <p class="text-text-secondary">No hay cartas negras</p>
+          <p class="text-sm text-text-muted mt-2">Agrega algunas cartas de pregunta</p>
+        </div>
       <% end %>
     </div>
 
-    <!-- White Cards -->
+    <!-- White Cards Section -->
     <div>
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold">Cartas Blancas (<%= @white_cards.count %>)</h2>
-        <%= link_to "+ Agregar", new_deck_deck_card_path(@deck, card_type: 'white'), class: "btn btn-secondary text-sm" %>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold neon-cyan flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-cyan-400 animate-neon-pulse"></span>
+          Cartas Blancas (<%= @white_cards.count %>)
+        </h2>
+        <%= link_to "+ Agregar", new_deck_deck_card_path(@deck, card_type: 'white'), class: "neon-btn neon-btn-cyan text-sm" %>
       </div>
 
-      <div id="white_cards" class="space-y-3">
+      <div id="white_cards" class="space-y-4">
         <% @white_cards.each do |card| %>
           <%= render 'card_item', card: card %>
         <% end %>
       </div>
 
       <% if @white_cards.empty? %>
-        <p class="text-text-secondary text-center py-8">No hay cartas blancas</p>
+        <div class="neon-empty-state">
+          <p class="text-text-secondary">No hay cartas blancas</p>
+          <p class="text-sm text-text-muted mt-2">Agrega algunas cartas de respuesta</p>
+        </div>
       <% end %>
     </div>
   </div>
 
-  <!-- Bulk Add -->
-  <div class="mt-12 bg-bg-card rounded-xl p-6">
-    <h2 class="text-xl font-bold mb-4">Agregar Multiples Cartas</h2>
-    <%= form_with url: bulk_create_deck_deck_cards_path(@deck), method: :post, class: "space-y-4" do |f| %>
+  <!-- Bulk Add Section with neon styling -->
+  <div class="mt-16 neon-deck-card neon-gradient-overlay p-8">
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"></div>
+
+    <h2 class="text-2xl font-bold mb-6 neon-section-header">
+      <span class="neon-purple">Agregar Multiples Cartas</span>
+    </h2>
+
+    <%= form_with url: bulk_create_deck_deck_cards_path(@deck), method: :post, class: "space-y-6" do |f| %>
       <div>
-        <%= f.label :card_type, "Tipo de Carta", class: "label" %>
+        <%= f.label :card_type, "Tipo de Carta", class: "neon-label" %>
         <%= f.select :card_type,
             options_for_select([['Carta Blanca', 'white'], ['Carta Negra', 'black']]),
             {},
-            class: "input" %>
+            class: "neon-select" %>
       </div>
 
       <div>
-        <%= f.label :cards, "Cartas (una por linea)", class: "label" %>
-        <%= f.text_area :cards, class: "input font-mono", rows: 10, placeholder: "Escribe cada carta en una linea separada.\nUsa _____ para los espacios en blanco en cartas negras." %>
-        <p class="text-xs text-text-muted mt-1">Tip: Usa _____ (5 guiones bajos) para indicar donde van las respuestas en cartas negras</p>
+        <%= f.label :cards, "Cartas (una por linea)", class: "neon-label" %>
+        <%= f.text_area :cards,
+            class: "neon-input font-mono text-sm",
+            rows: 12,
+            placeholder: "Escribe cada carta en una linea separada.\nUsa _____ para los espacios en blanco en cartas negras.\n\nEjemplo:\nNada dice 'te amo' como _____.\nLa fiesta se acabo cuando llego _____." %>
+        <p class="text-xs text-text-muted mt-3 flex items-center gap-2">
+          <span class="neon-pink">Tip:</span>
+          Usa <code class="px-2 py-1 bg-bg-darker rounded neon-border-pink text-xs">_____</code> (5 guiones bajos) para indicar donde van las respuestas en cartas negras
+        </p>
       </div>
 
-      <%= f.submit "Agregar Cartas", class: "btn btn-primary" %>
+      <div class="pt-2">
+        <%= f.submit "Agregar Cartas", class: "neon-btn neon-btn-pink cursor-pointer" %>
+      </div>
     <% end %>
   </div>
 </div>

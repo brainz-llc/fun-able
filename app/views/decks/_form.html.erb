@@ -1,23 +1,35 @@
-<%= form_with model: deck, class: "bg-bg-card rounded-xl p-8 space-y-6" do |f| %>
-  <div>
-    <%= f.label :name, t('activerecord.attributes.deck.name'), class: "label" %>
-    <%= f.text_field :name, class: "input", required: true, minlength: 3, maxlength: 100 %>
+<%= form_with model: deck, class: "neon-deck-card neon-gradient-overlay p-8 space-y-8" do |f| %>
+  <!-- Form title decoration -->
+  <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500"></div>
+
+  <div class="relative">
+    <%= f.label :name, t('activerecord.attributes.deck.name'), class: "neon-label" %>
+    <%= f.text_field :name,
+        class: "neon-input",
+        required: true,
+        minlength: 3,
+        maxlength: 100,
+        placeholder: "Nombre de tu mazo..." %>
   </div>
 
-  <div>
-    <%= f.label :description, t('activerecord.attributes.deck.description'), class: "label" %>
-    <%= f.text_area :description, class: "input", rows: 3, maxlength: 500 %>
+  <div class="relative">
+    <%= f.label :description, t('activerecord.attributes.deck.description'), class: "neon-label" %>
+    <%= f.text_area :description,
+        class: "neon-input",
+        rows: 4,
+        maxlength: 500,
+        placeholder: "Describe tu mazo con estilo..." %>
   </div>
 
-  <div>
-    <%= f.label :region_id, t('region.select'), class: "label" %>
+  <div class="relative">
+    <%= f.label :region_id, t('region.select'), class: "neon-label" %>
     <%= f.collection_select :region_id, @regions, :id, :display_name,
         { include_blank: "Ninguna (Universal)" },
-        class: "input" %>
+        class: "neon-select" %>
   </div>
 
-  <div>
-    <%= f.label :content_rating, t('activerecord.attributes.deck.content_rating'), class: "label" %>
+  <div class="relative">
+    <%= f.label :content_rating, t('activerecord.attributes.deck.content_rating'), class: "neon-label" %>
     <%= f.select :content_rating,
         options_for_select([
           [t('deck.content_rating.family'), 'family'],
@@ -25,11 +37,19 @@
           [t('deck.content_rating.nsfw'), 'nsfw']
         ], deck.content_rating),
         {},
-        class: "input" %>
+        class: "neon-select" %>
+
+    <!-- Rating preview badges -->
+    <div class="mt-3 flex gap-3">
+      <span class="rating-family px-3 py-1 rounded-full text-xs opacity-50">Familiar</span>
+      <span class="rating-adult px-3 py-1 rounded-full text-xs opacity-50">Adulto</span>
+      <span class="rating-nsfw px-3 py-1 rounded-full text-xs opacity-50">NSFW</span>
+    </div>
   </div>
 
-  <div class="flex gap-4">
-    <%= link_to t('actions.cancel'), decks_path, class: "btn btn-secondary flex-1 text-center" %>
-    <%= f.submit t('actions.save'), class: "btn btn-primary flex-1" %>
+  <!-- Action buttons with neon styling -->
+  <div class="flex gap-4 pt-4">
+    <%= link_to t('actions.cancel'), decks_path, class: "neon-btn neon-btn-purple flex-1 text-center" %>
+    <%= f.submit t('actions.save'), class: "neon-btn neon-btn-cyan flex-1 cursor-pointer" %>
   </div>
 <% end %>

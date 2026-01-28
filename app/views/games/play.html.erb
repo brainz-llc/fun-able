@@ -1,155 +1,306 @@
-<div class="min-h-screen"
+<div class="min-h-screen tokyo-street-bg"
      data-controller="game"
      data-game-id-value="<%= current_game.id %>"
      data-game-player-id-value="<%= current_game_player&.id %>"
      data-game-is-judge-value="<%= current_game_player&.current_judge? %>">
 
-  <!-- Top Bar: Round Info & Timer -->
-  <div class="bg-bg-card border-b border-gray-800 py-3 px-4 flex items-center justify-between sticky top-16 z-30">
-    <div class="flex items-center gap-4">
-      <span class="text-terracotta font-bold">
+  <!-- Mobile Floating Score Indicator (top right) -->
+  <div class="lg:hidden fixed top-20 right-3 z-40">
+    <div class="flex items-center gap-2 px-3 py-2 rounded-full bg-bg-darker/95 border border-neon-purple/40 backdrop-blur-sm"
+         style="box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);">
+      <span class="text-xs neon-purple">Tu:</span>
+      <span class="text-lg font-bold neon-cyan"><%= current_game_player&.score || 0 %></span>
+      <span class="text-xs text-text-muted">/ <%= current_game.points_to_win %></span>
+    </div>
+  </div>
+
+  <!-- Compact Top Bar: Round Info & Timer -->
+  <div class="bg-bg-darker/90 border-b border-neon-purple/30 py-2 lg:py-3 px-3 lg:px-4 flex items-center justify-between sticky top-16 z-30 backdrop-blur-sm"
+       style="box-shadow: 0 4px 20px rgba(191, 0, 255, 0.2);">
+    <div class="flex items-center gap-2 lg:gap-4">
+      <span class="neon-pink font-bold text-sm lg:text-base animate-neon-pulse">
         <%= t('game.play.round', number: current_game.current_round&.round_number || 1) %>
       </span>
-      <span class="text-text-secondary">
+      <span class="neon-cyan text-xs lg:text-sm hidden sm:inline">
         <%= t("game.status.#{current_game.current_round&.phase || 'submitting'}") %>
       </span>
     </div>
 
     <!-- Timer -->
-    <div class="timer" data-game-target="timer" data-controller="timer"
+    <div class="timer text-2xl lg:text-4xl neon-purple animate-neon-pulse" data-game-target="timer" data-controller="timer"
          data-timer-expires-at-value="<%= current_game.current_round&.timer_expires_at&.iso8601 %>">
       <span data-timer-target="display">--</span>
     </div>
 
-    <!-- Score Toggle -->
-    <button type="button" class="btn-ghost" data-action="click->game#toggleScoreboard">
+    <!-- Score Toggle (desktop shows scoreboard, mobile uses floating indicator) -->
+    <button type="button" class="hidden lg:block neon-btn neon-btn-purple text-sm" data-action="click->game#toggleScoreboard">
       <%= t('game.play.scoreboard') %>
+    </button>
+
+    <!-- Mobile menu button -->
+    <button type="button" class="lg:hidden p-2 rounded-lg border border-neon-purple/30 text-neon-purple"
+            data-action="click->game#toggleScoreboard">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
     </button>
   </div>
 
-  <div class="container mx-auto px-4 py-6">
-    <div class="grid lg:grid-cols-4 gap-6">
-      <!-- Main Game Area -->
-      <div class="lg:col-span-3">
-        <!-- Black Card -->
-        <div class="flex justify-center mb-8 black-card-section">
-          <% if current_game.current_round&.black_card %>
-            <div class="game-card card-black" data-game-target="blackCard">
-              <div class="card-content">
-                <%= current_game.current_round.black_card.display_content_with_blanks.html_safe.gsub('_____', '<span class="card-blank"></span>').html_safe %>
-              </div>
-              <div class="card-footer">
-                <% if current_game.current_round.pick_count > 1 %>
-                  Elige <%= current_game.current_round.pick_count %> cartas
+  <!-- Main Layout: Mobile stacked, Desktop side-by-side -->
+  <div class="flex flex-col lg:flex-row lg:container lg:mx-auto lg:px-4 lg:py-6 lg:gap-6">
+
+    <!-- Black Card Section - Full width mobile, 30% desktop -->
+    <div class="w-full lg:w-1/3 flex-shrink-0">
+      <div class="flex justify-center items-center py-6 px-4 lg:py-8 lg:sticky lg:top-36 black-card-section"
+           style="min-height: 200px;">
+        <% if current_game.current_round&.black_card %>
+          <div class="game-card game-card-mobile lg:game-card neon-card-black animate-neon-pulse p-4 lg:p-6"
+               data-game-target="blackCard"
+               style="filter: drop-shadow(0 0 15px rgba(236,72,153,0.5)); width: 85%; max-width: 280px;">
+            <div class="card-content text-white text-sm lg:text-lg leading-relaxed">
+              <%= current_game.current_round.black_card.display_content_with_blanks.html_safe.gsub('_____', '<span class="card-blank border-neon-pink" style="border-color: #ff2d95; box-shadow: 0 2px 0 #ff2d95;"></span>').html_safe %>
+            </div>
+            <div class="card-footer text-neon-pink/70 text-xs lg:text-sm mt-2">
+              <% if current_game.current_round.pick_count > 1 %>
+                Elige <%= current_game.current_round.pick_count %> cartas
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Judge Message (mobile: below black card, desktop: below black card) -->
+      <% if current_game_player&.current_judge? && current_game.current_round&.submitting? %>
+        <div class="text-center mx-4 mb-4 lg:mb-0 lg:mx-0 p-4 lg:p-6 rounded-xl neon-glow-pink" data-game-target="judgeMessage"
+             style="border: 1px solid rgba(255, 45, 149, 0.3);">
+          <div class="text-2xl lg:text-4xl mb-2 animate-neon-pulse">&#x1F451;</div>
+          <p class="text-lg lg:text-2xl font-bold neon-pink animate-neon-flicker"><%= t('game.play.you_are_czar') %></p>
+          <p class="neon-cyan text-xs lg:text-sm mt-2" data-game-target="submissionCount">
+            <%= current_game.current_round.submissions_count %>/<%= current_game.current_round.expected_submissions_count %> jugadores han respondido
+          </p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Center Area: Cards/Submissions - Full width mobile, 50% desktop -->
+    <div class="w-full lg:w-1/2 flex-grow px-4 lg:px-0 pb-32 lg:pb-6">
+
+      <!-- Submissions Area (for judging phase) -->
+      <% if current_game.current_round&.judging? || current_game.current_round&.revealing? %>
+        <% if current_game_player&.current_judge? %>
+          <div class="text-center mb-4 lg:mb-6 p-4 lg:p-6 rounded-xl neon-glow-pink"
+               style="border: 1px solid rgba(255, 45, 149, 0.4);">
+            <p class="text-base lg:text-xl font-bold neon-pink animate-neon-pulse">Elige la mejor respuesta</p>
+            <p class="neon-cyan text-xs lg:text-sm mt-1">Toca la respuesta ganadora</p>
+          </div>
+        <% else %>
+          <div class="text-center mb-4 lg:mb-6 p-3 lg:p-4 rounded-xl"
+               style="background: radial-gradient(ellipse at center, rgba(0, 245, 255, 0.1) 0%, transparent 70%);">
+            <p class="neon-cyan text-sm lg:text-base animate-neon-pulse">Esperando a que el Zar elija al ganador...</p>
+          </div>
+        <% end %>
+
+        <!-- Submissions Grid - Horizontal scroll on mobile, grid on desktop -->
+        <div class="submissions-container lg:submissions-grid mb-6 lg:mb-8" data-game-target="submissions">
+          <% current_game.current_round.submissions_for_display.each do |submission| %>
+            <div class="submission-card rounded-xl p-3 lg:p-4 transition-all duration-300
+                        <%= submission.winner? ? 'neon-border-cyan' : 'bg-bg-card/80' %>
+                        <%= 'cursor-pointer active:scale-95 lg:hover:scale-105' if current_game_player&.current_judge? && !submission.winner? %>"
+                 style="<%= 'box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);' if submission.winner? %>
+                        <%= 'border: 1px solid rgba(191, 0, 255, 0.3);' unless submission.winner? %>
+                        min-width: 200px; flex-shrink: 0;"
+                 data-submission-id="<%= submission.id %>"
+                 <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
+              <div class="flex flex-wrap gap-2 justify-center">
+                <% submission.cards_in_order.each do |card| %>
+                  <div class="game-card game-card-xs lg:game-card-sm neon-card-white"
+                       style="filter: drop-shadow(0 0 10px rgba(6,182,212,0.4));">
+                    <div class="card-content card-content-sm text-xs lg:text-sm"><%= card.content %></div>
+                  </div>
                 <% end %>
               </div>
             </div>
           <% end %>
         </div>
+      <% end %>
 
-        <!-- Judge Message (only during submission phase) -->
-        <% if current_game_player&.current_judge? && current_game.current_round&.submitting? %>
-          <div class="text-center mb-8" data-game-target="judgeMessage">
-            <div class="text-2xl mb-2">👑</div>
-            <p class="text-xl font-bold text-terracotta"><%= t('game.play.you_are_czar') %></p>
-            <p class="text-text-secondary" data-game-target="submissionCount">
-              <%= current_game.current_round.submissions_count %>/<%= current_game.current_round.expected_submissions_count %> jugadores han respondido
-            </p>
+      <!-- Player's Hand -->
+      <% unless current_game_player&.current_judge? %>
+        <div id="hand-controller-wrapper"
+             data-controller="hand"
+             data-hand-pick-count-value="<%= current_game.current_round&.pick_count || 1 %>">
+        <div class="hand-section p-4 lg:p-6 rounded-xl" id="player-hand"
+             style="background: linear-gradient(180deg, rgba(0, 245, 255, 0.05) 0%, rgba(191, 0, 255, 0.05) 100%);
+                    border: 1px solid rgba(0, 245, 255, 0.2);">
+
+          <!-- Hand Header with swipe hint on mobile -->
+          <div class="flex items-center justify-between mb-3 lg:mb-4">
+            <h3 class="text-base lg:text-lg font-bold neon-cyan animate-neon-pulse"><%= t('game.play.your_hand') %></h3>
+            <span class="text-xs text-text-muted lg:hidden flex items-center gap-1">
+              Desliza
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+              </svg>
+            </span>
           </div>
-        <% end %>
 
-        <!-- Submissions Area (for judging phase) -->
-        <% if current_game.current_round&.judging? || current_game.current_round&.revealing? %>
-          <% if current_game_player&.current_judge? %>
-            <div class="text-center mb-6 p-4 bg-terracotta/20 rounded-lg">
-              <p class="text-xl font-bold text-terracotta">Elige la mejor respuesta</p>
-              <p class="text-text-secondary">Haz clic en la respuesta ganadora</p>
+          <% if current_game_player&.submitted_for_round?(current_game.current_round) %>
+            <div class="text-center py-6 lg:py-8 rounded-xl neon-glow-cyan"
+                 style="border: 1px solid rgba(0, 245, 255, 0.4);">
+              <div class="text-3xl lg:text-4xl mb-2 animate-neon-pulse">&#x2705;</div>
+              <p class="neon-cyan font-bold text-base lg:text-lg">Cartas enviadas!</p>
+              <p class="text-text-secondary text-xs lg:text-sm mt-2">Esperando a los demas jugadores...</p>
             </div>
           <% else %>
-            <div class="text-center mb-6">
-              <p class="text-text-secondary">Esperando a que el Zar elija al ganador...</p>
-            </div>
-          <% end %>
-
-          <div class="submissions-grid mb-8" data-game-target="submissions">
-            <% current_game.current_round.submissions_for_display.each do |submission| %>
-              <div class="bg-bg-surface rounded-lg p-4 transition <%= 'ring-2 ring-success' if submission.winner? %> <%= 'cursor-pointer hover:ring-2 hover:ring-terracotta hover:scale-105' if current_game_player&.current_judge? && !submission.winner? %>"
-                   data-submission-id="<%= submission.id %>"
-                   <%= "data-action=click->game#selectWinner" if current_game_player&.current_judge? && !submission.winner? %>>
-                <div class="flex flex-wrap gap-2 justify-center">
-                  <% submission.cards_in_order.each do |card| %>
-                    <div class="game-card game-card-sm card-white">
-                      <div class="card-content card-content-sm"><%= card.content %></div>
-                    </div>
-                  <% end %>
+            <!-- Hand Container - Horizontal scroll with touch support -->
+            <div class="hand-container-mobile lg:hand-container" data-hand-target="cards"
+                 style="display: flex; gap: 12px; overflow-x: auto; padding: 12px 4px; margin: -12px -4px;
+                        scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+              <% current_game_player&.cards_in_hand&.each do |card| %>
+                <div class="game-card-touch neon-card-white card-selectable transition-all duration-300"
+                     data-card-id="<%= card.id %>"
+                     data-action="click->hand#toggleCard"
+                     style="filter: drop-shadow(0 0 10px rgba(6,182,212,0.3));
+                            min-width: 130px; width: 130px; height: 180px;
+                            flex-shrink: 0; scroll-snap-align: start;
+                            padding: 12px;">
+                  <div class="card-content text-sm leading-tight"><%= card.content %></div>
                 </div>
-              </div>
+              <% end %>
+            </div>
+
+            <!-- Form is hidden, button is in fixed bottom bar for mobile -->
+            <%= form_with url: submit_cards_game_game_actions_path(current_game),
+                          method: :post,
+                          data: { hand_target: "form", turbo_frame: "_top" },
+                          class: "hidden lg:block mt-6" do |f| %>
+              <div data-hand-target="cardInputs"></div>
+              <%= f.submit t('game.play.submit_cards'),
+                  class: "neon-btn neon-btn-pink w-full text-lg disabled:opacity-40 disabled:cursor-not-allowed",
+                  disabled: true,
+                  data: { hand_target: "submitButton" } %>
             <% end %>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
 
-        <!-- Player's Hand -->
-        <% unless current_game_player&.current_judge? %>
-          <div class="mt-8 hand-section" id="player-hand" data-controller="hand" data-hand-pick-count-value="<%= current_game.current_round&.pick_count || 1 %>">
-            <h3 class="text-lg font-bold mb-4"><%= t('game.play.your_hand') %></h3>
-
-            <% if current_game_player&.submitted_for_round?(current_game.current_round) %>
-              <div class="text-center py-8 bg-green-500/10 rounded-lg border border-green-500/30">
-                <div class="text-3xl mb-2">✅</div>
-                <p class="text-green-400 font-medium">¡Cartas enviadas!</p>
-                <p class="text-text-secondary text-sm mt-1">Esperando a los demas jugadores...</p>
+        <!-- Mobile Fixed Bottom Bar (Submit button + Selected count) - Inside hand controller -->
+        <% unless current_game_player&.submitted_for_round?(current_game.current_round) %>
+          <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-bg-darker/95 border-t border-neon-purple/30 backdrop-blur-sm"
+               style="box-shadow: 0 -4px 20px rgba(191, 0, 255, 0.2); padding-bottom: env(safe-area-inset-bottom);">
+            <div class="p-3 flex items-center gap-3">
+              <div class="flex-1">
+                <span class="text-xs text-text-muted">Seleccionadas:</span>
+                <span class="ml-1 text-lg font-bold neon-cyan" data-hand-target="mobileSelectedCount">0</span>
+                <span class="text-xs text-text-muted">/ <%= current_game.current_round&.pick_count || 1 %></span>
               </div>
-            <% else %>
-              <div class="hand-container" data-hand-target="cards">
-                <% current_game_player&.cards_in_hand&.each do |card| %>
-                  <div class="game-card card-white card-selectable"
-                       data-card-id="<%= card.id %>"
-                       data-action="click->hand#toggleCard">
-                    <div class="card-content"><%= card.content %></div>
-                  </div>
-                <% end %>
-              </div>
-
               <%= form_with url: submit_cards_game_game_actions_path(current_game),
                             method: :post,
-                            data: { hand_target: "form", turbo_frame: "_top" },
-                            class: "mt-4" do |f| %>
-                <div data-hand-target="cardInputs"></div>
+                            data: { hand_target: "mobileForm", turbo_frame: "_top" },
+                            class: "flex-1" do |f| %>
+                <div data-hand-target="mobileCardInputs"></div>
                 <%= f.submit t('game.play.submit_cards'),
-                    class: "btn btn-primary w-full",
+                    class: "neon-btn neon-btn-pink w-full py-3 text-base font-bold disabled:opacity-40 disabled:cursor-not-allowed",
                     disabled: true,
-                    data: { hand_target: "submitButton" } %>
+                    data: { hand_target: "mobileSubmitButton" } %>
               <% end %>
-            <% end %>
+            </div>
           </div>
         <% end %>
+        </div><!-- close hand-controller-wrapper -->
+      <% end %>
+    </div>
+
+    <!-- Sidebar: Scoreboard - Hidden on mobile, 20% on desktop -->
+    <div class="hidden lg:block lg:w-1/5 flex-shrink-0">
+      <div class="scoreboard sticky top-36 rounded-xl p-5" data-game-target="scoreboard"
+           style="background: linear-gradient(180deg, rgba(191, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%);
+                  border: 1px solid rgba(191, 0, 255, 0.3);
+                  box-shadow: 0 0 30px rgba(191, 0, 255, 0.2);">
+        <h3 class="font-bold mb-4 neon-purple animate-neon-pulse"><%= t('game.play.scoreboard') %></h3>
+        <% current_game.leaderboard.each do |player| %>
+          <div class="scoreboard-item py-2 lg:py-3 border-b border-neon-purple/20 last:border-0
+                      <%= 'neon-glow-pink rounded-lg px-2 -mx-2' if player.current_judge? %>">
+            <div class="flex items-center gap-2">
+              <div class="player-avatar w-6 h-6 lg:w-8 lg:h-8 text-xs rounded-full flex items-center justify-center font-bold"
+                   style="background: linear-gradient(135deg, #ff2d95 0%, #bf00ff 100%);
+                          box-shadow: 0 0 10px rgba(255, 45, 149, 0.5);">
+                <%= player.avatar_initials %>
+              </div>
+              <span class="scoreboard-name text-sm lg:text-base <%= 'neon-pink' if player.current_judge? %>">
+                <%= player.display_name %>
+                <%= "&#x1F451;".html_safe if player.current_judge? %>
+              </span>
+            </div>
+            <span class="scoreboard-score neon-cyan font-bold text-lg lg:text-xl"><%= player.score %></span>
+          </div>
+        <% end %>
+
+        <div class="mt-4 pt-4 border-t border-neon-purple/30 text-sm">
+          <p class="neon-purple">Meta: <span class="neon-cyan"><%= current_game.points_to_win %></span> puntos</p>
+        </div>
+
+        <%= button_to t('game.actions.leave_game'),
+            leave_game_game_actions_path(current_game),
+            method: :post,
+            class: "w-full mt-4 text-sm px-4 py-2 rounded-lg font-bold transition-all duration-300 bg-red-900/50 text-red-300 border border-red-500/50 hover:bg-red-800/70 hover:border-red-400",
+            style: "box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);",
+            data: { turbo_confirm: "Abandonar la partida?" } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Scoreboard Overlay (slides in from right) -->
+  <div class="lg:hidden fixed inset-0 z-50 pointer-events-none" data-game-target="mobileScoreboardOverlay">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-300 pointer-events-none"
+         data-game-target="mobileScoreboardBackdrop"
+         data-action="click->game#toggleScoreboard"></div>
+
+    <!-- Scoreboard Panel -->
+    <div class="absolute top-0 right-0 h-full w-3/4 max-w-xs bg-bg-darker transform translate-x-full transition-transform duration-300"
+         data-game-target="mobileScoreboardPanel"
+         style="border-left: 1px solid rgba(191, 0, 255, 0.3);
+                box-shadow: -4px 0 30px rgba(191, 0, 255, 0.2);">
+      <div class="p-4 border-b border-neon-purple/30 flex items-center justify-between">
+        <h3 class="font-bold neon-purple"><%= t('game.play.scoreboard') %></h3>
+        <button type="button" class="p-2 text-text-muted" data-action="click->game#toggleScoreboard">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
       </div>
 
-      <!-- Sidebar: Scoreboard -->
-      <div class="lg:col-span-1">
-        <div class="scoreboard sticky top-40" data-game-target="scoreboard">
-          <h3 class="font-bold mb-4"><%= t('game.play.scoreboard') %></h3>
-          <% current_game.leaderboard.each do |player| %>
-            <div class="scoreboard-item <%= 'bg-terracotta/20' if player.current_judge? %>">
-              <div class="flex items-center gap-2">
-                <div class="player-avatar w-8 h-8 text-xs"><%= player.avatar_initials %></div>
-                <span class="scoreboard-name <%= 'text-terracotta' if player.current_judge? %>">
-                  <%= player.display_name %>
-                  <%= "👑" if player.current_judge? %>
-                </span>
+      <div class="p-4 overflow-y-auto" style="max-height: calc(100vh - 120px);">
+        <% current_game.leaderboard.each do |player| %>
+          <div class="py-3 border-b border-neon-purple/20 last:border-0 flex items-center justify-between
+                      <%= 'bg-pink-500/10 rounded-lg px-2 -mx-2' if player.current_judge? %>">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                   style="background: linear-gradient(135deg, #ff2d95 0%, #bf00ff 100%);
+                          box-shadow: 0 0 10px rgba(255, 45, 149, 0.5);">
+                <%= player.avatar_initials %>
               </div>
-              <span class="scoreboard-score"><%= player.score %></span>
+              <div>
+                <span class="text-sm font-medium <%= 'neon-pink' if player.current_judge? %>">
+                  <%= player.display_name %>
+                </span>
+                <% if player.current_judge? %>
+                  <span class="block text-xs text-text-muted">Zar</span>
+                <% end %>
+              </div>
             </div>
-          <% end %>
-
-          <div class="mt-4 pt-4 border-t border-gray-700 text-sm text-text-secondary">
-            <p>Meta: <%= current_game.points_to_win %> puntos</p>
+            <span class="text-xl font-bold neon-cyan"><%= player.score %></span>
           </div>
+        <% end %>
+
+        <div class="mt-6 pt-4 border-t border-neon-purple/30">
+          <p class="text-sm neon-purple mb-4">Meta: <span class="neon-cyan"><%= current_game.points_to_win %></span> puntos</p>
 
           <%= button_to t('game.actions.leave_game'),
               leave_game_game_actions_path(current_game),
               method: :post,
-              class: "btn btn-danger w-full mt-4 text-sm",
+              class: "w-full text-sm px-4 py-3 rounded-lg font-bold transition-all duration-300 bg-red-900/50 text-red-300 border border-red-500/50",
+              style: "box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);",
               data: { turbo_confirm: "Abandonar la partida?" } %>
         </div>
       </div>
@@ -157,11 +308,99 @@
   </div>
 
   <!-- Victory Modal (hidden by default) -->
-  <div class="victory-modal" style="display: none;" data-game-target="victoryModal">
-    <div class="victory-content animate-bounce-in">
-      <div class="victory-title" data-game-target="victoryTitle"></div>
-      <div class="victory-gif" data-game-target="victoryGif"></div>
-      <button type="button" class="btn btn-primary" data-action="click->game#closeVictory">Continuar</button>
+  <div class="victory-modal" style="display: none; background: rgba(0, 0, 0, 0.9);" data-game-target="victoryModal">
+    <div class="victory-content animate-bounce-in rounded-2xl p-6 lg:p-8 mx-4"
+         style="background: linear-gradient(180deg, rgba(191, 0, 255, 0.2) 0%, rgba(0, 0, 0, 0.95) 100%);
+                border: 2px solid #bf00ff;
+                box-shadow: 0 0 50px rgba(191, 0, 255, 0.5), 0 0 100px rgba(255, 45, 149, 0.3);">
+      <div class="victory-title neon-pink animate-neon-flicker text-2xl lg:text-4xl" data-game-target="victoryTitle"></div>
+      <div class="victory-gif rounded-xl overflow-hidden mb-4 lg:mb-6" data-game-target="victoryGif"
+           style="border: 2px solid rgba(0, 245, 255, 0.5); box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);"></div>
+      <button type="button" class="neon-btn neon-btn-cyan text-base lg:text-lg px-6 lg:px-8 py-3" data-action="click->game#closeVictory">Continuar</button>
     </div>
   </div>
 </div>
+
+<style>
+  /* Mobile-specific card styles */
+  .game-card-touch {
+    @apply relative rounded-lg flex flex-col justify-between;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .game-card-touch:active {
+    transform: scale(0.95);
+  }
+
+  .game-card-touch.card-selected {
+    transform: translateY(-8px) scale(1.02);
+    border-color: #a855f7 !important;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(168, 85, 247, 0.4);
+  }
+
+  /* Mobile submissions horizontal scroll */
+  .submissions-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 4px;
+    margin: -8px -4px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .submissions-container .submission-card {
+    scroll-snap-align: start;
+  }
+
+  /* Desktop grid for submissions */
+  @media (min-width: 1024px) {
+    .submissions-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      overflow-x: visible;
+      scroll-snap-type: none;
+    }
+
+    .submissions-container .submission-card {
+      min-width: auto;
+    }
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .hand-container-mobile::-webkit-scrollbar,
+  .submissions-container::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .hand-container-mobile::-webkit-scrollbar-track,
+  .submissions-container::-webkit-scrollbar-track {
+    background: rgba(15, 15, 15, 0.3);
+    border-radius: 2px;
+  }
+
+  .hand-container-mobile::-webkit-scrollbar-thumb,
+  .submissions-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ec4899, #a855f7);
+    border-radius: 2px;
+  }
+
+  /* Mobile black card section adjustments */
+  @media (max-width: 1023px) {
+    .black-card-section {
+      min-height: auto !important;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+
+  /* Safe area padding for notched devices */
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .pb-32 {
+      padding-bottom: calc(8rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>

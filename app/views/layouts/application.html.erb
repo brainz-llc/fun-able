@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <title><%= content_for(:title) || t('app_name') %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= content_for(:title) || "Fun-able" %></title>
+    <!-- Mobile-first viewport with safe area support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="<%= t('app_name') %>">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="Fun-able">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#0a0a0a">
+    <meta name="format-detection" content="telephone=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -18,16 +21,72 @@
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <style>
+      /* Mobile-first CSS enhancements */
+      :root {
+        /* Safe area insets for notched phones */
+        --sat: env(safe-area-inset-top, 0px);
+        --sar: env(safe-area-inset-right, 0px);
+        --sab: env(safe-area-inset-bottom, 0px);
+        --sal: env(safe-area-inset-left, 0px);
+      }
+
+      /* Touch action for better swipe handling */
+      html {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Prevent overscroll bounce on iOS */
+      body {
+        overscroll-behavior: none;
+        padding-top: var(--sat);
+        padding-left: var(--sal);
+        padding-right: var(--sar);
+      }
+
+      /* Ensure main content accounts for fixed bars */
+      main {
+        padding-bottom: calc(var(--sab) + 1rem);
+      }
+
+      /* Mobile menu overlay animation */
+      .mobile-menu-overlay {
+        transition: opacity 0.3s ease;
+      }
+
+      .mobile-menu-panel {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .mobile-menu-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .mobile-menu-overlay.hidden .mobile-menu-panel {
+        transform: translateX(-100%);
+      }
+
+      /* Pull-to-refresh prevention on mobile */
+      @media (max-width: 1023px) {
+        body {
+          overscroll-behavior-y: contain;
+        }
+      }
+    </style>
   </head>
 
-  <body class="min-h-screen bg-bg-dark text-text-primary">
+  <body class="min-h-screen text-text-primary" style="background: linear-gradient(180deg, #0a0a0f 0%, #0f0f15 50%, #0a0a0f 100%);">
     <%= render 'shared/navbar' %>
+    <%= render 'shared/mobile_menu' %>
 
-    <div id="flash" class="fixed top-20 right-4 z-50">
+    <div id="flash" class="fixed top-20 right-2 left-2 lg:left-auto lg:right-4 z-50">
       <%= render 'shared/flash' %>
     </div>
 
-    <main class="container mx-auto px-4 py-6">
+    <main>
       <%= yield %>
     </main>
 

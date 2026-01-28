@@ -1,61 +1,78 @@
-<div class="max-w-4xl mx-auto">
-  <!-- Header -->
-  <div class="bg-bg-card rounded-xl p-6 mb-6">
-    <div class="flex items-start justify-between">
-      <div>
-        <div class="flex items-center gap-3 mb-2">
-          <h1 class="text-3xl font-bold"><%= @deck.name %></h1>
+<div class="min-h-screen px-4 py-6 md:py-8 pb-24 md:pb-8">
+  <!-- Header Card - Mobile optimized -->
+  <div class="neon-deck-card neon-gradient-overlay p-4 md:p-8 mb-6 md:mb-8 rounded-xl">
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-6">
+      <!-- Deck Info -->
+      <div class="flex-1">
+        <!-- Title and badges -->
+        <div class="flex flex-wrap items-center gap-2 md:gap-4 mb-3 md:mb-4">
+          <h1 class="text-2xl md:text-4xl font-bold neon-purple animate-neon-pulse"><%= @deck.name %></h1>
           <% if @deck.official? %>
-            <span class="bg-terracotta px-3 py-1 rounded text-sm"><%= t('deck.official') %></span>
+            <span class="neon-btn-pink px-3 py-0.5 md:px-4 md:py-1 rounded-full text-xs md:text-sm animate-neon-glow"><%= t('deck.official') %></span>
           <% end %>
-          <span class="rating-<%= @deck.content_rating %> px-3 py-1 rounded text-sm">
+          <span class="rating-<%= @deck.content_rating %> px-3 py-0.5 md:px-4 md:py-1 rounded-full text-xs md:text-sm font-medium">
             <%= t("deck.content_rating.#{@deck.content_rating}") %>
           </span>
         </div>
 
+        <!-- Region badge -->
         <% if @deck.region %>
-          <span class="region-badge"><%= @deck.region.display_name %></span>
+          <span class="inline-flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 rounded-full bg-bg-darker/50 text-xs md:text-sm neon-border-purple mb-3 md:mb-4">
+            <%= @deck.region.display_name %>
+          </span>
         <% end %>
 
-        <p class="text-text-secondary mt-4"><%= @deck.description %></p>
+        <!-- Description -->
+        <p class="text-text-secondary mt-2 md:mt-4 text-sm md:text-lg leading-relaxed"><%= @deck.description %></p>
 
-        <div class="flex items-center gap-6 mt-4 text-sm text-text-muted">
-          <span><%= @deck.black_cards_count %> cartas negras</span>
-          <span><%= @deck.white_cards_count %> cartas blancas</span>
+        <!-- Card counts - Horizontal on mobile -->
+        <div class="flex flex-wrap items-center gap-4 md:gap-8 mt-4 md:mt-6 text-sm">
+          <span class="flex items-center gap-2">
+            <span class="neon-pink text-lg md:text-xl font-bold"><%= @deck.black_cards_count %></span>
+            <span class="text-text-muted text-xs md:text-sm">cartas negras</span>
+          </span>
+          <span class="flex items-center gap-2">
+            <span class="neon-cyan text-lg md:text-xl font-bold"><%= @deck.white_cards_count %></span>
+            <span class="text-text-muted text-xs md:text-sm">cartas blancas</span>
+          </span>
           <% if @deck.creator %>
-            <span>Por <%= @deck.creator.display_name %></span>
+            <span class="text-text-muted text-xs md:text-sm">Por <span class="text-white"><%= @deck.creator.display_name %></span></span>
           <% end %>
         </div>
       </div>
 
-      <!-- Vote & Actions -->
-      <div class="flex flex-col items-end gap-4">
+      <!-- Vote & Actions - Compact on mobile -->
+      <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-6 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
+        <!-- Voting -->
         <% if logged_in? && @deck.creator_id != current_user.id %>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-3 md:gap-4 p-2 md:p-4 rounded-xl neon-glow-purple">
             <%= button_to vote_deck_path(@deck, value: 1),
                 method: :post,
-                class: "btn-ghost p-2 #{'text-terracotta' if @deck.vote_value_by(current_user) == 1}" do %>
-              👍
+                class: "p-2 md:p-3 rounded-full transition-all duration-300 hover:scale-110 #{@deck.vote_value_by(current_user) == 1 ? 'neon-glow-pink' : 'hover:neon-glow-pink'}" do %>
+              <span class="text-xl md:text-2xl">+</span>
             <% end %>
-            <span class="text-2xl font-bold text-terracotta"><%= @deck.votes_count %></span>
+            <span class="text-2xl md:text-4xl font-bold neon-purple animate-neon-pulse"><%= @deck.votes_count %></span>
             <%= button_to vote_deck_path(@deck, value: -1),
                 method: :post,
-                class: "btn-ghost p-2 #{'text-error' if @deck.vote_value_by(current_user) == -1}" do %>
-              👎
+                class: "p-2 md:p-3 rounded-full transition-all duration-300 hover:scale-110 #{@deck.vote_value_by(current_user) == -1 ? 'bg-error/30' : 'hover:bg-error/20'}" do %>
+              <span class="text-xl md:text-2xl">-</span>
             <% end %>
           </div>
         <% else %>
-          <span class="text-2xl font-bold text-terracotta">+<%= @deck.votes_count %></span>
+          <div class="p-2 md:p-4 rounded-xl neon-glow-purple">
+            <span class="text-2xl md:text-4xl font-bold neon-purple animate-neon-pulse">+<%= @deck.votes_count %></span>
+          </div>
         <% end %>
 
+        <!-- Owner actions -->
         <% if @deck.creator_id == current_user&.id %>
-          <div class="flex gap-2">
-            <%= link_to t('deck.edit'), edit_deck_path(@deck), class: "btn btn-secondary text-sm" %>
-            <%= link_to "Cartas", deck_deck_cards_path(@deck), class: "btn btn-secondary text-sm" %>
+          <div class="flex gap-2 md:gap-3 flex-wrap justify-end">
+            <%= link_to t('deck.edit'), edit_deck_path(@deck), class: "neon-btn neon-btn-purple text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2" %>
+            <%= link_to "Cartas", deck_deck_cards_path(@deck), class: "neon-btn neon-btn-cyan text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2" %>
             <% if @deck.draft? && @deck.playable? %>
-              <%= button_to t('deck.publish'), publish_deck_path(@deck), method: :post, class: "btn btn-primary text-sm" %>
+              <%= button_to t('deck.publish'), publish_deck_path(@deck), method: :post, class: "neon-btn neon-btn-pink text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2" %>
             <% elsif @deck.published? %>
-              <%= button_to t('deck.unpublish'), unpublish_deck_path(@deck), method: :post, class: "btn btn-ghost text-sm" %>
+              <%= button_to t('deck.unpublish'), unpublish_deck_path(@deck), method: :post, class: "btn btn-ghost text-xs md:text-sm px-3 py-1.5 md:px-4 md:py-2 neon-border-purple" %>
             <% end %>
           </div>
         <% end %>
@@ -63,50 +80,79 @@
     </div>
   </div>
 
-  <!-- Sample Cards -->
-  <div class="grid md:grid-cols-2 gap-6">
-    <!-- Black Cards -->
+  <!-- Sample Cards - Horizontal scroll carousels -->
+  <div class="space-y-6 md:space-y-10">
+    <!-- Black Cards Section -->
     <div>
-      <h2 class="text-xl font-bold mb-4">Cartas Negras</h2>
-      <div class="space-y-3">
+      <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 neon-section-header">
+        <span class="neon-pink">Cartas Negras</span>
+      </h2>
+      <!-- Horizontal scroll on mobile -->
+      <div class="flex gap-3 md:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0">
         <% @black_cards.each do |card| %>
-          <div class="game-card game-card-sm card-black">
-            <div class="card-content card-content-sm">
-              <%= card.display_content_with_blanks.gsub('_____', '<span class="card-blank"></span>').html_safe %>
+          <div class="neon-card-black p-4 md:p-5 animate-neon-pulse min-w-[260px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink rounded-xl" style="animation-delay: <%= rand(0..2000) %>ms;">
+            <div class="font-bold text-base md:text-lg leading-relaxed">
+              <%= card.display_content_with_blanks.gsub('_____', '<span class="inline-block border-b-2 border-pink-400 min-w-12 md:min-w-16 mx-1"></span>').html_safe %>
             </div>
             <% if card.pick_count > 1 %>
-              <div class="card-footer">Elige <%= card.pick_count %></div>
+              <div class="mt-3 md:mt-4 text-xs md:text-sm text-pink-300">Elige <%= card.pick_count %></div>
             <% end %>
           </div>
         <% end %>
         <% if @deck.black_cards_count > 10 %>
-          <p class="text-text-muted text-sm">Y <%= @deck.black_cards_count - 10 %> cartas mas...</p>
+          <div class="flex items-center justify-center min-w-[200px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+            <p class="text-text-muted text-sm text-center py-4 px-6 neon-border-pink rounded-lg">
+              Y <span class="neon-pink"><%= @deck.black_cards_count - 10 %></span> cartas mas...
+            </p>
+          </div>
         <% end %>
       </div>
     </div>
 
-    <!-- White Cards -->
+    <!-- White Cards Section -->
     <div>
-      <h2 class="text-xl font-bold mb-4">Cartas Blancas</h2>
-      <div class="space-y-3">
+      <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 neon-section-header">
+        <span class="neon-cyan">Cartas Blancas</span>
+      </h2>
+      <!-- Horizontal scroll on mobile -->
+      <div class="flex gap-3 md:gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-4 px-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0">
         <% @white_cards.each do |card| %>
-          <div class="game-card game-card-sm card-white">
-            <div class="card-content card-content-sm"><%= card.content %></div>
+          <div class="neon-card-white p-4 md:p-5 text-black min-w-[220px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink rounded-xl" style="animation-delay: <%= rand(0..2000) %>ms;">
+            <div class="font-bold text-base md:text-lg leading-relaxed"><%= card.content %></div>
           </div>
         <% end %>
         <% if @deck.white_cards_count > 20 %>
-          <p class="text-text-muted text-sm">Y <%= @deck.white_cards_count - 20 %> cartas mas...</p>
+          <div class="flex items-center justify-center min-w-[200px] md:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+            <p class="text-text-muted text-sm text-center py-4 px-6 neon-border-cyan rounded-lg">
+              Y <span class="neon-cyan"><%= @deck.white_cards_count - 20 %></span> cartas mas...
+            </p>
+          </div>
         <% end %>
       </div>
     </div>
   </div>
 
-  <!-- Play with this deck -->
-  <div class="mt-8 text-center">
+  <!-- Desktop CTA - Hidden on mobile (shown in sticky footer) -->
+  <div class="hidden md:block mt-12 text-center">
     <% if @deck.playable? %>
-      <%= link_to "Jugar con este Mazo", new_game_path(deck_id: @deck.id), class: "btn btn-primary btn-lg" %>
+      <div class="inline-block p-1 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 animate-neon-pulse">
+        <%= link_to "Jugar con este Mazo", new_game_path(deck_id: @deck.id), class: "block px-10 py-5 bg-bg-dark rounded-lg text-xl font-bold text-white hover:bg-transparent transition-all duration-300" %>
+      </div>
     <% else %>
-      <p class="text-text-secondary">Este mazo no tiene suficientes cartas para jugar</p>
+      <div class="neon-empty-state inline-block px-8 py-6">
+        <p class="text-text-secondary text-lg">Este mazo no tiene suficientes cartas para jugar</p>
+      </div>
     <% end %>
   </div>
+</div>
+
+<!-- Sticky Bottom CTA - Mobile only -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-bg-darker/95 backdrop-blur-lg border-t border-pink-500/30 md:hidden z-50 safe-area-inset-bottom">
+  <% if @deck.playable? %>
+    <div class="p-0.5 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 animate-neon-pulse">
+      <%= link_to "Jugar con este Mazo", new_game_path(deck_id: @deck.id), class: "block w-full py-4 bg-bg-dark rounded-lg text-lg font-bold text-white text-center hover:bg-transparent transition-all duration-300" %>
+    </div>
+  <% else %>
+    <p class="text-text-secondary text-center text-sm py-2">Este mazo no tiene suficientes cartas para jugar</p>
+  <% end %>
 </div>
