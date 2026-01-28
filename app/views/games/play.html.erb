@@ -154,10 +154,9 @@
                  data-hand-target="cards"
                  style="-webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;">
               <% current_game_player&.cards_in_hand&.each do |card| %>
-                <div class="flex-shrink-0 w-[140px] h-[190px] p-4 rounded-xl cursor-pointer transition-all duration-200
+                <div class="game-card-touch flex-shrink-0 w-[140px] h-[190px] p-4 rounded-xl cursor-pointer transition-all duration-200
                             bg-gradient-to-b from-white/10 to-white/5 border border-cyan-500/30
-                            hover:border-cyan-500/60 active:scale-95
-                            data-[selected=true]:border-purple-500 data-[selected=true]:bg-purple-500/20 data-[selected=true]:-translate-y-2"
+                            hover:border-cyan-500/60 active:scale-95"
                      data-card-id="<%= card.id %>"
                      data-action="click->hand#toggleCard"
                      style="scroll-snap-align: start; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
