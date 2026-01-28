@@ -79,12 +79,12 @@
 
       <!-- Judge Message -->
       <% if current_game_player&.current_judge? && current_game.current_round&.submitting? %>
-        <div class="mt-6 text-center p-4 rounded-xl bg-white/5 border border-pink-500/30 w-full max-w-[280px]"
-             data-game-target="judgeMessage">
-          <div class="text-3xl mb-2">&#x1F451;</div>
-          <p class="text-lg font-bold text-pink-400"><%= t('game.play.you_are_czar') %></p>
-          <p class="text-sm text-white/50 mt-1" data-game-target="submissionCount">
-            <%= current_game.current_round.submissions_count %>/<%= current_game.current_round.expected_submissions_count %> respondieron
+        <div class="mt-6 w-full max-w-[280px]" data-game-target="judgeMessage">
+          <div class="text-center px-4 py-3 rounded-lg bg-pink-500/10 border border-pink-500/20">
+            <p class="text-sm font-medium text-pink-400">Eres el Zar</p>
+          </div>
+          <p class="text-center text-xs text-white/40 mt-2" data-game-target="submissionCount">
+            <span class="text-white/60"><%= current_game.current_round.submissions_count %></span>/<%= current_game.current_round.expected_submissions_count %> respondieron
           </p>
         </div>
       <% end %>
@@ -157,10 +157,8 @@
 
           <% if current_game_player&.submitted_for_round?(current_game.current_round) %>
             <!-- Already submitted -->
-            <div class="text-center py-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
-              <div class="text-4xl mb-2">&#x2705;</div>
-              <p class="text-lg font-bold text-cyan-400">Cartas enviadas!</p>
-              <p class="text-sm text-white/50 mt-1">Esperando a los demas...</p>
+            <div class="text-center py-6 rounded-xl bg-white/5 border border-white/10">
+              <p class="text-white/60">Esperando a los demas jugadores...</p>
             </div>
           <% else %>
             <!-- Hand Cards -->
