@@ -1,0 +1,157 @@
+<% content_for :hide_footer, true %>
+
+<div class="min-h-screen relative overflow-hidden"
+     data-controller="kings-cup"
+     data-kings-cup-game-id-value="<%= @game.id %>"
+     data-kings-cup-player-id-value="<%= current_kings_cup_player&.id %>"
+     data-kings-cup-is-host-value="<%= @game.host?(current_user) %>">
+
+  <!-- Background -->
+  <div class="absolute inset-0 pointer-events-none" style="clip-path: inset(0);">
+    <div class="absolute top-0 left-0 -translate-x-1/2 w-64 h-64 md:w-[500px] md:h-[500px] bg-amber-500/15 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-0 right-0 translate-x-1/2 w-80 h-80 md:w-[500px] md:h-[500px] bg-pink-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+  </div>
+
+  <!-- Header -->
+  <div class="relative z-20 px-4 py-4 bg-black/60 backdrop-blur-xl border-b border-white/5">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <%= link_to kings_cup_path, class: "p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      <% end %>
+
+      <div class="text-center">
+        <span class="text-white/50 text-xs uppercase tracking-wider">Codigo de la Partida</span>
+        <div class="font-mono text-2xl font-bold text-amber-400 tracking-widest"
+             style="text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);">
+          <%= @game.code %>
+        </div>
+      </div>
+
+      <button type="button"
+              onclick="navigator.clipboard.writeText('<%= @game.code %>'); alert('Codigo copiado!')"
+              class="p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Crown Icon -->
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto"
+           style="background: linear-gradient(145deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+                  border: 2px solid rgba(251, 191, 36, 0.4);
+                  box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);">
+        <span class="text-4xl">👑</span>
+      </div>
+      <h1 class="text-2xl font-bold text-white mt-4">Esperando Jugadores</h1>
+      <p class="text-white/60 mt-1">Comparte el codigo para que se unan</p>
+    </div>
+
+    <!-- Players Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" data-kings-cup-target="playersList">
+      <% @players.each do |player| %>
+        <div class="relative p-4 rounded-2xl text-center transition-all"
+             data-player-id="<%= player.id %>"
+             style="background: linear-gradient(145deg, rgba(26, 26, 26, 0.9) 0%, rgba(15, 15, 15, 0.9) 100%);
+                    border: 1px solid <%= player.host? ? 'rgba(251, 191, 36, 0.4)' : 'rgba(255, 255, 255, 0.1)' %>;
+                    box-shadow: <%= player.host? ? '0 0 20px rgba(251, 191, 36, 0.2)' : '0 4px 20px rgba(0,0,0,0.3)' %>;">
+
+          <!-- Host Badge -->
+          <% if player.host? %>
+            <div class="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center"
+                 style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);">
+              <span class="text-sm">👑</span>
+            </div>
+          <% end %>
+
+          <!-- Avatar -->
+          <div class="w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold text-white mx-auto mb-2"
+               style="background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+                      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);">
+            <%= player.avatar_initials %>
+          </div>
+
+          <!-- Name -->
+          <p class="font-medium text-white truncate"><%= player.display_name %></p>
+
+          <!-- Connection Status -->
+          <div class="flex items-center justify-center gap-1 mt-1">
+            <div class="w-2 h-2 rounded-full <%= player.connected? ? 'bg-green-400' : 'bg-yellow-400' %>"></div>
+            <span class="text-xs text-white/50"><%= player.connected? ? 'Conectado' : 'Reconectando...' %></span>
+          </div>
+
+          <!-- Kick Button (host only) -->
+          <% if @game.host?(current_user) && !player.host? %>
+            <button type="button"
+                    onclick="if(confirm('Expulsar a <%= player.display_name %>?')) fetch('/kings-cup/<%= @game.id %>/kick', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': document.querySelector('[name=csrf-token]').content }, body: JSON.stringify({ player_id: <%= player.id %> }) })"
+                    class="absolute top-2 left-2 w-6 h-6 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Empty Slots -->
+      <% (@game.max_players - @players.count).times do %>
+        <div class="p-4 rounded-2xl text-center border-2 border-dashed border-white/10 flex flex-col items-center justify-center min-h-[140px] lobby-empty-slot">
+          <div class="w-14 h-14 rounded-full flex items-center justify-center lobby-empty-slot-icon"
+               style="background: rgba(6, 182, 212, 0.08);">
+            <svg class="w-6 h-6 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+          </div>
+          <p class="text-white/30 text-sm mt-2">Esperando...</p>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Game Info -->
+    <div class="p-4 rounded-xl bg-white/5 border border-white/10 mb-6">
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-white/60">Jugadores</span>
+        <span class="text-white font-medium"><%= @players.count %>/<%= @game.max_players %></span>
+      </div>
+      <div class="flex items-center justify-between text-sm mt-2">
+        <span class="text-white/60">Minimo para empezar</span>
+        <span class="text-white font-medium">2 jugadores</span>
+      </div>
+    </div>
+
+    <!-- Start Game Button -->
+    <% if @game.host?(current_user) %>
+      <% if @game.can_start? %>
+        <%= button_to "Iniciar Partida", kings_cup_start_path(@game),
+            method: :post,
+            class: "w-full py-4 rounded-xl font-bold text-black text-lg transition-all duration-300 active:scale-[0.98]",
+            style: "background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);" %>
+      <% else %>
+        <button type="button" disabled
+                class="w-full py-4 rounded-xl font-bold text-white/50 text-lg bg-white/10 cursor-not-allowed">
+          Esperando mas jugadores...
+        </button>
+      <% end %>
+    <% else %>
+      <div class="text-center p-4 rounded-xl bg-white/5 border border-white/10">
+        <p class="text-white/60">Esperando a que el anfitrion inicie la partida...</p>
+      </div>
+    <% end %>
+
+    <!-- Leave Button -->
+    <div class="text-center mt-6">
+      <%= button_to "Abandonar Partida", kings_cup_leave_path(@game),
+          method: :post,
+          data: { turbo_confirm: "Seguro que quieres abandonar?" },
+          class: "text-red-400 hover:text-red-300 transition-colors text-sm" %>
+    </div>
+
+  </div>
+</div>

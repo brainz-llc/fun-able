@@ -1,0 +1,90 @@
+<% content_for :title, "Que Prefieres - Juego de Beber" %>
+
+<div class="min-h-screen relative overflow-hidden">
+  <!-- Animated Background -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-0 left-0 -translate-x-1/2 w-64 h-64 md:w-[500px] md:h-[500px] bg-pink-500/15 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[500px] md:h-[500px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-96 h-96 md:w-[600px] md:h-[600px] bg-purple-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-6xl font-black mb-4">
+        <span class="text-pink-400" style="text-shadow: 0 0 30px rgba(236, 72, 153, 0.5);">Que</span>
+        <span class="text-white"> Prefieres</span>
+        <span class="text-cyan-400" style="text-shadow: 0 0 30px rgba(6, 182, 212, 0.5);">?</span>
+      </h1>
+      <p class="text-white/60 text-lg">La minoria bebe. Elige sabiamente.</p>
+    </div>
+
+    <!-- Create Game Button -->
+    <div class="text-center mb-12">
+      <%= link_to new_would_you_rather_path, class: "inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-bold text-white text-lg transition-all duration-300 hover:scale-105", style: "background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%); box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);" do %>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Crear Nueva Partida
+      <% end %>
+    </div>
+
+    <!-- Join by Code -->
+    <div class="max-w-md mx-auto mb-12">
+      <%= form_with url: join_by_code_would_you_rather_index_path, method: :post, class: "flex gap-2" do |f| %>
+        <%= f.text_field :code, placeholder: "CODIGO", maxlength: 6, class: "flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-center font-mono text-xl uppercase tracking-widest placeholder:text-white/30 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20" %>
+        <%= f.submit "Unirse", class: "px-6 py-3 rounded-xl font-bold text-white cursor-pointer transition-all hover:scale-105", style: "background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);" %>
+      <% end %>
+    </div>
+
+    <!-- How to Play -->
+    <div class="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 mb-8">
+      <h2 class="text-xl font-bold text-white mb-4">Como Jugar</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="text-center p-4">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1));">
+            <span class="text-2xl">1</span>
+          </div>
+          <p class="text-white/70 text-sm">Se muestra un dilema con dos opciones</p>
+        </div>
+        <div class="text-center p-4">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.1));">
+            <span class="text-2xl">2</span>
+          </div>
+          <p class="text-white/70 text-sm">Todos votan en secreto</p>
+        </div>
+        <div class="text-center p-4">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.1));">
+            <span class="text-2xl">3</span>
+          </div>
+          <p class="text-white/70 text-sm">La minoria bebe!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Games -->
+    <% if @active_games.any? %>
+      <div class="mb-8">
+        <h2 class="text-xl font-bold text-white mb-4">Partidas Activas</h2>
+        <div class="space-y-3">
+          <% @active_games.each do |game| %>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+              <div>
+                <span class="font-mono text-pink-400 font-bold"><%= game.code %></span>
+                <span class="text-white/50 text-sm ml-2">por <%= game.host.display_name %></span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="text-white/50 text-sm"><%= game.player_count %> jugadores</span>
+                <% if game.joinable? %>
+                  <%= link_to "Unirse", join_would_you_rather_path(game), class: "px-4 py-2 rounded-lg text-sm font-bold text-white", style: "background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);" %>
+                <% else %>
+                  <span class="px-4 py-2 rounded-lg text-sm text-white/50 bg-white/10">En juego</span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<%# locals: (player:, show_kick: false) %>
+<div id="nhie_player_<%= player.id %>" class="aspect-square rounded-lg flex flex-col items-center justify-center p-2 relative"
+     style="background: rgba(20, 20, 25, 0.8);
+            border: 1px solid <%= player.host? ? 'rgba(168, 85, 247, 0.5)' : 'rgba(255, 255, 255, 0.1)' %>;">
+
+  <% if player.host? %>
+    <span class="absolute -top-1 -right-1 text-sm">&#128081;</span>
+  <% end %>
+
+  <div class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white mb-1"
+       style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);">
+    <%= player.avatar_initials %>
+  </div>
+
+  <span class="text-[10px] text-white/70 truncate w-full text-center">
+    <%= truncate(player.display_name, length: 10) %>
+  </span>
+
+  <% if !player.connected? %>
+    <span class="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-yellow-500 animate-pulse" title="Desconectado"></span>
+  <% end %>
+
+  <% if show_kick %>
+    <%= button_to kick_never_have_i_ever_game_actions_path(player.game, player_id: player.id),
+        method: :post,
+        class: "absolute -top-1 -left-1 w-5 h-5 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center text-white text-[10px] opacity-0 hover:opacity-100 transition-opacity",
+        data: { turbo_confirm: "Expulsar a #{player.display_name}?" } do %>
+      &times;
+    <% end %>
+  <% end %>
+</div>

@@ -12,3 +12,4 @@ puts "Regions: #{Region.count}"
 puts "Decks: #{Deck.count}"
 puts "Cards: #{Card.count}"
 puts "Victory GIFs: #{VictoryGif.count}"
+puts "Never Have I Ever Cards: #{NeverHaveIEverCard.count}" if defined?(NeverHaveIEverCard)

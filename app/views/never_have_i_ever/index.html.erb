@@ -1,0 +1,97 @@
+<div class="min-h-screen -mt-16 pt-16 pb-24 relative overflow-hidden">
+  <!-- Animated Background -->
+  <div class="absolute inset-0 pointer-events-none" style="clip-path: inset(0);">
+    <div class="absolute top-1/4 left-0 -translate-x-1/2 w-64 h-64 md:w-[400px] md:h-[400px] bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[500px] md:h-[500px] bg-pink-500/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-48 h-48 md:w-[300px] md:h-[300px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 py-12">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-4">
+        <span style="color: #a855f7; text-shadow: 0 0 30px rgba(168, 85, 247, 0.6);">Yo Nunca</span>
+        <span class="text-white mx-2">Nunca</span>
+      </h1>
+      <p class="text-xl text-white/60 mb-2">Never Have I Ever</p>
+      <p class="text-white/40 max-w-xl mx-auto">
+        El clasico juego para descubrir secretos de tus amigos. Si lo has hecho, bebes!
+      </p>
+    </div>
+
+    <!-- How to Play -->
+    <div class="mb-12 p-6 rounded-2xl"
+         style="background: rgba(10, 10, 15, 0.8); border: 1px solid rgba(168, 85, 247, 0.2);">
+      <h2 class="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2">
+        <span class="text-2xl">&#127922;</span>
+        Como jugar
+      </h2>
+      <ul class="space-y-3 text-white/70">
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold flex-shrink-0">1</span>
+          <span>Por turnos, un jugador lee una carta que empieza con "Yo nunca nunca..."</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 text-sm font-bold flex-shrink-0">2</span>
+          <span>Si alguna vez lo has hecho, bebes y pierdes un punto</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-sm font-bold flex-shrink-0">3</span>
+          <span>El ultimo jugador con puntos gana!</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+      <%= link_to new_never_have_i_ever_game_path,
+          class: "inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]",
+          style: "background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);" do %>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Crear Partida
+      <% end %>
+
+      <%= form_with url: never_have_i_ever_join_by_code_path, method: :post, class: "flex gap-2" do |f| %>
+        <%= f.text_field :code,
+            placeholder: "CODIGO",
+            maxlength: 6,
+            class: "w-32 px-4 py-4 rounded-xl font-mono text-lg text-center uppercase tracking-widest text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all",
+            style: "background: rgba(10, 10, 15, 0.8); border: 1px solid rgba(168, 85, 247, 0.3);" %>
+        <%= f.submit "Unirse",
+            class: "px-6 py-4 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
+            style: "background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.4);" %>
+      <% end %>
+    </div>
+
+    <!-- Categories Preview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-5 rounded-xl text-center"
+           style="background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(34, 197, 94, 0.3);">
+        <span class="text-3xl mb-2 block">&#128519;</span>
+        <h3 class="font-bold text-green-400 mb-1">Suave</h3>
+        <p class="text-xs text-white/50">Para empezar tranquilo</p>
+      </div>
+      <div class="p-5 rounded-xl text-center"
+           style="background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(251, 146, 60, 0.3);">
+        <span class="text-3xl mb-2 block">&#127798;</span>
+        <h3 class="font-bold text-orange-400 mb-1">Picante</h3>
+        <p class="text-xs text-white/50">Las cosas se ponen interesantes</p>
+      </div>
+      <div class="p-5 rounded-xl text-center"
+           style="background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(239, 68, 68, 0.3);">
+        <span class="text-3xl mb-2 block">&#128293;</span>
+        <h3 class="font-bold text-red-400 mb-1">Extremo</h3>
+        <p class="text-xs text-white/50">Solo para valientes</p>
+      </div>
+    </div>
+
+    <!-- Back to Main Games -->
+    <div class="mt-12 text-center">
+      <%= link_to root_path, class: "text-white/40 hover:text-white transition-colors text-sm" do %>
+        <span class="mr-2">&larr;</span> Volver a Fun-able
+      <% end %>
+    </div>
+  </div>
+</div>

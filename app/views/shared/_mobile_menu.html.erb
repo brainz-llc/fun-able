@@ -121,7 +121,7 @@
 
       <div class="my-2 mx-4 border-t border-gray-800"></div>
 
-      <div class="px-3 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider">Quick Actions</div>
+      <div class="px-3 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider">Juegos</div>
 
       <% if logged_in? %>
         <%= link_to new_game_path,
@@ -135,6 +135,24 @@
           </span>
           <span class="font-bold"><%= t('nav.create_game') %></span>
         <% end %>
+      <% end %>
+
+      <%= link_to kings_cup_path,
+          class: "flex items-center gap-3 mx-2 px-4 py-3 rounded-lg bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/20 text-amber-400 hover:text-amber-300 hover:border-amber-500/40 transition group",
+          data: { action: "click->mobile-menu#close" } do %>
+        <span class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center group-hover:bg-amber-500/30 transition text-lg">
+          👑
+        </span>
+        <span class="font-bold">Copa del Rey</span>
+      <% end %>
+
+      <%= link_to truth_or_dare_index_path,
+          class: "flex items-center gap-3 mx-2 px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500/10 to-transparent border border-purple-500/20 text-purple-400 hover:text-purple-300 hover:border-purple-500/40 transition group",
+          data: { action: "click->mobile-menu#close" } do %>
+        <span class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center group-hover:bg-purple-500/30 transition text-lg">
+          🎭
+        </span>
+        <span class="font-bold">Verdad o Reto</span>
       <% end %>
     </nav>
 

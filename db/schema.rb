@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_27_130309) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_01_210001) do
   create_table "card_submissions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "is_winner", default: false, null: false
@@ -36,6 +36,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_27_130309) do
     t.index ["card_type"], name: "index_cards_on_card_type"
     t.index ["deck_id", "card_type"], name: "index_cards_on_deck_id_and_card_type"
     t.index ["deck_id"], name: "index_cards_on_deck_id"
+  end
+
+  create_table "dare_cards", force: :cascade do |t|
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.integer "intensity", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["intensity"], name: "index_dare_cards_on_intensity"
   end
 
   create_table "deck_cards", force: :cascade do |t|
@@ -120,6 +128,174 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_27_130309) do
     t.index ["game_player_id"], name: "index_hand_cards_on_game_player_id"
   end
 
+  create_table "kings_cup_cards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "drawn", default: false, null: false
+    t.datetime "drawn_at"
+    t.integer "drawn_by_id"
+    t.integer "kings_cup_game_id", null: false
+    t.string "suit", limit: 10, null: false
+    t.datetime "updated_at", null: false
+    t.string "value", limit: 5, null: false
+    t.index ["drawn_by_id"], name: "index_kings_cup_cards_on_drawn_by_id"
+    t.index ["kings_cup_game_id", "drawn"], name: "index_kings_cup_cards_on_kings_cup_game_id_and_drawn"
+    t.index ["kings_cup_game_id", "suit", "value"], name: "index_kings_cup_cards_on_kings_cup_game_id_and_suit_and_value", unique: true
+    t.index ["kings_cup_game_id"], name: "index_kings_cup_cards_on_kings_cup_game_id"
+  end
+
+  create_table "kings_cup_games", force: :cascade do |t|
+    t.string "code", limit: 6, null: false
+    t.datetime "created_at", null: false
+    t.integer "current_player_index", default: 0, null: false
+    t.json "custom_rules", default: {}
+    t.integer "host_id", null: false
+    t.integer "kings_drawn", default: 0, null: false
+    t.integer "max_players", default: 10, null: false
+    t.json "settings", default: {}
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_kings_cup_games_on_code", unique: true
+    t.index ["host_id"], name: "index_kings_cup_games_on_host_id"
+    t.index ["status"], name: "index_kings_cup_games_on_status"
+  end
+
+  create_table "kings_cup_players", force: :cascade do |t|
+    t.datetime "connected_at"
+    t.datetime "created_at", null: false
+    t.datetime "disconnected_at"
+    t.boolean "is_question_master", default: false, null: false
+    t.integer "kings_cup_game_id", null: false
+    t.integer "mate_player_id"
+    t.integer "position"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["kings_cup_game_id", "status"], name: "index_kings_cup_players_on_kings_cup_game_id_and_status"
+    t.index ["kings_cup_game_id", "user_id"], name: "index_kings_cup_players_on_kings_cup_game_id_and_user_id", unique: true
+    t.index ["kings_cup_game_id"], name: "index_kings_cup_players_on_kings_cup_game_id"
+    t.index ["user_id"], name: "index_kings_cup_players_on_user_id"
+  end
+
+  create_table "kings_cup_rules", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.integer "created_by_id"
+    t.integer "kings_cup_game_id", null: false
+    t.text "rule_text", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_kings_cup_rules_on_created_by_id"
+    t.index ["kings_cup_game_id", "active"], name: "index_kings_cup_rules_on_kings_cup_game_id_and_active"
+    t.index ["kings_cup_game_id"], name: "index_kings_cup_rules_on_kings_cup_game_id"
+  end
+
+  create_table "most_likely_to_cards", force: :cascade do |t|
+    t.string "category", default: "general"
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.integer "times_played", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_most_likely_to_cards_on_category"
+  end
+
+  create_table "most_likely_to_games", force: :cascade do |t|
+    t.string "code", limit: 6, null: false
+    t.datetime "created_at", null: false
+    t.integer "current_card_id"
+    t.integer "current_round", default: 0, null: false
+    t.integer "host_id", null: false
+    t.integer "max_players", default: 10, null: false
+    t.string "phase", default: "waiting"
+    t.integer "status", default: 0, null: false
+    t.integer "total_rounds", default: 10, null: false
+    t.datetime "updated_at", null: false
+    t.json "used_card_ids", default: []
+    t.index ["code"], name: "index_most_likely_to_games_on_code", unique: true
+    t.index ["current_card_id"], name: "index_most_likely_to_games_on_current_card_id"
+    t.index ["host_id"], name: "index_most_likely_to_games_on_host_id"
+    t.index ["status"], name: "index_most_likely_to_games_on_status"
+  end
+
+  create_table "most_likely_to_players", force: :cascade do |t|
+    t.datetime "connected_at"
+    t.datetime "created_at", null: false
+    t.datetime "disconnected_at"
+    t.integer "drinks", default: 0, null: false
+    t.integer "most_likely_to_game_id", null: false
+    t.integer "position"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["most_likely_to_game_id", "status"], name: "idx_mlt_players_game_status"
+    t.index ["most_likely_to_game_id", "user_id"], name: "idx_mlt_players_game_user", unique: true
+    t.index ["most_likely_to_game_id"], name: "index_most_likely_to_players_on_most_likely_to_game_id"
+    t.index ["user_id"], name: "index_most_likely_to_players_on_user_id"
+  end
+
+  create_table "most_likely_to_votes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "most_likely_to_game_id", null: false
+    t.integer "round_number", null: false
+    t.datetime "updated_at", null: false
+    t.integer "voted_for_id", null: false
+    t.integer "voter_id", null: false
+    t.index ["most_likely_to_game_id", "round_number", "voter_id"], name: "idx_mlt_votes_unique_per_round", unique: true
+    t.index ["most_likely_to_game_id", "round_number"], name: "idx_mlt_votes_round"
+    t.index ["most_likely_to_game_id"], name: "index_most_likely_to_votes_on_most_likely_to_game_id"
+    t.index ["voted_for_id"], name: "index_most_likely_to_votes_on_voted_for_id"
+    t.index ["voter_id"], name: "index_most_likely_to_votes_on_voter_id"
+  end
+
+  create_table "never_have_i_ever_cards", force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_never_have_i_ever_cards_on_category"
+  end
+
+  create_table "never_have_i_ever_games", force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.string "code", limit: 6, null: false
+    t.datetime "created_at", null: false
+    t.integer "current_card_id"
+    t.integer "current_reader_position"
+    t.integer "host_id", null: false
+    t.integer "max_players", default: 10, null: false
+    t.integer "starting_points", default: 3, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_never_have_i_ever_games_on_code", unique: true
+    t.index ["host_id"], name: "index_never_have_i_ever_games_on_host_id"
+    t.index ["status"], name: "index_never_have_i_ever_games_on_status"
+  end
+
+  create_table "never_have_i_ever_players", force: :cascade do |t|
+    t.datetime "connected_at"
+    t.datetime "created_at", null: false
+    t.datetime "disconnected_at"
+    t.boolean "drank_this_round", default: false
+    t.integer "never_have_i_ever_game_id", null: false
+    t.integer "points", default: 3, null: false
+    t.integer "position"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["never_have_i_ever_game_id", "status"], name: "idx_nhie_players_game_status"
+    t.index ["never_have_i_ever_game_id", "user_id"], name: "idx_nhie_players_game_user", unique: true
+    t.index ["never_have_i_ever_game_id"], name: "index_never_have_i_ever_players_on_never_have_i_ever_game_id"
+    t.index ["user_id"], name: "index_never_have_i_ever_players_on_user_id"
+  end
+
+  create_table "never_have_i_ever_used_cards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "never_have_i_ever_card_id", null: false
+    t.integer "never_have_i_ever_game_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["never_have_i_ever_card_id"], name: "idx_on_never_have_i_ever_card_id_f2ddf6f5a4"
+    t.index ["never_have_i_ever_game_id", "never_have_i_ever_card_id"], name: "idx_nhie_used_cards_game_card", unique: true
+    t.index ["never_have_i_ever_game_id"], name: "idx_on_never_have_i_ever_game_id_6a57e0a78b"
+  end
+
   create_table "regions", force: :cascade do |t|
     t.boolean "active", default: true, null: false
     t.string "code", null: false
@@ -163,6 +339,49 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_27_130309) do
     t.index ["card_submission_id"], name: "index_submission_cards_on_card_submission_id"
   end
 
+  create_table "truth_cards", force: :cascade do |t|
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.integer "intensity", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["intensity"], name: "index_truth_cards_on_intensity"
+  end
+
+  create_table "truth_or_dare_games", force: :cascade do |t|
+    t.string "code", limit: 6, null: false
+    t.datetime "created_at", null: false
+    t.integer "current_player_index", default: 0, null: false
+    t.integer "host_id", null: false
+    t.integer "intensity_level", default: 0, null: false
+    t.integer "max_players", default: 10, null: false
+    t.json "settings", default: {}
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.json "used_dare_ids", default: []
+    t.json "used_truth_ids", default: []
+    t.index ["code"], name: "index_truth_or_dare_games_on_code", unique: true
+    t.index ["host_id"], name: "index_truth_or_dare_games_on_host_id"
+    t.index ["status"], name: "index_truth_or_dare_games_on_status"
+  end
+
+  create_table "truth_or_dare_players", force: :cascade do |t|
+    t.datetime "connected_at"
+    t.datetime "created_at", null: false
+    t.integer "dares_completed", default: 0, null: false
+    t.datetime "disconnected_at"
+    t.integer "drinks_taken", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.integer "truth_or_dare_game_id", null: false
+    t.integer "truths_completed", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["truth_or_dare_game_id", "status"], name: "idx_tod_players_game_status"
+    t.index ["truth_or_dare_game_id", "user_id"], name: "idx_tod_players_game_user", unique: true
+    t.index ["truth_or_dare_game_id"], name: "index_truth_or_dare_players_on_truth_or_dare_game_id"
+    t.index ["user_id"], name: "index_truth_or_dare_players_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "display_name", null: false
@@ -185,6 +404,67 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_27_130309) do
     t.index ["category"], name: "index_victory_gifs_on_category"
   end
 
+  create_table "would_you_rather_cards", force: :cascade do |t|
+    t.string "category", default: "general"
+    t.datetime "created_at", null: false
+    t.text "option_a", null: false
+    t.integer "option_a_wins", default: 0
+    t.text "option_b", null: false
+    t.integer "option_b_wins", default: 0
+    t.integer "times_played", default: 0
+    t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_would_you_rather_cards_on_category"
+  end
+
+  create_table "would_you_rather_games", force: :cascade do |t|
+    t.string "code", limit: 6, null: false
+    t.datetime "created_at", null: false
+    t.integer "current_card_id"
+    t.integer "current_round", default: 0
+    t.integer "host_id", null: false
+    t.integer "max_rounds", default: 10
+    t.string "phase", default: "waiting"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.datetime "voting_ends_at"
+    t.index ["code"], name: "index_would_you_rather_games_on_code", unique: true
+    t.index ["current_card_id"], name: "index_would_you_rather_games_on_current_card_id"
+    t.index ["host_id"], name: "index_would_you_rather_games_on_host_id"
+    t.index ["status"], name: "index_would_you_rather_games_on_status"
+  end
+
+  create_table "would_you_rather_players", force: :cascade do |t|
+    t.datetime "connected_at"
+    t.datetime "created_at", null: false
+    t.integer "current_streak", default: 0
+    t.integer "drinks_taken", default: 0
+    t.boolean "is_host", default: false
+    t.integer "max_streak", default: 0
+    t.integer "status", default: 0
+    t.integer "times_in_minority", default: 0
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.integer "would_you_rather_game_id", null: false
+    t.index ["user_id"], name: "index_would_you_rather_players_on_user_id"
+    t.index ["would_you_rather_game_id", "user_id"], name: "idx_wyr_players_game_user", unique: true
+    t.index ["would_you_rather_game_id"], name: "index_would_you_rather_players_on_would_you_rather_game_id"
+  end
+
+  create_table "would_you_rather_votes", force: :cascade do |t|
+    t.string "choice", null: false
+    t.datetime "created_at", null: false
+    t.integer "round_number", null: false
+    t.datetime "updated_at", null: false
+    t.integer "would_you_rather_card_id", null: false
+    t.integer "would_you_rather_game_id", null: false
+    t.integer "would_you_rather_player_id", null: false
+    t.index ["would_you_rather_card_id"], name: "index_would_you_rather_votes_on_would_you_rather_card_id"
+    t.index ["would_you_rather_game_id", "round_number"], name: "idx_wyr_votes_game_round"
+    t.index ["would_you_rather_game_id", "would_you_rather_player_id", "round_number"], name: "idx_wyr_votes_unique_per_round", unique: true
+    t.index ["would_you_rather_game_id"], name: "index_would_you_rather_votes_on_would_you_rather_game_id"
+    t.index ["would_you_rather_player_id"], name: "index_would_you_rather_votes_on_would_you_rather_player_id"
+  end
+
   add_foreign_key "card_submissions", "game_players", column: "player_id"
   add_foreign_key "card_submissions", "rounds"
   add_foreign_key "cards", "decks"
@@ -200,10 +480,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_27_130309) do
   add_foreign_key "games", "users", column: "host_id"
   add_foreign_key "hand_cards", "cards"
   add_foreign_key "hand_cards", "game_players"
+  add_foreign_key "kings_cup_cards", "kings_cup_games"
+  add_foreign_key "kings_cup_cards", "kings_cup_players", column: "drawn_by_id"
+  add_foreign_key "kings_cup_games", "users", column: "host_id"
+  add_foreign_key "kings_cup_players", "kings_cup_games"
+  add_foreign_key "kings_cup_players", "users"
+  add_foreign_key "kings_cup_rules", "kings_cup_games"
+  add_foreign_key "kings_cup_rules", "kings_cup_players", column: "created_by_id"
+  add_foreign_key "most_likely_to_games", "most_likely_to_cards", column: "current_card_id"
+  add_foreign_key "most_likely_to_games", "users", column: "host_id"
+  add_foreign_key "most_likely_to_players", "most_likely_to_games"
+  add_foreign_key "most_likely_to_players", "users"
+  add_foreign_key "most_likely_to_votes", "most_likely_to_games"
+  add_foreign_key "most_likely_to_votes", "most_likely_to_players", column: "voted_for_id"
+  add_foreign_key "most_likely_to_votes", "most_likely_to_players", column: "voter_id"
+  add_foreign_key "never_have_i_ever_games", "never_have_i_ever_cards", column: "current_card_id"
+  add_foreign_key "never_have_i_ever_games", "users", column: "host_id"
+  add_foreign_key "never_have_i_ever_players", "never_have_i_ever_games"
+  add_foreign_key "never_have_i_ever_players", "users"
+  add_foreign_key "never_have_i_ever_used_cards", "never_have_i_ever_cards"
+  add_foreign_key "never_have_i_ever_used_cards", "never_have_i_ever_games"
   add_foreign_key "rounds", "cards", column: "black_card_id"
   add_foreign_key "rounds", "game_players", column: "judge_id"
   add_foreign_key "rounds", "game_players", column: "winner_id"
   add_foreign_key "rounds", "games"
   add_foreign_key "submission_cards", "card_submissions"
   add_foreign_key "submission_cards", "cards"
+  add_foreign_key "truth_or_dare_games", "users", column: "host_id"
+  add_foreign_key "truth_or_dare_players", "truth_or_dare_games"
+  add_foreign_key "truth_or_dare_players", "users"
+  add_foreign_key "would_you_rather_games", "users", column: "host_id"
+  add_foreign_key "would_you_rather_games", "would_you_rather_cards", column: "current_card_id"
+  add_foreign_key "would_you_rather_players", "users"
+  add_foreign_key "would_you_rather_players", "would_you_rather_games"
+  add_foreign_key "would_you_rather_votes", "would_you_rather_cards"
+  add_foreign_key "would_you_rather_votes", "would_you_rather_games"
+  add_foreign_key "would_you_rather_votes", "would_you_rather_players"
 end
