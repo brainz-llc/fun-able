@@ -15,6 +15,67 @@
 
       <%# Desktop Navigation %>
       <div class="hidden lg:flex items-center gap-6">
+        <%# Games Dropdown %>
+        <div class="relative" data-controller="dropdown">
+          <button type="button"
+                  class="flex items-center gap-1 text-sm font-medium text-white/70 hover:text-pink-400 transition-colors"
+                  data-action="click->dropdown#toggle">
+            <span>🎮 Juegos</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="absolute left-0 mt-2 w-64 rounded-xl overflow-hidden hidden"
+               style="background: rgba(15, 15, 20, 0.98); border: 1px solid rgba(236, 72, 153, 0.3); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(236, 72, 153, 0.1);"
+               data-dropdown-target="menu">
+            <div class="py-2">
+              <%= link_to new_game_path, class: "flex items-center gap-3 px-4 py-2.5 text-sm text-pink-400 hover:bg-pink-500/10 transition" do %>
+                <span class="text-lg">🎴</span>
+                <div>
+                  <div class="font-bold">Fun-able</div>
+                  <div class="text-xs text-white/40">El juego original</div>
+                </div>
+              <% end %>
+              <div class="border-t border-white/10 my-1"></div>
+              <%= link_to kings_cup_path, class: "flex items-center gap-3 px-4 py-2.5 text-sm text-amber-400 hover:bg-amber-500/10 transition" do %>
+                <span class="text-lg">👑</span>
+                <div>
+                  <div class="font-bold">Copa del Rey</div>
+                  <div class="text-xs text-white/40">Juego de cartas clásico</div>
+                </div>
+              <% end %>
+              <%= link_to truth_or_dare_index_path, class: "flex items-center gap-3 px-4 py-2.5 text-sm text-cyan-400 hover:bg-cyan-500/10 transition" do %>
+                <span class="text-lg">🎭</span>
+                <div>
+                  <div class="font-bold">Verdad o Reto</div>
+                  <div class="text-xs text-white/40">¿Te atreves?</div>
+                </div>
+              <% end %>
+              <%= link_to never_have_i_ever_path, class: "flex items-center gap-3 px-4 py-2.5 text-sm text-pink-400 hover:bg-pink-500/10 transition" do %>
+                <span class="text-lg">🍺</span>
+                <div>
+                  <div class="font-bold">Yo Nunca Nunca</div>
+                  <div class="text-xs text-white/40">Revela tus secretos</div>
+                </div>
+              <% end %>
+              <%= link_to would_you_rather_index_path, class: "flex items-center gap-3 px-4 py-2.5 text-sm text-purple-400 hover:bg-purple-500/10 transition" do %>
+                <span class="text-lg">🤔</span>
+                <div>
+                  <div class="font-bold">Qué Prefieres</div>
+                  <div class="text-xs text-white/40">Dilemas imposibles</div>
+                </div>
+              <% end %>
+              <%= link_to most_likely_to_index_path, class: "flex items-center gap-3 px-4 py-2.5 text-sm text-purple-400 hover:bg-purple-500/10 transition" do %>
+                <span class="text-lg">👆</span>
+                <div>
+                  <div class="font-bold">Quién es Más Probable</div>
+                  <div class="text-xs text-white/40">Vota por tus amigos</div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
         <%= link_to t('nav.browse_decks'), decks_path, class: "text-sm font-medium text-white/70 hover:text-cyan-400 transition-colors" %>
         <% if logged_in? %>
           <%= link_to t('nav.my_decks'), my_decks_decks_path, class: "text-sm font-medium text-white/70 hover:text-purple-400 transition-colors" %>

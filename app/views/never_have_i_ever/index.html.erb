@@ -1,97 +1,491 @@
-<div class="min-h-screen -mt-16 pt-16 pb-24 relative overflow-hidden">
-  <!-- Animated Background -->
+<div class="min-h-screen -mt-16 pt-16 relative">
+  <!-- Animated Background Gradients -->
   <div class="absolute inset-0 pointer-events-none" style="clip-path: inset(0);">
-    <div class="absolute top-1/4 left-0 -translate-x-1/2 w-64 h-64 md:w-[400px] md:h-[400px] bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[500px] md:h-[500px] bg-pink-500/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-    <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-48 h-48 md:w-[300px] md:h-[300px] bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <!-- Pink blob - top left (primary) -->
+    <div class="absolute top-1/4 left-0 -translate-x-1/2 w-64 h-64 md:w-[500px] md:h-[500px] lg:w-[700px] lg:h-[700px] bg-pink-500/25 md:bg-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+    <!-- Purple blob - right side -->
+    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] bg-purple-500/20 md:bg-purple-500/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <!-- Magenta blob - center/bottom -->
+    <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-48 h-48 md:w-[400px] md:h-[400px] lg:w-[600px] lg:h-[600px] bg-fuchsia-500/15 md:bg-fuchsia-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <!-- Extra glow for desktop - bottom corners -->
+    <div class="hidden md:block absolute bottom-0 left-0 -translate-x-1/3 translate-y-1/3 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] bg-pink-600/15 rounded-full blur-3xl"></div>
+    <div class="hidden md:block absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] bg-purple-600/15 rounded-full blur-3xl"></div>
   </div>
 
-  <div class="relative z-10 max-w-4xl mx-auto px-4 py-12">
-    <!-- Hero Section -->
-    <div class="text-center mb-12">
-      <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-4">
-        <span style="color: #a855f7; text-shadow: 0 0 30px rgba(168, 85, 247, 0.6);">Yo Nunca</span>
-        <span class="text-white mx-2">Nunca</span>
-      </h1>
-      <p class="text-xl text-white/60 mb-2">Never Have I Ever</p>
-      <p class="text-white/40 max-w-xl mx-auto">
-        El clasico juego para descubrir secretos de tus amigos. Si lo has hecho, bebes!
-      </p>
+  <!-- Hero Section -->
+  <div class="relative z-10 flex flex-col items-center justify-center min-h-[85vh] px-6 text-center">
+
+    <!-- Floating Cards Preview (top on mobile, bottom on desktop) -->
+    <div class="relative w-full max-w-sm md:max-w-6xl h-44 md:h-72 mb-6 md:mb-0 md:mt-10 order-1 md:order-3">
+
+      <!-- Desktop Only: Extra Card (far left) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-18deg] transition-transform hover:rotate-0 hover:scale-105 duration-300"
+           style="left: 2%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 25px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed font-medium">Yo nunca nunca he enviado un mensaje al chat equivocado</p>
+          <span class="text-[10px] text-pink-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Card 1 (left) -->
+      <div class="absolute top-1/2 -translate-y-1/2 rotate-[-12deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+           style="left: 5%; width: 130px; height: 175px;">
+        <div class="w-full h-full md:w-[160px] md:h-[210px] rounded-xl p-3 md:p-4 md:absolute md:left-[80px] flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 25px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-xs md:text-sm leading-relaxed font-medium">Yo nunca nunca he mentido a mi mejor amigo</p>
+          <span class="text-[10px] text-pink-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Center Card (featured) -->
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-3 transition-transform hover:rotate-0 hover:scale-110 duration-300 z-10"
+           style="width: 140px; height: 190px;">
+        <div class="w-full h-full md:w-[180px] md:h-[240px] rounded-xl p-4 md:p-5 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(236, 72, 153, 0.6); box-shadow: 0 0 40px rgba(236, 72, 153, 0.4), 0 20px 40px rgba(0,0,0,0.5);">
+          <p class="text-white text-xs md:text-sm leading-relaxed font-medium">Yo nunca nunca he stalkeado a mi ex en redes</p>
+          <span class="text-[10px] md:text-xs text-pink-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Card 2 (right) -->
+      <div class="absolute top-1/2 -translate-y-1/2 rotate-[10deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+           style="right: 5%; width: 130px; height: 175px;">
+        <div class="w-full h-full md:w-[160px] md:h-[210px] rounded-xl p-3 md:p-4 md:absolute md:right-[80px] flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 25px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-xs md:text-sm leading-relaxed font-medium">Yo nunca nunca me he quedado dormido en clase</p>
+          <span class="text-[10px] text-pink-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Card (far right) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[15deg] transition-transform hover:rotate-0 hover:scale-105 duration-300"
+           style="right: 2%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(236, 72, 153, 0.4); box-shadow: 0 0 25px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed font-medium">Yo nunca nunca he fingido estar enfermo para no ir a trabajar</p>
+          <span class="text-[10px] text-pink-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Card (left of center) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-8deg] transition-transform hover:rotate-0 hover:scale-105 duration-300 z-[5]"
+           style="left: 28%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 25px rgba(168, 85, 247, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed font-medium">Yo nunca nunca he llorado viendo una pelicula</p>
+          <span class="text-[10px] text-purple-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Card (right of center) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[6deg] transition-transform hover:rotate-0 hover:scale-105 duration-300 z-[5]"
+           style="right: 28%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 25px rgba(168, 85, 247, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed font-medium">Yo nunca nunca he cantado en la ducha</p>
+          <span class="text-[10px] text-purple-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
     </div>
 
-    <!-- How to Play -->
-    <div class="mb-12 p-6 rounded-2xl"
-         style="background: rgba(10, 10, 15, 0.8); border: 1px solid rgba(168, 85, 247, 0.2);">
-      <h2 class="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2">
-        <span class="text-2xl">&#127922;</span>
-        Como jugar
-      </h2>
-      <ul class="space-y-3 text-white/70">
-        <li class="flex items-start gap-3">
-          <span class="w-6 h-6 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm font-bold flex-shrink-0">1</span>
-          <span>Por turnos, un jugador lee una carta que empieza con "Yo nunca nunca..."</span>
-        </li>
-        <li class="flex items-start gap-3">
-          <span class="w-6 h-6 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-400 text-sm font-bold flex-shrink-0">2</span>
-          <span>Si alguna vez lo has hecho, bebes y pierdes un punto</span>
-        </li>
-        <li class="flex items-start gap-3">
-          <span class="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-sm font-bold flex-shrink-0">3</span>
-          <span>El ultimo jugador con puntos gana!</span>
-        </li>
-      </ul>
+    <!-- Logo - Neon Sign -->
+    <div class="mb-6 order-2 md:order-1">
+      <h1 class="font-black tracking-tighter leading-none" style="font-size: clamp(3.5rem, 15vw, 6rem);">
+        <span class="neon-pink-title">Yo Nunca</span>
+        <br class="md:hidden">
+        <span class="neon-pink-title neon-flicker-delayed">Nunca</span>
+      </h1>
+      <p class="mt-3 text-lg md:text-xl text-white/60 font-light tracking-wide">El juego que revela tus secretos mas oscuros</p>
     </div>
 
     <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-      <%= link_to new_never_have_i_ever_game_path,
-          class: "inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]",
-          style: "background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);" do %>
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        Crear Partida
+    <div class="w-full max-w-md space-y-5 order-3 md:order-2">
+      <!-- Create Game Button - Mobile: Neon glow, Desktop: Simple -->
+      <%= link_to never_have_i_ever_new_game_path, class: "group block w-full" do %>
+        <!-- Mobile Layout - Neon style -->
+        <div class="md:hidden flex items-center justify-center gap-4 py-5 px-8 rounded-2xl bg-pink-500 transition-all duration-300 active:scale-[0.98]"
+             style="box-shadow: 0 0 40px rgba(236, 72, 153, 0.5);">
+          <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <span class="block text-xl font-black text-white tracking-wide">Crear Partida</span>
+            <span class="block text-sm text-white/70">Invita a tus amigos</span>
+          </div>
+        </div>
+
+        <!-- Desktop Layout - Neon border -->
+        <div class="hidden md:flex items-center justify-center gap-3 py-4 px-8 rounded-xl border border-pink-500/50 hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300">
+          <svg class="w-5 h-5 text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span class="text-lg font-medium text-white">Crear Partida</span>
+        </div>
       <% end %>
 
-      <%= form_with url: never_have_i_ever_join_by_code_path, method: :post, class: "flex gap-2" do |f| %>
-        <%= f.text_field :code,
-            placeholder: "CODIGO",
-            maxlength: 6,
-            class: "w-32 px-4 py-4 rounded-xl font-mono text-lg text-center uppercase tracking-widest text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all",
-            style: "background: rgba(10, 10, 15, 0.8); border: 1px solid rgba(168, 85, 247, 0.3);" %>
-        <%= f.submit "Unirse",
-            class: "px-6 py-4 rounded-xl font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
-            style: "background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.4);" %>
+      <!-- Divider -->
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <span class="text-white/40 text-sm font-medium">o unete con codigo</span>
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      </div>
+
+      <!-- Join Game -->
+      <%= form_with url: never_have_i_ever_join_by_code_path, method: :post, class: "w-full" do %>
+        <div class="relative">
+          <!-- Mobile: Pink neon style -->
+          <input type="text"
+                 name="code"
+                 placeholder="ABC123"
+                 maxlength="6"
+                 class="w-full text-center uppercase tracking-[0.5em] font-mono text-2xl md:text-xl py-4 md:py-3 rounded-2xl md:rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-400/50 md:focus:ring-white/30 placeholder:text-white/20"
+                 style="background: rgba(10, 10, 15, 0.9); border: 2px solid rgba(236, 72, 153, 0.3); color: #f472b6; letter-spacing: 0.5em;"
+                 autocomplete="off">
+          <!-- Mobile: Pink button -->
+          <button type="submit" class="md:hidden absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95"
+                  style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </button>
+          <!-- Desktop: Simple button -->
+          <button type="submit" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </button>
+        </div>
       <% end %>
     </div>
 
-    <!-- Categories Preview -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-5 rounded-xl text-center"
-           style="background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(34, 197, 94, 0.3);">
-        <span class="text-3xl mb-2 block">&#128519;</span>
-        <h3 class="font-bold text-green-400 mb-1">Suave</h3>
-        <p class="text-xs text-white/50">Para empezar tranquilo</p>
-      </div>
-      <div class="p-5 rounded-xl text-center"
-           style="background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(251, 146, 60, 0.3);">
-        <span class="text-3xl mb-2 block">&#127798;</span>
-        <h3 class="font-bold text-orange-400 mb-1">Picante</h3>
-        <p class="text-xs text-white/50">Las cosas se ponen interesantes</p>
-      </div>
-      <div class="p-5 rounded-xl text-center"
-           style="background: rgba(10, 10, 15, 0.6); border: 1px solid rgba(239, 68, 68, 0.3);">
-        <span class="text-3xl mb-2 block">&#128293;</span>
-        <h3 class="font-bold text-red-400 mb-1">Extremo</h3>
-        <p class="text-xs text-white/50">Solo para valientes</p>
-      </div>
-    </div>
+  </div>
 
-    <!-- Back to Main Games -->
-    <div class="mt-12 text-center">
-      <%= link_to root_path, class: "text-white/40 hover:text-white transition-colors text-sm" do %>
-        <span class="mr-2">&larr;</span> Volver a Fun-able
-      <% end %>
+  <!-- Scroll indicator (below hero) -->
+  <div class="flex justify-center py-4 animate-bounce">
+    <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+
+  <!-- How to Play - Animated Demo Section -->
+  <div class="relative z-10 py-12 pb-20 md:py-20 px-4" data-controller="nhie-demo">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-white">Como Jugar</h2>
+
+    <!-- Phase Indicator -->
+    <p class="text-center text-lg md:text-xl font-medium mb-8 h-8 text-pink-400"
+       data-nhie-demo-target="phaseIndicator">
+      Aparece una carta con una afirmacion
+    </p>
+
+    <!-- Demo Container -->
+    <div class="relative max-w-2xl mx-auto h-[500px] md:h-[520px] overflow-hidden">
+
+      <!-- Statement Card (Center Top) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-75"
+           data-nhie-demo-target="statementCard">
+        <div class="w-48 md:w-56 h-60 md:h-72 rounded-xl p-5 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+                    border: 2px solid rgba(236, 72, 153, 0.6);
+                    box-shadow: 0 0 40px rgba(236, 72, 153, 0.4), 0 10px 30px rgba(0,0,0,0.5);">
+          <p class="text-white text-base md:text-lg leading-relaxed font-medium">
+            Yo nunca nunca he stalkeado a mi ex en redes sociales
+          </p>
+          <span class="text-xs text-pink-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
+      <!-- Players Area (Middle) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-[200px] md:top-[220px] w-full max-w-lg opacity-0 transition-opacity duration-500"
+           data-nhie-demo-target="playersArea">
+
+        <div class="flex justify-center items-center gap-6 md:gap-10">
+          <!-- Player 1 -->
+          <div class="flex flex-col items-center gap-2 opacity-0 -translate-x-8 transition-all duration-500"
+               data-nhie-demo-target="player1">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl"
+                 style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(168, 85, 247, 0.4);">
+              <span data-nhie-demo-target="player1Icon">&#128100;</span>
+            </div>
+            <span class="text-white/60 text-sm">Ana</span>
+            <div class="px-3 py-1 rounded-full text-xs font-bold opacity-0 transition-all duration-300"
+                 data-nhie-demo-target="player1Status"
+                 style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;">
+              Bebe
+            </div>
+          </div>
+
+          <!-- Player 2 (You) -->
+          <div class="flex flex-col items-center gap-2 opacity-0 translate-y-8 transition-all duration-500"
+               data-nhie-demo-target="player2">
+            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-3xl md:text-4xl"
+                 style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(236, 72, 153, 0.5); box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);">
+              <span data-nhie-demo-target="player2Icon">&#128100;</span>
+            </div>
+            <span class="text-pink-400 text-sm font-medium">Tu</span>
+            <div class="px-3 py-1 rounded-full text-xs font-bold opacity-0 transition-all duration-300"
+                 data-nhie-demo-target="player2Status"
+                 style="background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #86efac;">
+              Salvo
+            </div>
+          </div>
+
+          <!-- Player 3 -->
+          <div class="flex flex-col items-center gap-2 opacity-0 translate-x-8 transition-all duration-500"
+               data-nhie-demo-target="player3">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl"
+                 style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(168, 85, 247, 0.4);">
+              <span data-nhie-demo-target="player3Icon">&#128100;</span>
+            </div>
+            <span class="text-white/60 text-sm">Carlos</span>
+            <div class="px-3 py-1 rounded-full text-xs font-bold opacity-0 transition-all duration-300"
+                 data-nhie-demo-target="player3Status"
+                 style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;">
+              Bebe
+            </div>
+          </div>
+        </div>
+
+        <!-- Drink Counter -->
+        <div class="mt-8 flex justify-center gap-6 opacity-0 transition-all duration-500"
+             data-nhie-demo-target="drinkCounter">
+          <div class="text-center">
+            <span class="text-3xl">&#127866;</span>
+            <p class="text-white/40 text-xs mt-1">2 bebieron</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons (Bottom) -->
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-full opacity-0 transition-all duration-700 ease-out"
+           data-nhie-demo-target="actionButtons">
+        <div class="flex gap-4">
+          <!-- I've Done It Button -->
+          <button class="px-6 py-3 rounded-xl font-bold text-white transition-all duration-300"
+                  data-nhie-demo-target="drinkBtn"
+                  style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);">
+            <span class="flex items-center gap-2">
+              <span class="text-xl">&#127867;</span>
+              Lo he hecho
+            </span>
+          </button>
+
+          <!-- Never Button -->
+          <button class="px-6 py-3 rounded-xl font-bold text-white transition-all duration-300"
+                  data-nhie-demo-target="safeBtn"
+                  style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);">
+            <span class="flex items-center gap-2">
+              <span class="text-xl">&#128519;</span>
+              Nunca
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Next Card Animation -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-50 translate-y-20"
+           data-nhie-demo-target="nextCard">
+        <div class="w-48 md:w-56 h-60 md:h-72 rounded-xl p-5 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+                    border: 2px solid rgba(168, 85, 247, 0.6);
+                    box-shadow: 0 0 40px rgba(168, 85, 247, 0.4), 0 10px 30px rgba(0,0,0,0.5);">
+          <p class="text-white text-base md:text-lg leading-relaxed font-medium">
+            Yo nunca nunca he fingido estar enfermo para faltar al trabajo
+          </p>
+          <span class="text-xs text-purple-500/60">Yo Nunca Nunca</span>
+        </div>
+      </div>
+
     </div>
   </div>
+
+  <!-- Back to Fun-able -->
+  <div class="relative z-10 pb-16 text-center">
+    <%= link_to root_path, class: "inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+      Volver a Fun-able
+    <% end %>
+  </div>
+
+  <style>
+    /* Neon pink title styling */
+    .neon-pink-title {
+      color: #fff;
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px #ec4899,
+        0 0 25px rgba(236, 72, 153, 0.7),
+        0 0 50px rgba(236, 72, 153, 0.4);
+      animation: neon-title-flicker 4s infinite;
+    }
+
+    .neon-flicker-delayed {
+      animation: neon-title-flicker 4s infinite 0.3s;
+    }
+
+    @keyframes neon-title-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.92;
+      }
+      22% {
+        opacity: 0.88;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Drink animation */
+    @keyframes drink-shake {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(15deg); }
+    }
+    .drink-animation {
+      animation: drink-shake 0.5s ease-in-out;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simple demo animation for the "How to Play" section
+      const demoController = document.querySelector('[data-controller="nhie-demo"]');
+      if (!demoController) return;
+
+      const elements = {
+        phaseIndicator: demoController.querySelector('[data-nhie-demo-target="phaseIndicator"]'),
+        statementCard: demoController.querySelector('[data-nhie-demo-target="statementCard"]'),
+        playersArea: demoController.querySelector('[data-nhie-demo-target="playersArea"]'),
+        player1: demoController.querySelector('[data-nhie-demo-target="player1"]'),
+        player2: demoController.querySelector('[data-nhie-demo-target="player2"]'),
+        player3: demoController.querySelector('[data-nhie-demo-target="player3"]'),
+        player1Status: demoController.querySelector('[data-nhie-demo-target="player1Status"]'),
+        player2Status: demoController.querySelector('[data-nhie-demo-target="player2Status"]'),
+        player3Status: demoController.querySelector('[data-nhie-demo-target="player3Status"]'),
+        player1Icon: demoController.querySelector('[data-nhie-demo-target="player1Icon"]'),
+        player2Icon: demoController.querySelector('[data-nhie-demo-target="player2Icon"]'),
+        player3Icon: demoController.querySelector('[data-nhie-demo-target="player3Icon"]'),
+        drinkCounter: demoController.querySelector('[data-nhie-demo-target="drinkCounter"]'),
+        actionButtons: demoController.querySelector('[data-nhie-demo-target="actionButtons"]'),
+        drinkBtn: demoController.querySelector('[data-nhie-demo-target="drinkBtn"]'),
+        safeBtn: demoController.querySelector('[data-nhie-demo-target="safeBtn"]'),
+        nextCard: demoController.querySelector('[data-nhie-demo-target="nextCard"]')
+      };
+
+      const phases = [
+        'Aparece una carta con una afirmacion',
+        'Los jugadores deciden si lo han hecho',
+        'Quienes lo hicieron, beben!',
+        'Siguiente carta...'
+      ];
+
+      let currentPhase = 0;
+
+      function resetDemo() {
+        // Hide everything
+        elements.statementCard.classList.add('opacity-0', 'scale-75');
+        elements.playersArea.classList.add('opacity-0');
+        elements.player1.classList.add('opacity-0', '-translate-x-8');
+        elements.player2.classList.add('opacity-0', 'translate-y-8');
+        elements.player3.classList.add('opacity-0', 'translate-x-8');
+        elements.player1Status.classList.add('opacity-0');
+        elements.player2Status.classList.add('opacity-0');
+        elements.player3Status.classList.add('opacity-0');
+        elements.drinkCounter.classList.add('opacity-0');
+        elements.actionButtons.classList.add('translate-y-full', 'opacity-0');
+        elements.nextCard.classList.add('opacity-0', 'scale-50', 'translate-y-20');
+
+        // Reset icons
+        elements.player1Icon.textContent = '&#128100;';
+        elements.player2Icon.textContent = '&#128100;';
+        elements.player3Icon.textContent = '&#128100;';
+      }
+
+      function runPhase(phase) {
+        elements.phaseIndicator.textContent = phases[phase];
+
+        switch(phase) {
+          case 0:
+            // Show statement card
+            setTimeout(() => {
+              elements.statementCard.classList.remove('opacity-0', 'scale-75');
+            }, 300);
+            break;
+
+          case 1:
+            // Show players and action buttons
+            elements.playersArea.classList.remove('opacity-0');
+            setTimeout(() => elements.player1.classList.remove('opacity-0', '-translate-x-8'), 200);
+            setTimeout(() => elements.player2.classList.remove('opacity-0', 'translate-y-8'), 400);
+            setTimeout(() => elements.player3.classList.remove('opacity-0', 'translate-x-8'), 600);
+            setTimeout(() => elements.actionButtons.classList.remove('translate-y-full', 'opacity-0'), 800);
+            break;
+
+          case 2:
+            // Show who drinks
+            // Player 1 drinks
+            elements.player1Icon.innerHTML = '&#127867;';
+            elements.player1Status.classList.remove('opacity-0');
+
+            // Player 2 is safe
+            setTimeout(() => {
+              elements.player2Icon.innerHTML = '&#128519;';
+              elements.player2Status.classList.remove('opacity-0');
+            }, 400);
+
+            // Player 3 drinks
+            setTimeout(() => {
+              elements.player3Icon.innerHTML = '&#127867;';
+              elements.player3Status.classList.remove('opacity-0');
+            }, 800);
+
+            // Show drink counter
+            setTimeout(() => {
+              elements.drinkCounter.classList.remove('opacity-0');
+            }, 1200);
+            break;
+
+          case 3:
+            // Transition to next card
+            elements.statementCard.classList.add('opacity-0', 'scale-75');
+            elements.actionButtons.classList.add('translate-y-full', 'opacity-0');
+
+            setTimeout(() => {
+              elements.nextCard.classList.remove('opacity-0', 'scale-50', 'translate-y-20');
+            }, 500);
+            break;
+        }
+      }
+
+      function nextPhase() {
+        currentPhase++;
+        if (currentPhase >= phases.length) {
+          currentPhase = 0;
+          resetDemo();
+          setTimeout(() => runPhase(currentPhase), 500);
+        } else {
+          runPhase(currentPhase);
+        }
+      }
+
+      // Start the demo animation loop
+      resetDemo();
+      setTimeout(() => runPhase(0), 1000);
+
+      // Progress through phases
+      setInterval(nextPhase, 3500);
+    });
+  </script>
 </div>

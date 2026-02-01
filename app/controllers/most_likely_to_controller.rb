@@ -1,12 +1,12 @@
 class MostLikelyToController < ApplicationController
-  before_action :require_login, except: [:show, :join]
+  before_action :require_login, except: [:index, :show, :join]
   before_action :set_game, only: [:show, :lobby, :join, :play]
   before_action :set_game_from_game_id, only: [:start, :vote, :reveal, :next_round, :leave]
   before_action :require_game_player, only: [:lobby, :play, :vote, :reveal, :next_round, :leave]
   before_action :require_game_host, only: [:start, :reveal, :next_round]
 
   def index
-    redirect_to new_most_likely_to_path
+    # Show landing page
   end
 
   def new
