@@ -46,7 +46,7 @@ class KingsCupController < ApplicationController
     create_or_find_guest! unless logged_in?
 
     if @game.has_player?(current_user)
-      redirect_to kings_cup_path(@game)
+      redirect_to kings_cup_show_path(@game)
       return
     end
 
@@ -86,7 +86,7 @@ class KingsCupController < ApplicationController
 
     if @game.start!
       KingsCupChannel.broadcast_game_started(@game)
-      redirect_to kings_cup_path(@game)
+      redirect_to kings_cup_show_path(@game)
     else
       redirect_to kings_cup_lobby_path(@game), alert: 'Error al iniciar la partida'
     end
@@ -180,13 +180,13 @@ class KingsCupController < ApplicationController
 
   def require_game_host
     unless @game.host?(current_user)
-      redirect_to kings_cup_path(@game), alert: 'Solo el anfitrion puede hacer esto'
+      redirect_to kings_cup_show_path(@game), alert: 'Solo el anfitrion puede hacer esto'
     end
   end
 
   def require_playing
     unless @game.playing?
-      redirect_to kings_cup_path(@game), alert: 'La partida no esta activa'
+      redirect_to kings_cup_show_path(@game), alert: 'La partida no esta activa'
     end
   end
 
