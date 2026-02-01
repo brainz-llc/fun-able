@@ -1,0 +1,567 @@
+<div class="min-h-screen -mt-16 pt-16 relative">
+  <!-- Animated Background Gradients - Purple Theme -->
+  <div class="absolute inset-0 pointer-events-none" style="clip-path: inset(0);">
+    <!-- Purple blob - top left -->
+    <div class="absolute top-1/4 left-0 -translate-x-1/2 w-64 h-64 md:w-[500px] md:h-[500px] lg:w-[700px] lg:h-[700px] bg-purple-500/20 md:bg-purple-500/15 rounded-full blur-3xl animate-pulse"></div>
+    <!-- Pink blob - right side -->
+    <div class="absolute top-1/3 right-0 translate-x-1/2 w-80 h-80 md:w-[600px] md:h-[600px] lg:w-[800px] lg:h-[800px] bg-pink-500/15 md:bg-pink-500/12 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <!-- Purple blob - center/bottom -->
+    <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 w-48 h-48 md:w-[400px] md:h-[400px] lg:w-[600px] lg:h-[600px] bg-purple-600/10 md:bg-purple-600/8 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <!-- Extra glow for desktop - bottom corners -->
+    <div class="hidden md:block absolute bottom-0 left-0 -translate-x-1/3 translate-y-1/3 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] bg-purple-600/10 rounded-full blur-3xl"></div>
+    <div class="hidden md:block absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] bg-pink-600/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="relative z-10 flex flex-col items-center justify-center min-h-[85vh] px-6 text-center">
+
+    <!-- Floating Cards Preview with Player Avatars -->
+    <div class="relative w-full max-w-sm md:max-w-6xl h-52 md:h-80 mb-6 md:mb-0 md:mt-10 order-1 md:order-3">
+
+      <!-- Desktop Only: Extra Card (far left) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-18deg] transition-transform hover:rotate-0 hover:scale-105 duration-300"
+           style="left: 2%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%); border: 2px solid rgba(168, 85, 247, 0.3); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Quien es mas probable que se quede dormido en una fiesta?</p>
+        </div>
+      </div>
+
+      <!-- Statement Card 1 (left) -->
+      <div class="absolute top-1/2 -translate-y-1/2 rotate-[-12deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+           style="left: 5%; width: 130px; height: 175px;">
+        <div class="w-full h-full md:w-[160px] md:h-[210px] rounded-xl p-3 md:p-4 md:absolute md:left-[80px]"
+             style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 25px rgba(168, 85, 247, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-xs md:text-sm leading-relaxed">Quien es mas probable que llegue tarde a su propia boda?</p>
+        </div>
+        <!-- Floating Avatar with Pointing Finger -->
+        <div class="absolute -bottom-4 -right-2 animate-bounce" style="animation-duration: 2s;">
+          <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-sm md:text-base shadow-lg"
+               style="box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);">
+            <span class="transform -rotate-45">👆</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Statement Card -->
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-3 transition-transform hover:rotate-0 hover:scale-110 duration-300 z-10"
+           style="width: 150px; height: 200px;">
+        <div class="w-full h-full md:w-[190px] md:h-[250px] rounded-xl p-4 md:p-5 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%); border: 2px solid rgba(168, 85, 247, 0.5); box-shadow: 0 0 40px rgba(168, 85, 247, 0.3), 0 20px 40px rgba(0,0,0,0.5);">
+          <p class="text-white text-sm md:text-base leading-relaxed">Quien es mas probable que se vuelva viral en TikTok?</p>
+          <span class="text-[10px] md:text-xs text-purple-500/60">Fun-able</span>
+        </div>
+        <!-- Multiple Pointing Avatars -->
+        <div class="absolute -top-3 -left-3 animate-bounce" style="animation-duration: 1.8s; animation-delay: 0.2s;">
+          <div class="w-9 h-9 md:w-11 md:h-11 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white text-base md:text-lg shadow-lg"
+               style="box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);">
+            <span class="transform rotate-[135deg]">👆</span>
+          </div>
+        </div>
+        <div class="absolute -top-2 -right-4 animate-bounce" style="animation-duration: 2.2s; animation-delay: 0.4s;">
+          <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-white text-sm md:text-base shadow-lg"
+               style="box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);">
+            <span class="transform rotate-45">👆</span>
+          </div>
+        </div>
+        <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 animate-bounce" style="animation-duration: 1.6s; animation-delay: 0.6s;">
+          <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-lg md:text-xl shadow-lg"
+               style="box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);">
+            <span>👆</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statement Card 2 (right) -->
+      <div class="absolute top-1/2 -translate-y-1/2 rotate-[10deg] transition-transform hover:rotate-0 hover:scale-110 duration-300"
+           style="right: 5%; width: 130px; height: 175px;">
+        <div class="w-full h-full md:w-[160px] md:h-[210px] rounded-xl p-3 md:p-4 md:absolute md:right-[80px]"
+             style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 25px rgba(168, 85, 247, 0.2), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-xs md:text-sm leading-relaxed">Quien es mas probable que sobreviva un apocalipsis zombie?</p>
+        </div>
+        <!-- Floating Avatar with Pointing Finger -->
+        <div class="absolute -bottom-4 -left-2 animate-bounce" style="animation-duration: 2.4s; animation-delay: 0.3s;">
+          <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-white text-sm md:text-base shadow-lg"
+               style="box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);">
+            <span class="transform rotate-[135deg]">👆</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Card (far right) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[15deg] transition-transform hover:rotate-0 hover:scale-105 duration-300"
+           style="right: 2%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%); border: 2px solid rgba(168, 85, 247, 0.3); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15), 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Quien es mas probable que llore viendo una pelicula?</p>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Card (left of center) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[-8deg] transition-transform hover:rotate-0 hover:scale-105 duration-300 z-[5]"
+           style="left: 28%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%); border: 2px solid rgba(168, 85, 247, 0.35); box-shadow: 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Quien es mas probable que termine en la carcel por algo tonto?</p>
+          <span class="text-[10px] text-purple-400/40">Fun-able</span>
+        </div>
+      </div>
+
+      <!-- Desktop Only: Extra Card (right of center) -->
+      <div class="hidden md:block absolute top-1/2 -translate-y-1/2 rotate-[6deg] transition-transform hover:rotate-0 hover:scale-105 duration-300 z-[5]"
+           style="right: 28%; width: 160px; height: 210px;">
+        <div class="w-full h-full rounded-xl p-4 flex flex-col justify-between"
+             style="background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%); border: 2px solid rgba(168, 85, 247, 0.35); box-shadow: 0 15px 30px rgba(0,0,0,0.4);">
+          <p class="text-white text-sm leading-relaxed">Quien es mas probable que gaste todo su dinero en algo inutil?</p>
+          <span class="text-[10px] text-purple-400/40">Fun-able</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo - Neon Sign (Purple Theme) -->
+    <div class="mb-6 order-2 md:order-1">
+      <h1 class="font-black tracking-tighter leading-none" style="font-size: clamp(2.5rem, 12vw, 5rem);">
+        <span class="neon-purple-title">Quien es</span>
+        <br class="md:hidden">
+        <span class="neon-purple-title neon-flicker-purple">Mas Probable</span>
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-white/70 font-light tracking-wide">Vota por tus amigos... y descubre que piensan de ti <span class="inline-block animate-bounce">👆</span></p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="w-full max-w-md space-y-5 order-3 md:order-2">
+      <!-- Create Game Button - Mobile: Neon glow, Desktop: Simple -->
+      <%= link_to new_most_likely_to_path, class: "group block w-full" do %>
+        <!-- Mobile Layout - Neon style -->
+        <div class="md:hidden flex items-center justify-center gap-4 py-5 px-8 rounded-2xl bg-purple-500 transition-all duration-300 active:scale-[0.98]"
+             style="box-shadow: 0 0 40px rgba(168, 85, 247, 0.5);">
+          <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <span class="block text-xl font-black text-white tracking-wide">Crear Partida</span>
+            <span class="block text-sm text-white/70">Invita a tus amigos</span>
+          </div>
+        </div>
+
+        <!-- Desktop Layout - Neon border -->
+        <div class="hidden md:flex items-center justify-center gap-3 py-4 px-8 rounded-xl border border-purple-500/50 hover:border-purple-500 hover:bg-purple-500/10 transition-all duration-300">
+          <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span class="text-lg font-medium text-white">Crear Partida</span>
+        </div>
+      <% end %>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <span class="text-white/40 text-sm font-medium">o unete con codigo</span>
+        <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      </div>
+
+      <!-- Join Game -->
+      <%= form_with url: join_by_code_most_likely_to_index_path, method: :post, class: "w-full" do %>
+        <div class="relative">
+          <!-- Mobile: Purple neon style -->
+          <input type="text"
+                 name="code"
+                 placeholder="ABC123"
+                 maxlength="6"
+                 class="w-full text-center uppercase tracking-[0.5em] font-mono text-2xl md:text-xl py-4 md:py-3 rounded-2xl md:rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400/50 md:focus:ring-white/30 placeholder:text-white/20"
+                 style="background: rgba(10, 10, 15, 0.9); border: 2px solid rgba(168, 85, 247, 0.3); color: #c084fc; letter-spacing: 0.5em;"
+                 autocomplete="off">
+          <!-- Mobile: Purple button -->
+          <button type="submit" class="md:hidden absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95"
+                  style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </button>
+          <!-- Desktop: Simple button -->
+          <button type="submit" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-lg items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </button>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <!-- Scroll indicator (below hero) -->
+  <div class="flex justify-center py-4 animate-bounce">
+    <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </div>
+
+  <!-- How to Play - Animated Demo Section -->
+  <div class="relative z-10 py-12 pb-20 md:py-20 px-4" data-controller="mlt-demo">
+    <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-white">Como Jugar</h2>
+
+    <!-- Phase Indicator -->
+    <p class="text-center text-lg md:text-xl font-medium mb-8 h-8 text-purple-400"
+       data-mlt-demo-target="phaseIndicator">
+      Aparece una pregunta...
+    </p>
+
+    <!-- Demo Container -->
+    <div class="relative max-w-2xl mx-auto h-[520px] md:h-[540px] overflow-hidden">
+
+      <!-- Statement Card (Center Top) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-75"
+           data-mlt-demo-target="statementCard">
+        <div class="w-48 md:w-56 h-32 md:h-36 rounded-xl p-4 flex flex-col justify-center"
+             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+                    border: 2px solid rgba(168, 85, 247, 0.5);
+                    box-shadow: 0 0 30px rgba(168, 85, 247, 0.3), 0 10px 30px rgba(0,0,0,0.5);">
+          <p class="text-white text-sm md:text-base leading-relaxed text-center">
+            Quien es mas probable que llegue tarde a su propia boda?
+          </p>
+        </div>
+      </div>
+
+      <!-- Players Voting Area (Middle) -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-[160px] md:top-[170px] w-full max-w-lg opacity-0 transition-opacity duration-500"
+           data-mlt-demo-target="votingArea">
+
+        <div class="flex justify-center items-center gap-6 md:gap-10 flex-wrap">
+          <!-- Player 1 -->
+          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
+               data-mlt-demo-target="player1">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
+                 style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);">
+              <span>Ana</span>
+              <!-- Vote indicator -->
+              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
+                   data-mlt-demo-target="vote1"
+                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
+                <span class="text-white text-xs">1</span>
+              </div>
+            </div>
+            <span class="text-white/70 text-sm font-medium">Ana</span>
+          </div>
+
+          <!-- Player 2 -->
+          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
+               data-mlt-demo-target="player2">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
+                 style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">
+              <span>Luis</span>
+              <!-- Vote indicator -->
+              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
+                   data-mlt-demo-target="vote2"
+                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
+                <span class="text-white text-xs">3</span>
+              </div>
+            </div>
+            <span class="text-white/70 text-sm font-medium">Luis</span>
+          </div>
+
+          <!-- Player 3 -->
+          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
+               data-mlt-demo-target="player3">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
+                 style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">
+              <span>Sara</span>
+              <!-- Vote indicator -->
+              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
+                   data-mlt-demo-target="vote3"
+                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
+                <span class="text-white text-xs">1</span>
+              </div>
+            </div>
+            <span class="text-white/70 text-sm font-medium">Sara</span>
+          </div>
+
+          <!-- Player 4 -->
+          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
+               data-mlt-demo-target="player4">
+            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
+                 style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">
+              <span>Paco</span>
+              <!-- Vote indicator -->
+              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
+                   data-mlt-demo-target="vote4"
+                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
+                <span class="text-white text-xs">0</span>
+              </div>
+            </div>
+            <span class="text-white/70 text-sm font-medium">Paco</span>
+          </div>
+        </div>
+
+        <!-- Pointing Fingers Animation -->
+        <div class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500"
+             data-mlt-demo-target="pointingFingers">
+          <!-- Finger pointing to Luis -->
+          <div class="absolute top-8 left-[15%] text-3xl animate-bounce" style="animation-duration: 0.8s;">👆</div>
+          <div class="absolute top-12 left-[25%] text-2xl animate-bounce" style="animation-duration: 0.9s; animation-delay: 0.1s;">👆</div>
+          <div class="absolute top-6 right-[25%] text-3xl animate-bounce" style="animation-duration: 0.7s; animation-delay: 0.2s;">👆</div>
+        </div>
+
+        <!-- Winner Reveal -->
+        <div class="absolute left-1/2 -translate-x-1/2 top-28 scale-0 opacity-0 transition-all duration-500 ease-out z-20"
+             data-mlt-demo-target="winnerReveal">
+          <div class="flex flex-col items-center gap-3">
+            <div class="px-6 py-3 rounded-full font-bold text-lg"
+                 style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+                        box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+                        color: white;">
+              Luis gana! BEBE! 🍺
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tie Scenario Badge -->
+      <div class="absolute left-1/2 -translate-x-1/2 bottom-32 scale-0 opacity-0 transition-all duration-500 ease-out"
+           data-mlt-demo-target="tieBadge">
+        <div class="px-5 py-2 rounded-full font-bold text-sm"
+             style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                    box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+                    color: white;">
+          Empate? Todos los empatados beben!
+        </div>
+      </div>
+
+      <!-- Step Indicators -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step1"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step2"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step3"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step4"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Purple Neon Title */
+    .neon-purple-title {
+      color: #fff;
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px #a855f7,
+        0 0 25px rgba(168, 85, 247, 0.6),
+        0 0 45px rgba(168, 85, 247, 0.35);
+      animation: neon-purple-flicker 4s infinite;
+    }
+
+    .neon-flicker-purple {
+      animation: neon-purple-flicker 4s infinite 0.3s;
+    }
+
+    @keyframes neon-purple-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.92;
+      }
+      22% {
+        opacity: 0.88;
+      }
+    }
+
+    /* Active step indicator */
+    .step-dot.active {
+      background: #a855f7;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+      transform: scale(1.3);
+    }
+
+    /* Winner glow animation */
+    @keyframes winner-pulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(168, 85, 247, 0.8), 0 0 60px rgba(168, 85, 247, 0.4);
+      }
+    }
+    .winner-glow {
+      animation: winner-pulse 1s ease-in-out infinite;
+    }
+  </style>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Simple demo animation controller
+  const demoContainer = document.querySelector('[data-controller="mlt-demo"]');
+  if (!demoContainer) return;
+
+  const targets = {
+    phaseIndicator: demoContainer.querySelector('[data-mlt-demo-target="phaseIndicator"]'),
+    statementCard: demoContainer.querySelector('[data-mlt-demo-target="statementCard"]'),
+    votingArea: demoContainer.querySelector('[data-mlt-demo-target="votingArea"]'),
+    player1: demoContainer.querySelector('[data-mlt-demo-target="player1"]'),
+    player2: demoContainer.querySelector('[data-mlt-demo-target="player2"]'),
+    player3: demoContainer.querySelector('[data-mlt-demo-target="player3"]'),
+    player4: demoContainer.querySelector('[data-mlt-demo-target="player4"]'),
+    vote1: demoContainer.querySelector('[data-mlt-demo-target="vote1"]'),
+    vote2: demoContainer.querySelector('[data-mlt-demo-target="vote2"]'),
+    vote3: demoContainer.querySelector('[data-mlt-demo-target="vote3"]'),
+    vote4: demoContainer.querySelector('[data-mlt-demo-target="vote4"]'),
+    pointingFingers: demoContainer.querySelector('[data-mlt-demo-target="pointingFingers"]'),
+    winnerReveal: demoContainer.querySelector('[data-mlt-demo-target="winnerReveal"]'),
+    tieBadge: demoContainer.querySelector('[data-mlt-demo-target="tieBadge"]'),
+    step1: demoContainer.querySelector('[data-mlt-demo-target="step1"]'),
+    step2: demoContainer.querySelector('[data-mlt-demo-target="step2"]'),
+    step3: demoContainer.querySelector('[data-mlt-demo-target="step3"]'),
+    step4: demoContainer.querySelector('[data-mlt-demo-target="step4"]'),
+  };
+
+  const phases = [
+    'Aparece una pregunta...',
+    'Todos votan por un jugador!',
+    'Revelacion dramatica...',
+    'El mas votado bebe!'
+  ];
+
+  let currentPhase = 0;
+
+  function setStep(step) {
+    [targets.step1, targets.step2, targets.step3, targets.step4].forEach((s, i) => {
+      if (s) {
+        s.classList.toggle('active', i === step);
+      }
+    });
+  }
+
+  function resetDemo() {
+    // Reset all elements
+    if (targets.statementCard) {
+      targets.statementCard.classList.add('opacity-0', 'scale-75');
+    }
+    if (targets.votingArea) {
+      targets.votingArea.classList.add('opacity-0');
+    }
+    [targets.player1, targets.player2, targets.player3, targets.player4].forEach(p => {
+      if (p) {
+        p.classList.add('opacity-0', '-translate-y-4');
+      }
+    });
+    [targets.vote1, targets.vote2, targets.vote3, targets.vote4].forEach(v => {
+      if (v) {
+        v.classList.add('opacity-0', 'scale-0');
+      }
+    });
+    if (targets.pointingFingers) {
+      targets.pointingFingers.classList.add('opacity-0');
+    }
+    if (targets.winnerReveal) {
+      targets.winnerReveal.classList.add('scale-0', 'opacity-0');
+    }
+    if (targets.tieBadge) {
+      targets.tieBadge.classList.add('scale-0', 'opacity-0');
+    }
+
+    // Reset player 2 winner glow
+    const player2Avatar = targets.player2?.querySelector('div');
+    if (player2Avatar) {
+      player2Avatar.classList.remove('winner-glow');
+    }
+  }
+
+  function runPhase(phase) {
+    if (targets.phaseIndicator) {
+      targets.phaseIndicator.textContent = phases[phase];
+    }
+    setStep(phase);
+
+    switch(phase) {
+      case 0: // Statement appears
+        resetDemo();
+        setTimeout(() => {
+          if (targets.statementCard) {
+            targets.statementCard.classList.remove('opacity-0', 'scale-75');
+          }
+        }, 300);
+        break;
+
+      case 1: // Everyone votes
+        if (targets.votingArea) {
+          targets.votingArea.classList.remove('opacity-0');
+        }
+        // Show players one by one
+        [targets.player1, targets.player2, targets.player3, targets.player4].forEach((p, i) => {
+          setTimeout(() => {
+            if (p) {
+              p.classList.remove('opacity-0', '-translate-y-4');
+            }
+          }, i * 200);
+        });
+        // Show pointing fingers
+        setTimeout(() => {
+          if (targets.pointingFingers) {
+            targets.pointingFingers.classList.remove('opacity-0');
+          }
+        }, 1000);
+        break;
+
+      case 2: // Dramatic reveal
+        if (targets.pointingFingers) {
+          targets.pointingFingers.classList.add('opacity-0');
+        }
+        // Show vote counts
+        [targets.vote1, targets.vote2, targets.vote3, targets.vote4].forEach((v, i) => {
+          setTimeout(() => {
+            if (v) {
+              v.classList.remove('opacity-0', 'scale-0');
+            }
+          }, i * 300);
+        });
+        break;
+
+      case 3: // Winner drinks
+        // Highlight winner (Luis/Player 2)
+        const player2Avatar = targets.player2?.querySelector('div');
+        if (player2Avatar) {
+          player2Avatar.classList.add('winner-glow');
+        }
+        setTimeout(() => {
+          if (targets.winnerReveal) {
+            targets.winnerReveal.classList.remove('scale-0', 'opacity-0');
+          }
+        }, 500);
+        // Show tie info
+        setTimeout(() => {
+          if (targets.tieBadge) {
+            targets.tieBadge.classList.remove('scale-0', 'opacity-0');
+          }
+        }, 1500);
+        break;
+    }
+  }
+
+  function nextPhase() {
+    currentPhase = (currentPhase + 1) % 4;
+    if (currentPhase === 0) {
+      resetDemo();
+      setTimeout(() => runPhase(0), 500);
+    } else {
+      runPhase(currentPhase);
+    }
+  }
+
+  // Start the demo
+  setTimeout(() => runPhase(0), 500);
+
+  // Auto-advance phases
+  setInterval(nextPhase, 3500);
+});
+</script>
