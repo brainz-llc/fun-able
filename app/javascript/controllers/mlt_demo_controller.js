@@ -4,17 +4,25 @@ export default class extends Controller {
   static targets = [
     "phaseIndicator",
     "statementCard",
-    "votingArea",
+    "phoneScreen",
     "player1",
     "player2",
     "player3",
     "player4",
-    "vote1",
-    "vote2",
-    "vote3",
-    "vote4",
-    "winnerReveal",
-    "tieBadge",
+    "select1",
+    "select2",
+    "select3",
+    "select4",
+    "voteStatus",
+    "waitingDots",
+    "resultsArea",
+    "result1",
+    "result2",
+    "result3",
+    "bar1",
+    "bar2",
+    "bar3",
+    "winnerBadge",
     "step1",
     "step2",
     "step3",
@@ -28,8 +36,10 @@ export default class extends Controller {
   connect() {
     this.phases = [
       'Aparece una pregunta...',
-      'Todos votan por un jugador!',
-      'Revelacion dramatica...',
+      'Todos ven las opciones',
+      'Eliges a quien votar...',
+      'Esperando a los demas...',
+      'Se revelan los resultados!',
       'El mas votado bebe!'
     ]
     this.startDemo()
@@ -37,114 +47,208 @@ export default class extends Controller {
 
   disconnect() {
     if (this.timeout) clearTimeout(this.timeout)
-    if (this.interval) clearInterval(this.interval)
   }
 
   startDemo() {
+    this.resetAll()
     this.phaseValue = 0
-    this.timeout = setTimeout(() => this.runPhase(0), 500)
-    this.interval = setInterval(() => this.nextPhase(), 3500)
+    this.timeout = setTimeout(() => this.runPhase0(), 500)
   }
 
   setStep(step) {
     const steps = [this.step1Target, this.step2Target, this.step3Target, this.step4Target].filter(Boolean)
     steps.forEach((s, i) => {
-      if (s) s.classList.toggle('active', i === step)
+      s.classList.toggle('active', i === step)
     })
   }
 
-  resetDemo() {
-    // Reset all elements
-    if (this.hasStatementCardTarget) {
-      this.statementCardTarget.classList.add('opacity-0', 'scale-75')
-    }
-    if (this.hasVotingAreaTarget) {
-      this.votingAreaTarget.classList.add('opacity-0')
-    }
-
-    const players = [this.player1Target, this.player2Target, this.player3Target, this.player4Target].filter(Boolean)
-    players.forEach(p => p.classList.add('opacity-0', '-translate-y-4'))
-
-    const votes = [this.vote1Target, this.vote2Target, this.vote3Target, this.vote4Target].filter(Boolean)
-    votes.forEach(v => v.classList.add('opacity-0', 'scale-0'))
-
-    if (this.hasWinnerRevealTarget) {
-      this.winnerRevealTarget.classList.add('scale-0', 'opacity-0')
-    }
-    if (this.hasTieBadgeTarget) {
-      this.tieBadgeTarget.classList.add('scale-0', 'opacity-0')
-    }
-
-    // Reset player 2 winner glow
-    if (this.hasPlayer2Target) {
-      const avatar = this.player2Target.querySelector('div')
-      if (avatar) avatar.classList.remove('winner-glow')
-    }
-  }
-
-  runPhase(phase) {
+  updatePhaseIndicator() {
     if (this.hasPhaseIndicatorTarget) {
-      this.phaseIndicatorTarget.textContent = this.phases[phase]
-    }
-    this.setStep(phase)
-
-    switch(phase) {
-      case 0: // Statement appears
-        this.resetDemo()
-        setTimeout(() => {
-          if (this.hasStatementCardTarget) {
-            this.statementCardTarget.classList.remove('opacity-0', 'scale-75')
-          }
-        }, 300)
-        break
-
-      case 1: // Everyone votes
-        if (this.hasVotingAreaTarget) {
-          this.votingAreaTarget.classList.remove('opacity-0')
-        }
-        // Show players one by one
-        const players = [this.player1Target, this.player2Target, this.player3Target, this.player4Target].filter(Boolean)
-        players.forEach((p, i) => {
-          setTimeout(() => p.classList.remove('opacity-0', '-translate-y-4'), i * 200)
-        })
-        break
-
-      case 2: // Dramatic reveal
-        // Show vote counts
-        const votes = [this.vote1Target, this.vote2Target, this.vote3Target, this.vote4Target].filter(Boolean)
-        votes.forEach((v, i) => {
-          setTimeout(() => v.classList.remove('opacity-0', 'scale-0'), i * 300)
-        })
-        break
-
-      case 3: // Winner drinks
-        // Highlight winner (Luis/Player 2)
-        if (this.hasPlayer2Target) {
-          const avatar = this.player2Target.querySelector('div')
-          if (avatar) avatar.classList.add('winner-glow')
-        }
-        setTimeout(() => {
-          if (this.hasWinnerRevealTarget) {
-            this.winnerRevealTarget.classList.remove('scale-0', 'opacity-0')
-          }
-        }, 500)
-        // Show tie info
-        setTimeout(() => {
-          if (this.hasTieBadgeTarget) {
-            this.tieBadgeTarget.classList.remove('scale-0', 'opacity-0')
-          }
-        }, 1500)
-        break
+      this.phaseIndicatorTarget.textContent = this.phases[this.phaseValue]
+      this.phaseIndicatorTarget.classList.add('animate-pulse')
+      setTimeout(() => this.phaseIndicatorTarget.classList.remove('animate-pulse'), 500)
     }
   }
 
-  nextPhase() {
-    this.phaseValue = (this.phaseValue + 1) % 4
-    if (this.phaseValue === 0) {
-      this.resetDemo()
-      this.timeout = setTimeout(() => this.runPhase(0), 500)
-    } else {
-      this.runPhase(this.phaseValue)
+  resetAll() {
+    // Statement card - uses translate and scale
+    if (this.hasStatementCardTarget) {
+      this.statementCardTarget.classList.add('opacity-0', 'scale-90', '-translate-y-4')
     }
+
+    // Phone screen / voting grid
+    if (this.hasPhoneScreenTarget) {
+      this.phoneScreenTarget.classList.add('opacity-0')
+    }
+
+    // Player selections
+    const selects = [this.select1Target, this.select2Target, this.select3Target, this.select4Target].filter(Boolean)
+    selects.forEach(s => s.classList.add('opacity-0'))
+
+    // Vote status and waiting
+    if (this.hasVoteStatusTarget) this.voteStatusTarget.classList.add('opacity-0')
+    if (this.hasWaitingDotsTarget) this.waitingDotsTarget.classList.add('opacity-0')
+
+    // Results area
+    if (this.hasResultsAreaTarget) {
+      this.resultsAreaTarget.classList.add('opacity-0', 'scale-95')
+    }
+
+    // Vote bars
+    if (this.hasBar1Target) this.bar1Target.style.width = '0%'
+    if (this.hasBar2Target) this.bar2Target.style.width = '0%'
+    if (this.hasBar3Target) this.bar3Target.style.width = '0%'
+
+    // Winner badge
+    if (this.hasWinnerBadgeTarget) {
+      this.winnerBadgeTarget.classList.add('scale-0', 'opacity-0')
+    }
+  }
+
+  // Phase 0: Statement card appears with dramatic entrance
+  runPhase0() {
+    this.updatePhaseIndicator()
+    this.setStep(0)
+
+    this.timeout = setTimeout(() => {
+      if (this.hasStatementCardTarget) {
+        this.statementCardTarget.classList.remove('opacity-0', 'scale-90', '-translate-y-4')
+      }
+
+      this.timeout = setTimeout(() => {
+        this.phaseValue = 1
+        this.runPhase1()
+      }, 1800)
+    }, 300)
+  }
+
+  // Phase 1: Phone screen appears with voting options
+  runPhase1() {
+    this.updatePhaseIndicator()
+    this.setStep(1)
+
+    this.timeout = setTimeout(() => {
+      if (this.hasPhoneScreenTarget) {
+        this.phoneScreenTarget.classList.remove('opacity-0')
+      }
+
+      this.timeout = setTimeout(() => {
+        this.phaseValue = 2
+        this.runPhase2()
+      }, 1500)
+    }, 300)
+  }
+
+  // Phase 2: Selection animation - user picks Luis
+  runPhase2() {
+    this.updatePhaseIndicator()
+    this.setStep(1)
+
+    // Simulate hovering/selecting different players
+    const selectSequence = [
+      { target: 'select1', delay: 400 },
+      { target: 'select1', delay: 700, hide: true },
+      { target: 'select3', delay: 1000 },
+      { target: 'select3', delay: 1300, hide: true },
+      { target: 'select2', delay: 1600 } // Final selection - Luis
+    ]
+
+    selectSequence.forEach(({ target, delay, hide }) => {
+      this.timeout = setTimeout(() => {
+        const el = this[`${target}Target`]
+        if (el) {
+          if (hide) {
+            el.classList.add('opacity-0')
+          } else {
+            el.classList.remove('opacity-0')
+          }
+        }
+      }, delay)
+    })
+
+    this.timeout = setTimeout(() => {
+      this.phaseValue = 3
+      this.runPhase3()
+    }, 2200)
+  }
+
+  // Phase 3: Vote submitted, waiting for others
+  runPhase3() {
+    this.updatePhaseIndicator()
+    this.setStep(2)
+
+    // Show vote confirmation
+    if (this.hasVoteStatusTarget) {
+      this.voteStatusTarget.classList.remove('opacity-0')
+    }
+
+    this.timeout = setTimeout(() => {
+      // Show waiting dots
+      if (this.hasWaitingDotsTarget) {
+        this.waitingDotsTarget.classList.remove('opacity-0')
+      }
+
+      this.timeout = setTimeout(() => {
+        this.phaseValue = 4
+        this.runPhase4()
+      }, 2000)
+    }, 500)
+  }
+
+  // Phase 4: Results reveal with animated bars
+  runPhase4() {
+    this.updatePhaseIndicator()
+    this.setStep(2)
+
+    // Hide phone screen, show results
+    if (this.hasPhoneScreenTarget) {
+      this.phoneScreenTarget.classList.add('opacity-0')
+    }
+
+    // Also hide the statement card to make room
+    if (this.hasStatementCardTarget) {
+      this.statementCardTarget.classList.add('opacity-0', 'scale-90')
+    }
+
+    this.timeout = setTimeout(() => {
+      if (this.hasResultsAreaTarget) {
+        this.resultsAreaTarget.classList.remove('opacity-0', 'scale-95')
+      }
+
+      // Animate vote bars with stagger
+      this.timeout = setTimeout(() => {
+        if (this.hasBar1Target) this.bar1Target.style.width = '75%' // Luis - 3 votes
+        if (this.hasBar2Target) this.bar2Target.style.width = '25%' // Ana - 1 vote
+        if (this.hasBar3Target) this.bar3Target.style.width = '0%'  // Sara - 0 votes
+
+        this.timeout = setTimeout(() => {
+          this.phaseValue = 5
+          this.runPhase5()
+        }, 1500)
+      }, 500)
+    }, 400)
+  }
+
+  // Phase 5: Winner celebration
+  runPhase5() {
+    this.updatePhaseIndicator()
+    this.setStep(3)
+
+    // Highlight winner bar
+    if (this.hasBar1Target) {
+      this.bar1Target.style.boxShadow = '0 0 20px rgba(168, 85, 247, 0.8)'
+    }
+
+    this.timeout = setTimeout(() => {
+      // Show winner badge
+      if (this.hasWinnerBadgeTarget) {
+        this.winnerBadgeTarget.classList.remove('scale-0', 'opacity-0')
+      }
+
+      // Restart loop after celebration
+      this.timeout = setTimeout(() => {
+        this.startDemo()
+      }, 3500)
+    }, 600)
   }
 }

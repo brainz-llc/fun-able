@@ -176,126 +176,225 @@
       Aparece una pregunta...
     </p>
 
-    <!-- Demo Container -->
-    <div class="relative max-w-2xl mx-auto h-[520px] md:h-[540px] overflow-hidden">
+    <!-- Demo Container - Phone Frame Style -->
+    <div class="relative max-w-sm mx-auto">
+      <!-- Phone Frame -->
+      <div class="relative rounded-[2.5rem] p-3 mx-auto"
+           style="background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+                  box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(168, 85, 247, 0.15), inset 0 1px 1px rgba(255,255,255,0.1);">
 
-      <!-- Statement Card (Center Top) -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-75"
-           data-mlt-demo-target="statementCard">
-        <div class="w-48 md:w-56 h-32 md:h-36 rounded-xl p-4 flex flex-col justify-center"
-             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
-                    border: 2px solid rgba(168, 85, 247, 0.5);
-                    box-shadow: 0 0 30px rgba(168, 85, 247, 0.3), 0 10px 30px rgba(0,0,0,0.5);">
-          <p class="text-white text-sm md:text-base leading-relaxed text-center">
-            Quien es mas probable que llegue tarde a su propia boda?
-          </p>
+        <!-- Phone Notch -->
+        <div class="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-6 rounded-full bg-black z-20"></div>
+
+        <!-- Phone Screen -->
+        <div class="relative rounded-[2rem] overflow-hidden min-h-[480px]"
+             style="background: linear-gradient(180deg, #0f0f12 0%, #1a1a20 100%);">
+
+          <!-- Screen Content -->
+          <div class="p-5 pt-10">
+
+            <!-- Statement Card -->
+            <div class="transition-all duration-700 ease-out opacity-0 scale-90 -translate-y-4"
+                 data-mlt-demo-target="statementCard">
+              <div class="rounded-2xl p-5 mb-6"
+                   style="background: linear-gradient(145deg, #1f1f24 0%, #15151a 100%);
+                          border: 2px solid rgba(168, 85, 247, 0.4);
+                          box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);">
+                <p class="text-white text-base md:text-lg leading-relaxed text-center font-medium">
+                  Quien es mas probable que llegue tarde a su propia boda?
+                </p>
+                <p class="text-purple-500/50 text-xs text-center mt-3">Fun-able</p>
+              </div>
+            </div>
+
+            <!-- Voting Grid -->
+            <div class="opacity-0 transition-all duration-500" data-mlt-demo-target="phoneScreen">
+              <p class="text-white/50 text-xs text-center mb-4 uppercase tracking-wider">Elige a quien votar</p>
+
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Player 1 - Ana -->
+                <div class="group rounded-2xl p-4 flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 relative hover:scale-[1.02]"
+                     data-mlt-demo-target="player1"
+                     style="background: linear-gradient(145deg, rgba(236, 72, 153, 0.15) 0%, rgba(236, 72, 153, 0.05) 100%);
+                            border: 2px solid rgba(236, 72, 153, 0.25);">
+                  <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110"
+                       style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+                              box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);">
+                    😊
+                  </div>
+                  <span class="text-white text-sm font-semibold">Ana</span>
+                  <div class="absolute inset-0 rounded-2xl border-2 border-purple-400 opacity-0 transition-opacity duration-300"
+                       data-mlt-demo-target="select1"
+                       style="box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.1);"></div>
+                </div>
+
+                <!-- Player 2 - Luis -->
+                <div class="group rounded-2xl p-4 flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 relative hover:scale-[1.02]"
+                     data-mlt-demo-target="player2"
+                     style="background: linear-gradient(145deg, rgba(6, 182, 212, 0.15) 0%, rgba(6, 182, 212, 0.05) 100%);
+                            border: 2px solid rgba(6, 182, 212, 0.25);">
+                  <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110"
+                       style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                              box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);">
+                    😎
+                  </div>
+                  <span class="text-white text-sm font-semibold">Luis</span>
+                  <div class="absolute inset-0 rounded-2xl border-2 border-purple-400 opacity-0 transition-opacity duration-300"
+                       data-mlt-demo-target="select2"
+                       style="box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.1);"></div>
+                </div>
+
+                <!-- Player 3 - Sara -->
+                <div class="group rounded-2xl p-4 flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 relative hover:scale-[1.02]"
+                     data-mlt-demo-target="player3"
+                     style="background: linear-gradient(145deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%);
+                            border: 2px solid rgba(168, 85, 247, 0.25);">
+                  <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110"
+                       style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+                              box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);">
+                    🤗
+                  </div>
+                  <span class="text-white text-sm font-semibold">Sara</span>
+                  <div class="absolute inset-0 rounded-2xl border-2 border-purple-400 opacity-0 transition-opacity duration-300"
+                       data-mlt-demo-target="select3"
+                       style="box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.1);"></div>
+                </div>
+
+                <!-- Player 4 - Paco -->
+                <div class="group rounded-2xl p-4 flex flex-col items-center gap-2 cursor-pointer transition-all duration-300 relative hover:scale-[1.02]"
+                     data-mlt-demo-target="player4"
+                     style="background: linear-gradient(145deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+                            border: 2px solid rgba(245, 158, 11, 0.25);">
+                  <div class="w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110"
+                       style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                              box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);">
+                    😄
+                  </div>
+                  <span class="text-white text-sm font-semibold">Paco</span>
+                  <div class="absolute inset-0 rounded-2xl border-2 border-purple-400 opacity-0 transition-opacity duration-300"
+                       data-mlt-demo-target="select4"
+                       style="box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), inset 0 0 20px rgba(168, 85, 247, 0.1);"></div>
+                </div>
+              </div>
+
+              <!-- Vote Status -->
+              <div class="mt-5 text-center opacity-0 transition-opacity duration-300" data-mlt-demo-target="voteStatus">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                     style="background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.3);">
+                  <span class="text-purple-300 text-sm font-medium">✓ Votaste por Luis</span>
+                </div>
+              </div>
+
+              <!-- Waiting indicator -->
+              <div class="mt-4 flex justify-center items-center gap-2 opacity-0 transition-opacity duration-300" data-mlt-demo-target="waitingDots">
+                <div class="flex gap-1">
+                  <div class="w-2 h-2 rounded-full bg-purple-400 animate-bounce" style="animation-delay: 0s;"></div>
+                  <div class="w-2 h-2 rounded-full bg-purple-400 animate-bounce" style="animation-delay: 0.15s;"></div>
+                  <div class="w-2 h-2 rounded-full bg-purple-400 animate-bounce" style="animation-delay: 0.3s;"></div>
+                </div>
+                <span class="text-white/40 text-xs">Esperando a los demas...</span>
+              </div>
+            </div>
+
+            <!-- Results Area (hidden by default, replaces voting grid) -->
+            <div class="opacity-0 scale-95 transition-all duration-700 absolute inset-x-5 top-10" data-mlt-demo-target="resultsArea">
+              <div class="rounded-2xl p-5"
+                   style="background: linear-gradient(145deg, #1f1f24 0%, #15151a 100%);
+                          border: 2px solid rgba(168, 85, 247, 0.3);">
+                <p class="text-white/50 text-xs text-center mb-4 uppercase tracking-wider">Resultados</p>
+
+                <!-- Vote Bars -->
+                <div class="space-y-4">
+                  <!-- Luis - Winner -->
+                  <div class="flex items-center gap-3" data-mlt-demo-target="result1">
+                    <div class="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                         style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                                box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);">
+                      😎
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-sm mb-1.5">
+                        <span class="text-white font-semibold">Luis</span>
+                        <span class="text-purple-400 font-bold" data-mlt-demo-target="count1">3 votos</span>
+                      </div>
+                      <div class="h-3 rounded-full bg-white/20 overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-1000 ease-out"
+                             data-mlt-demo-target="bar1"
+                             style="width: 0%; background: linear-gradient(90deg, #a855f7, #ec4899); box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Ana -->
+                  <div class="flex items-center gap-3" data-mlt-demo-target="result2">
+                    <div class="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                         style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+                                box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);">
+                      😊
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-sm mb-1.5">
+                        <span class="text-white font-semibold">Ana</span>
+                        <span class="text-white/60" data-mlt-demo-target="count2">1 voto</span>
+                      </div>
+                      <div class="h-3 rounded-full bg-white/20 overflow-hidden">
+                        <div class="h-full rounded-full bg-pink-400/60 transition-all duration-1000 ease-out"
+                             data-mlt-demo-target="bar2"
+                             style="width: 0%;"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sara -->
+                  <div class="flex items-center gap-3" data-mlt-demo-target="result3">
+                    <div class="w-11 h-11 rounded-full flex items-center justify-center text-xl flex-shrink-0"
+                         style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+                                box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);">
+                      🤗
+                    </div>
+                    <div class="flex-1">
+                      <div class="flex justify-between text-sm mb-1.5">
+                        <span class="text-white font-semibold">Sara</span>
+                        <span class="text-white/60" data-mlt-demo-target="count3">0 votos</span>
+                      </div>
+                      <div class="h-3 rounded-full bg-white/20 overflow-hidden">
+                        <div class="h-full rounded-full bg-purple-400/60 transition-all duration-1000 ease-out"
+                             data-mlt-demo-target="bar3"
+                             style="width: 0%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Winner Badge inside results -->
+                <div class="mt-5 text-center scale-0 opacity-0 transition-all duration-500" data-mlt-demo-target="winnerBadge">
+                  <div class="inline-block px-6 py-3 rounded-2xl font-bold text-base"
+                       style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+                              box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+                              color: white;">
+                    🍺 Luis BEBE! 🍺
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- End Screen Content -->
+
+          <!-- Home Indicator -->
+          <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full bg-white/20"></div>
         </div>
+        <!-- End Phone Screen -->
       </div>
+      <!-- End Phone Frame -->
 
-      <!-- Players Voting Area (Middle) -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-[160px] md:top-[170px] w-full max-w-lg opacity-0 transition-opacity duration-500"
-           data-mlt-demo-target="votingArea">
-
-        <div class="flex justify-center items-center gap-6 md:gap-10 flex-wrap">
-          <!-- Player 1 -->
-          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
-               data-mlt-demo-target="player1">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
-                 style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);">
-              <span>Ana</span>
-              <!-- Vote indicator -->
-              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
-                   data-mlt-demo-target="vote1"
-                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
-                <span class="text-white text-xs">1</span>
-              </div>
-            </div>
-            <span class="text-white/70 text-sm font-medium">Ana</span>
-          </div>
-
-          <!-- Player 2 -->
-          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
-               data-mlt-demo-target="player2">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
-                 style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);">
-              <span>Luis</span>
-              <!-- Vote indicator -->
-              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
-                   data-mlt-demo-target="vote2"
-                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
-                <span class="text-white text-xs">3</span>
-              </div>
-            </div>
-            <span class="text-white/70 text-sm font-medium">Luis</span>
-          </div>
-
-          <!-- Player 3 -->
-          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
-               data-mlt-demo-target="player3">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
-                 style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">
-              <span>Sara</span>
-              <!-- Vote indicator -->
-              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
-                   data-mlt-demo-target="vote3"
-                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
-                <span class="text-white text-xs">1</span>
-              </div>
-            </div>
-            <span class="text-white/70 text-sm font-medium">Sara</span>
-          </div>
-
-          <!-- Player 4 -->
-          <div class="flex flex-col items-center gap-2 opacity-0 -translate-y-4 transition-all duration-500"
-               data-mlt-demo-target="player4">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl relative"
-                 style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">
-              <span>Paco</span>
-              <!-- Vote indicator -->
-              <div class="absolute -top-2 -right-2 w-6 h-6 md:w-7 md:h-7 rounded-full bg-purple-500 flex items-center justify-center opacity-0 scale-0 transition-all duration-300"
-                   data-mlt-demo-target="vote4"
-                   style="box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);">
-                <span class="text-white text-xs">0</span>
-              </div>
-            </div>
-            <span class="text-white/70 text-sm font-medium">Paco</span>
-          </div>
-        </div>
-
-
-        <!-- Winner Reveal -->
-        <div class="absolute left-1/2 -translate-x-1/2 top-28 scale-0 opacity-0 transition-all duration-500 ease-out z-20"
-             data-mlt-demo-target="winnerReveal">
-          <div class="flex flex-col items-center gap-3">
-            <div class="px-6 py-3 rounded-full font-bold text-lg"
-                 style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
-                        box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
-                        color: white;">
-              Luis gana! BEBE! 🍺
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tie Scenario Badge -->
-      <div class="absolute left-1/2 -translate-x-1/2 bottom-32 scale-0 opacity-0 transition-all duration-500 ease-out"
-           data-mlt-demo-target="tieBadge">
-        <div class="px-5 py-2 rounded-full font-bold text-sm"
-             style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-                    box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
-                    color: white;">
-          Empate? Todos los empatados beben!
-        </div>
-      </div>
-
-      <!-- Step Indicators -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3">
+      <!-- Step Indicators (outside phone) -->
+      <div class="flex justify-center items-center gap-3 mt-6">
         <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step1"></div>
         <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step2"></div>
         <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step3"></div>
         <div class="step-dot w-2.5 h-2.5 rounded-full bg-purple-500/30 transition-all duration-300" data-mlt-demo-target="step4"></div>
       </div>
-
     </div>
   </div>
 
