@@ -70,6 +70,7 @@ Rails.application.configure do
   # Allow ngrok and other tunnel hosts
   config.hosts << /.*\.ngrok-free\.dev/
   config.hosts << /.*\.ngrok\.io/
+  config.hosts << /.*\.ngrok-free\.app/
 
   # Allow Action Cable access from any origin (for development with tunnels)
   config.action_cable.disable_request_forgery_protection = true

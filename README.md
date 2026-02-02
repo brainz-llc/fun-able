@@ -1,24 +1,44 @@
-# README
+# fun-able
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Multiplayer party card game inspired by Cards Against Humanity. Built with Rails 8.
 
-Things you may want to cover:
+## features
 
-* Ruby version
+- **real-time multiplayer** - play with friends online
+- **custom decks** - create and share your own card decks
+- **regional content** - decks tailored for different regions/cultures
+- **meme cards** - cards with images and GIFs
+- **victory celebrations** - animated GIFs when you win
 
-* System dependencies
+## tech stack
 
-* Configuration
+- Rails 8.1
+- Hotwire (Turbo + Stimulus)
+- SQLite / PostgreSQL
+- Tailwind CSS
 
-* Database creation
+## how it works
 
-* Database initialization
+1. create or join a game
+2. each round, one player is the judge
+3. judge plays a black card (question/fill-in-the-blank)
+4. other players submit white cards (answers)
+5. judge picks the funniest answer
+6. winner gets a point, next player becomes judge
+7. first to target score wins
 
-* How to run the test suite
+## setup
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+bundle install
+bin/rails db:prepare
+bin/dev
+```
 
-* Deployment instructions
+## license
 
-* ...
+MIT
+
+---
+
+built with fun by [@afmp94](https://github.com/afmp94)

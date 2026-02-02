@@ -39,3 +39,6 @@
 
 # Node modules
 node_modules/
+
+# IDE files
+.idea/
