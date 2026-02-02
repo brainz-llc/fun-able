@@ -3,23 +3,27 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [
     "phaseIndicator",
-    "step1",
+    "dilemmaCard",
+    "choicesArea",
     "optionA",
     "optionB",
-    "vsBadge",
-    "step2",
-    "voter1",
-    "voter2",
-    "voter3",
-    "voter4",
-    "voteLabel",
-    "step3",
-    "resultBarA",
-    "resultBarB",
-    "percentA",
-    "percentB",
+    "selectA",
+    "selectB",
+    "voteStatus",
+    "waitingDots",
+    "resultsArea",
+    "resultA",
+    "resultB",
+    "barA",
+    "barB",
+    "countA",
+    "countB",
+    "voterAvatars",
     "drinkBadge",
-    "streakCounter"
+    "step1",
+    "step2",
+    "step3",
+    "step4"
   ]
 
   static values = {
@@ -28,9 +32,11 @@ export default class extends Controller {
 
   connect() {
     this.phases = [
-      'Aparece el dilema',
-      'Todos votan en secreto',
-      'Se revelan los resultados',
+      'Aparece el dilema...',
+      'Ves las opciones',
+      'Eliges tu respuesta...',
+      'Esperando a los demas...',
+      'Se revelan los resultados!',
       'La minoria bebe!'
     ]
     this.startDemo()
@@ -38,97 +44,208 @@ export default class extends Controller {
 
   disconnect() {
     if (this.timeout) clearTimeout(this.timeout)
-    if (this.interval) clearInterval(this.interval)
   }
 
   startDemo() {
     this.resetAll()
     this.phaseValue = 0
-    this.timeout = setTimeout(() => this.nextPhase(), 1000)
+    this.timeout = setTimeout(() => this.runPhase0(), 500)
+  }
+
+  setStep(step) {
+    const steps = [this.step1Target, this.step2Target, this.step3Target, this.step4Target].filter(Boolean)
+    steps.forEach((s, i) => {
+      s.classList.toggle('active', i === step)
+    })
+  }
+
+  updatePhaseIndicator() {
+    if (this.hasPhaseIndicatorTarget) {
+      this.phaseIndicatorTarget.textContent = this.phases[this.phaseValue]
+      this.phaseIndicatorTarget.classList.add('animate-pulse')
+      setTimeout(() => this.phaseIndicatorTarget.classList.remove('animate-pulse'), 500)
+    }
   }
 
   resetAll() {
-    if (this.hasStep1Target) this.step1Target.classList.add('opacity-0')
-    if (this.hasOptionATarget) this.optionATarget.classList.add('-translate-x-full', 'opacity-0')
-    if (this.hasOptionBTarget) this.optionBTarget.classList.add('translate-x-full', 'opacity-0')
-    if (this.hasVsBadgeTarget) this.vsBadgeTarget.classList.add('scale-0', 'opacity-0')
-    if (this.hasStep2Target) this.step2Target.classList.add('opacity-0')
-
-    const voters = [this.voter1Target, this.voter2Target, this.voter3Target, this.voter4Target].filter(Boolean)
-    voters.forEach(v => v.classList.add('opacity-0', '-translate-y-4'))
-
-    if (this.hasVoteLabelTarget) this.voteLabelTarget.classList.add('opacity-0')
-    if (this.hasStep3Target) this.step3Target.classList.add('opacity-0', 'scale-95')
-    if (this.hasResultBarATarget) this.resultBarATarget.style.width = '0%'
-    if (this.hasResultBarBTarget) this.resultBarBTarget.style.width = '0%'
-    if (this.hasPercentATarget) this.percentATarget.classList.add('opacity-0')
-    if (this.hasPercentBTarget) this.percentBTarget.classList.add('opacity-0')
-    if (this.hasDrinkBadgeTarget) this.drinkBadgeTarget.classList.add('scale-0', 'opacity-0')
-    if (this.hasStreakCounterTarget) this.streakCounterTarget.classList.add('opacity-0', 'scale-0')
-  }
-
-  runPhase(phase) {
-    if (this.hasPhaseIndicatorTarget) {
-      this.phaseIndicatorTarget.textContent = this.phases[phase]
+    // Dilemma card
+    if (this.hasDilemmaCardTarget) {
+      this.dilemmaCardTarget.classList.add('opacity-0', 'scale-90', '-translate-y-4')
     }
 
-    switch(phase) {
-      case 0: // Dilemma appears
-        if (this.hasStep1Target) this.step1Target.classList.remove('opacity-0')
-        setTimeout(() => {
-          if (this.hasOptionATarget) this.optionATarget.classList.remove('-translate-x-full', 'opacity-0')
-        }, 200)
-        setTimeout(() => {
-          if (this.hasVsBadgeTarget) this.vsBadgeTarget.classList.remove('scale-0', 'opacity-0')
-        }, 400)
-        setTimeout(() => {
-          if (this.hasOptionBTarget) this.optionBTarget.classList.remove('translate-x-full', 'opacity-0')
-        }, 600)
-        break
+    // Choices area
+    if (this.hasChoicesAreaTarget) {
+      this.choicesAreaTarget.classList.add('opacity-0')
+    }
 
-      case 1: // Voting
-        if (this.hasStep2Target) this.step2Target.classList.remove('opacity-0')
-        const voters = [this.voter1Target, this.voter2Target, this.voter3Target, this.voter4Target].filter(Boolean)
-        voters.forEach((v, i) => {
-          setTimeout(() => v.classList.remove('opacity-0', '-translate-y-4'), i * 200)
-        })
-        setTimeout(() => {
-          if (this.hasVoteLabelTarget) this.voteLabelTarget.classList.remove('opacity-0')
-        }, 1000)
-        break
+    // Option selections
+    if (this.hasSelectATarget) this.selectATarget.classList.add('opacity-0')
+    if (this.hasSelectBTarget) this.selectBTarget.classList.add('opacity-0')
 
-      case 2: // Results
-        if (this.hasStep3Target) this.step3Target.classList.remove('opacity-0', 'scale-95')
-        setTimeout(() => {
-          if (this.hasResultBarATarget) this.resultBarATarget.style.width = '75%'
-          if (this.hasResultBarBTarget) this.resultBarBTarget.style.width = '25%'
-        }, 300)
-        setTimeout(() => {
-          if (this.hasPercentATarget) this.percentATarget.classList.remove('opacity-0')
-          if (this.hasPercentBTarget) this.percentBTarget.classList.remove('opacity-0')
-        }, 800)
-        break
+    // Vote status and waiting
+    if (this.hasVoteStatusTarget) this.voteStatusTarget.classList.add('opacity-0')
+    if (this.hasWaitingDotsTarget) this.waitingDotsTarget.classList.add('opacity-0')
 
-      case 3: // Minority drinks
-        if (this.hasDrinkBadgeTarget) this.drinkBadgeTarget.classList.remove('scale-0', 'opacity-0')
-        setTimeout(() => {
-          if (this.hasStreakCounterTarget) this.streakCounterTarget.classList.remove('opacity-0', 'scale-0')
-        }, 500)
-        break
+    // Results area
+    if (this.hasResultsAreaTarget) {
+      this.resultsAreaTarget.classList.add('opacity-0', 'scale-95')
+    }
+
+    // Vote bars
+    if (this.hasBarATarget) this.barATarget.style.width = '0%'
+    if (this.hasBarBTarget) this.barBTarget.style.width = '0%'
+
+    // Drink badge
+    if (this.hasDrinkBadgeTarget) {
+      this.drinkBadgeTarget.classList.add('scale-0', 'opacity-0')
     }
   }
 
-  nextPhase() {
-    if (this.phaseValue >= this.phases.length) {
-      this.phaseValue = 0
-      this.resetAll()
-      this.timeout = setTimeout(() => this.runPhase(this.phaseValue), 500)
-    } else {
-      this.runPhase(this.phaseValue)
-    }
-    this.phaseValue++
+  // Phase 0: Dilemma card appears with dramatic entrance
+  runPhase0() {
+    this.updatePhaseIndicator()
+    this.setStep(0)
 
-    // Schedule next phase
-    this.timeout = setTimeout(() => this.nextPhase(), 2500)
+    this.timeout = setTimeout(() => {
+      if (this.hasDilemmaCardTarget) {
+        this.dilemmaCardTarget.classList.remove('opacity-0', 'scale-90', '-translate-y-4')
+      }
+
+      this.timeout = setTimeout(() => {
+        this.phaseValue = 1
+        this.runPhase1()
+      }, 1800)
+    }, 300)
+  }
+
+  // Phase 1: Choice buttons appear
+  runPhase1() {
+    this.updatePhaseIndicator()
+    this.setStep(1)
+
+    this.timeout = setTimeout(() => {
+      if (this.hasChoicesAreaTarget) {
+        this.choicesAreaTarget.classList.remove('opacity-0')
+      }
+
+      this.timeout = setTimeout(() => {
+        this.phaseValue = 2
+        this.runPhase2()
+      }, 1500)
+    }, 300)
+  }
+
+  // Phase 2: Selection animation - user picks Option B
+  runPhase2() {
+    this.updatePhaseIndicator()
+    this.setStep(1)
+
+    // Simulate hovering/selecting different options
+    const selectSequence = [
+      { target: 'selectA', delay: 400 },
+      { target: 'selectA', delay: 800, hide: true },
+      { target: 'selectB', delay: 1200 } // Final selection - Option B
+    ]
+
+    selectSequence.forEach(({ target, delay, hide }) => {
+      this.timeout = setTimeout(() => {
+        const el = this[`${target}Target`]
+        if (el) {
+          if (hide) {
+            el.classList.add('opacity-0')
+          } else {
+            el.classList.remove('opacity-0')
+          }
+        }
+      }, delay)
+    })
+
+    this.timeout = setTimeout(() => {
+      this.phaseValue = 3
+      this.runPhase3()
+    }, 1800)
+  }
+
+  // Phase 3: Vote submitted, waiting for others
+  runPhase3() {
+    this.updatePhaseIndicator()
+    this.setStep(2)
+
+    // Show vote confirmation
+    if (this.hasVoteStatusTarget) {
+      this.voteStatusTarget.classList.remove('opacity-0')
+    }
+
+    this.timeout = setTimeout(() => {
+      // Show waiting dots
+      if (this.hasWaitingDotsTarget) {
+        this.waitingDotsTarget.classList.remove('opacity-0')
+      }
+
+      this.timeout = setTimeout(() => {
+        this.phaseValue = 4
+        this.runPhase4()
+      }, 2000)
+    }, 500)
+  }
+
+  // Phase 4: Results reveal with animated bars
+  runPhase4() {
+    this.updatePhaseIndicator()
+    this.setStep(2)
+
+    // Hide choices area, show results
+    if (this.hasChoicesAreaTarget) {
+      this.choicesAreaTarget.classList.add('opacity-0')
+    }
+
+    // Also hide the dilemma card to make room
+    if (this.hasDilemmaCardTarget) {
+      this.dilemmaCardTarget.classList.add('opacity-0', 'scale-90')
+    }
+
+    this.timeout = setTimeout(() => {
+      if (this.hasResultsAreaTarget) {
+        this.resultsAreaTarget.classList.remove('opacity-0', 'scale-95')
+      }
+
+      // Animate vote bars with stagger
+      this.timeout = setTimeout(() => {
+        if (this.hasBarATarget) this.barATarget.style.width = '75%' // Option A - 3 votes (majority)
+        if (this.hasBarBTarget) this.barBTarget.style.width = '25%' // Option B - 1 vote (minority)
+
+        this.timeout = setTimeout(() => {
+          this.phaseValue = 5
+          this.runPhase5()
+        }, 1500)
+      }, 500)
+    }, 400)
+  }
+
+  // Phase 5: Minority drinks celebration
+  runPhase5() {
+    this.updatePhaseIndicator()
+    this.setStep(3)
+
+    // Highlight minority bar
+    if (this.hasBarBTarget) {
+      this.barBTarget.style.boxShadow = '0 0 20px rgba(6, 182, 212, 0.8)'
+    }
+
+    this.timeout = setTimeout(() => {
+      // Show drink badge
+      if (this.hasDrinkBadgeTarget) {
+        this.drinkBadgeTarget.classList.remove('scale-0', 'opacity-0')
+        this.drinkBadgeTarget.classList.add('minority-glow')
+      }
+
+      // Restart loop after celebration
+      this.timeout = setTimeout(() => {
+        if (this.hasDrinkBadgeTarget) {
+          this.drinkBadgeTarget.classList.remove('minority-glow')
+        }
+        this.startDemo()
+      }, 3500)
+    }, 600)
   }
 }

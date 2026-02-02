@@ -180,124 +180,180 @@
       Aparece una carta con una afirmacion
     </p>
 
-    <!-- Demo Container -->
-    <div class="relative max-w-2xl mx-auto h-[500px] md:h-[520px] overflow-hidden">
+    <!-- Demo Container - Phone Frame Style -->
+    <div class="relative max-w-sm mx-auto">
+      <!-- Phone Frame -->
+      <div class="relative rounded-[2.5rem] p-3 mx-auto"
+           style="background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+                  box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(236, 72, 153, 0.15), inset 0 1px 1px rgba(255,255,255,0.1);">
 
-      <!-- Statement Card (Center Top) -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-75"
-           data-nhie-demo-target="statementCard">
-        <div class="w-48 md:w-56 h-60 md:h-72 rounded-xl p-5 flex flex-col justify-between"
-             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
-                    border: 2px solid rgba(236, 72, 153, 0.6);
-                    box-shadow: 0 0 40px rgba(236, 72, 153, 0.4), 0 10px 30px rgba(0,0,0,0.5);">
-          <p class="text-white text-base md:text-lg leading-relaxed font-medium">
-            Yo nunca nunca he stalkeado a mi ex en redes sociales
-          </p>
-          <span class="text-xs text-pink-500/60">Yo Nunca Nunca</span>
-        </div>
-      </div>
+        <!-- Phone Notch -->
+        <div class="absolute top-3 left-1/2 -translate-x-1/2 w-24 h-6 rounded-full bg-black z-20"></div>
 
-      <!-- Players Area (Middle) -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-[200px] md:top-[220px] w-full max-w-lg opacity-0 transition-opacity duration-500"
-           data-nhie-demo-target="playersArea">
+        <!-- Phone Screen -->
+        <div class="relative rounded-[2rem] overflow-hidden min-h-[520px]"
+             style="background: linear-gradient(180deg, #0f0f12 0%, #1a1a20 100%);">
 
-        <div class="flex justify-center items-center gap-6 md:gap-10">
-          <!-- Player 1 -->
-          <div class="flex flex-col items-center gap-2 opacity-0 -translate-x-8 transition-all duration-500"
-               data-nhie-demo-target="player1">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl"
-                 style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(168, 85, 247, 0.4);">
-              <span data-nhie-demo-target="player1Icon">&#128100;</span>
+          <!-- Screen Content -->
+          <div class="p-5 pt-10">
+
+            <!-- Statement Card -->
+            <div class="transition-all duration-700 ease-out opacity-0 scale-90 -translate-y-4"
+                 data-nhie-demo-target="statementCard">
+              <div class="rounded-2xl p-5 mb-5"
+                   style="background: linear-gradient(145deg, #1f1f24 0%, #15151a 100%);
+                          border: 2px solid rgba(236, 72, 153, 0.5);
+                          box-shadow: 0 0 30px rgba(236, 72, 153, 0.25);">
+                <p class="text-white text-base leading-relaxed text-center font-medium">
+                  Yo nunca nunca he stalkeado a mi ex en redes sociales
+                </p>
+                <p class="text-pink-500/50 text-xs text-center mt-3">Yo Nunca Nunca</p>
+              </div>
             </div>
-            <span class="text-white/60 text-sm">Ana</span>
-            <div class="px-3 py-1 rounded-full text-xs font-bold opacity-0 transition-all duration-300"
-                 data-nhie-demo-target="player1Status"
-                 style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;">
-              Bebe
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 mb-6 opacity-0 translate-y-4 transition-all duration-500"
+                 data-nhie-demo-target="actionButtons">
+              <!-- I Have Button -->
+              <button class="flex-1 py-3.5 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2"
+                      data-nhie-demo-target="drinkBtn"
+                      style="background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); box-shadow: 0 0 25px rgba(244, 63, 94, 0.35);">
+                <span class="text-lg">🍷</span>
+                <span class="text-sm">Lo he hecho</span>
+              </button>
+
+              <!-- I Haven't Button -->
+              <button class="flex-1 py-3.5 rounded-xl font-bold text-white transition-all duration-300 flex items-center justify-center gap-2"
+                      data-nhie-demo-target="safeBtn"
+                      style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); box-shadow: 0 0 25px rgba(34, 197, 94, 0.35);">
+                <span class="text-lg">😇</span>
+                <span class="text-sm">Nunca</span>
+              </button>
             </div>
+
+            <!-- Players Grid -->
+            <div class="opacity-0 transition-all duration-500" data-nhie-demo-target="playersArea">
+              <p class="text-white/50 text-xs text-center mb-4 uppercase tracking-wider">Jugadores</p>
+
+              <div class="grid grid-cols-3 gap-3">
+                <!-- Player 1 - Ana -->
+                <div class="rounded-2xl p-3 flex flex-col items-center gap-2 transition-all duration-500 opacity-0 -translate-x-4"
+                     data-nhie-demo-target="player1"
+                     style="background: linear-gradient(145deg, rgba(236, 72, 153, 0.12) 0%, rgba(236, 72, 153, 0.04) 100%);
+                            border: 2px solid rgba(236, 72, 153, 0.2);">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all duration-300"
+                       data-nhie-demo-target="player1Avatar"
+                       style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+                              box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);">
+                    <span data-nhie-demo-target="player1Icon">😊</span>
+                  </div>
+                  <span class="text-white text-xs font-medium">Ana</span>
+                  <!-- Status Badge -->
+                  <div class="px-2 py-0.5 rounded-full text-[10px] font-bold opacity-0 scale-75 transition-all duration-300"
+                       data-nhie-demo-target="player1Status"
+                       style="background: rgba(244, 63, 94, 0.25); border: 1px solid rgba(244, 63, 94, 0.5); color: #fb7185;">
+                    🍷 Bebe
+                  </div>
+                </div>
+
+                <!-- Player 2 - Tu (You) -->
+                <div class="rounded-2xl p-3 flex flex-col items-center gap-2 transition-all duration-500 opacity-0 translate-y-4"
+                     data-nhie-demo-target="player2"
+                     style="background: linear-gradient(145deg, rgba(168, 85, 247, 0.12) 0%, rgba(168, 85, 247, 0.04) 100%);
+                            border: 2px solid rgba(168, 85, 247, 0.3);">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all duration-300"
+                       data-nhie-demo-target="player2Avatar"
+                       style="background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+                              box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);">
+                    <span data-nhie-demo-target="player2Icon">🤗</span>
+                  </div>
+                  <span class="text-pink-400 text-xs font-semibold">Tu</span>
+                  <!-- Status Badge -->
+                  <div class="px-2 py-0.5 rounded-full text-[10px] font-bold opacity-0 scale-75 transition-all duration-300"
+                       data-nhie-demo-target="player2Status"
+                       style="background: rgba(34, 197, 94, 0.25); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac;">
+                    😇 Salvo
+                  </div>
+                </div>
+
+                <!-- Player 3 - Carlos -->
+                <div class="rounded-2xl p-3 flex flex-col items-center gap-2 transition-all duration-500 opacity-0 translate-x-4"
+                     data-nhie-demo-target="player3"
+                     style="background: linear-gradient(145deg, rgba(6, 182, 212, 0.12) 0%, rgba(6, 182, 212, 0.04) 100%);
+                            border: 2px solid rgba(6, 182, 212, 0.2);">
+                  <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all duration-300"
+                       data-nhie-demo-target="player3Avatar"
+                       style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+                              box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);">
+                    <span data-nhie-demo-target="player3Icon">😎</span>
+                  </div>
+                  <span class="text-white text-xs font-medium">Carlos</span>
+                  <!-- Status Badge -->
+                  <div class="px-2 py-0.5 rounded-full text-[10px] font-bold opacity-0 scale-75 transition-all duration-300"
+                       data-nhie-demo-target="player3Status"
+                       style="background: rgba(244, 63, 94, 0.25); border: 1px solid rgba(244, 63, 94, 0.5); color: #fb7185;">
+                    🍷 Bebe
+                  </div>
+                </div>
+              </div>
+
+              <!-- Waiting indicator -->
+              <div class="mt-4 flex justify-center items-center gap-2 opacity-0 transition-opacity duration-300" data-nhie-demo-target="waitingDots">
+                <div class="flex gap-1">
+                  <div class="w-2 h-2 rounded-full bg-pink-400 animate-bounce" style="animation-delay: 0s;"></div>
+                  <div class="w-2 h-2 rounded-full bg-pink-400 animate-bounce" style="animation-delay: 0.15s;"></div>
+                  <div class="w-2 h-2 rounded-full bg-pink-400 animate-bounce" style="animation-delay: 0.3s;"></div>
+                </div>
+                <span class="text-white/40 text-xs">Esperando respuestas...</span>
+              </div>
+            </div>
+
+            <!-- Drink Counter / Results -->
+            <div class="mt-5 opacity-0 scale-95 transition-all duration-500" data-nhie-demo-target="drinkCounter">
+              <div class="rounded-2xl p-4 text-center"
+                   style="background: linear-gradient(145deg, rgba(244, 63, 94, 0.15) 0%, rgba(244, 63, 94, 0.05) 100%);
+                          border: 2px solid rgba(244, 63, 94, 0.3);
+                          box-shadow: 0 0 20px rgba(244, 63, 94, 0.2);">
+                <div class="flex items-center justify-center gap-3 mb-2">
+                  <span class="text-3xl drink-shake">🍷</span>
+                  <span class="text-3xl drink-shake" style="animation-delay: 0.1s;">🍺</span>
+                </div>
+                <p class="text-white font-bold text-lg">2 bebieron!</p>
+                <p class="text-white/50 text-xs mt-1">Ana y Carlos deben beber</p>
+              </div>
+            </div>
+
+            <!-- Next Card Preview -->
+            <div class="absolute inset-x-5 top-10 opacity-0 scale-90 translate-y-8 transition-all duration-700"
+                 data-nhie-demo-target="nextCard">
+              <div class="rounded-2xl p-5"
+                   style="background: linear-gradient(145deg, #1f1f24 0%, #15151a 100%);
+                          border: 2px solid rgba(168, 85, 247, 0.5);
+                          box-shadow: 0 0 30px rgba(168, 85, 247, 0.25);">
+                <p class="text-white text-base leading-relaxed text-center font-medium">
+                  Yo nunca nunca he fingido estar enfermo para faltar al trabajo
+                </p>
+                <p class="text-purple-500/50 text-xs text-center mt-3">Yo Nunca Nunca</p>
+              </div>
+            </div>
+
           </div>
+          <!-- End Screen Content -->
 
-          <!-- Player 2 (You) -->
-          <div class="flex flex-col items-center gap-2 opacity-0 translate-y-8 transition-all duration-500"
-               data-nhie-demo-target="player2">
-            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center text-3xl md:text-4xl"
-                 style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(236, 72, 153, 0.5); box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);">
-              <span data-nhie-demo-target="player2Icon">&#128100;</span>
-            </div>
-            <span class="text-pink-400 text-sm font-medium">Tu</span>
-            <div class="px-3 py-1 rounded-full text-xs font-bold opacity-0 transition-all duration-300"
-                 data-nhie-demo-target="player2Status"
-                 style="background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #86efac;">
-              Salvo
-            </div>
-          </div>
-
-          <!-- Player 3 -->
-          <div class="flex flex-col items-center gap-2 opacity-0 translate-x-8 transition-all duration-500"
-               data-nhie-demo-target="player3">
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl"
-                 style="background: linear-gradient(145deg, #1f1f1f 0%, #151515 100%); border: 2px solid rgba(168, 85, 247, 0.4);">
-              <span data-nhie-demo-target="player3Icon">&#128100;</span>
-            </div>
-            <span class="text-white/60 text-sm">Carlos</span>
-            <div class="px-3 py-1 rounded-full text-xs font-bold opacity-0 transition-all duration-300"
-                 data-nhie-demo-target="player3Status"
-                 style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;">
-              Bebe
-            </div>
-          </div>
+          <!-- Home Indicator -->
+          <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full bg-white/20"></div>
         </div>
-
-        <!-- Drink Counter -->
-        <div class="mt-8 flex justify-center gap-6 opacity-0 transition-all duration-500"
-             data-nhie-demo-target="drinkCounter">
-          <div class="text-center">
-            <span class="text-3xl">&#127866;</span>
-            <p class="text-white/40 text-xs mt-1">2 bebieron</p>
-          </div>
-        </div>
+        <!-- End Phone Screen -->
       </div>
+      <!-- End Phone Frame -->
 
-      <!-- Action Buttons (Bottom) -->
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-full opacity-0 transition-all duration-700 ease-out"
-           data-nhie-demo-target="actionButtons">
-        <div class="flex gap-4">
-          <!-- I've Done It Button -->
-          <button class="px-6 py-3 rounded-xl font-bold text-white transition-all duration-300"
-                  data-nhie-demo-target="drinkBtn"
-                  style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);">
-            <span class="flex items-center gap-2">
-              <span class="text-xl">&#127867;</span>
-              Lo he hecho
-            </span>
-          </button>
-
-          <!-- Never Button -->
-          <button class="px-6 py-3 rounded-xl font-bold text-white transition-all duration-300"
-                  data-nhie-demo-target="safeBtn"
-                  style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);">
-            <span class="flex items-center gap-2">
-              <span class="text-xl">&#128519;</span>
-              Nunca
-            </span>
-          </button>
-        </div>
+      <!-- Step Indicators (outside phone) -->
+      <div class="flex justify-center items-center gap-3 mt-6">
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-pink-500/30 transition-all duration-300" data-nhie-demo-target="step1"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-pink-500/30 transition-all duration-300" data-nhie-demo-target="step2"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-pink-500/30 transition-all duration-300" data-nhie-demo-target="step3"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-pink-500/30 transition-all duration-300" data-nhie-demo-target="step4"></div>
       </div>
-
-      <!-- Next Card Animation -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-4 transition-all duration-700 ease-out opacity-0 scale-50 translate-y-20"
-           data-nhie-demo-target="nextCard">
-        <div class="w-48 md:w-56 h-60 md:h-72 rounded-xl p-5 flex flex-col justify-between"
-             style="background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
-                    border: 2px solid rgba(168, 85, 247, 0.6);
-                    box-shadow: 0 0 40px rgba(168, 85, 247, 0.4), 0 10px 30px rgba(0,0,0,0.5);">
-          <p class="text-white text-base md:text-lg leading-relaxed font-medium">
-            Yo nunca nunca he fingido estar enfermo para faltar al trabajo
-          </p>
-          <span class="text-xs text-purple-500/60">Yo Nunca Nunca</span>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -347,14 +403,63 @@
       animation: float 3s ease-in-out infinite;
     }
 
-    /* Drink animation */
+    /* Drink shake animation */
     @keyframes drink-shake {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(-15deg); }
-      75% { transform: rotate(15deg); }
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      15% { transform: rotate(-20deg) scale(1.1); }
+      30% { transform: rotate(20deg) scale(1.1); }
+      45% { transform: rotate(-15deg) scale(1.05); }
+      60% { transform: rotate(15deg) scale(1.05); }
+      75% { transform: rotate(-10deg) scale(1); }
+      90% { transform: rotate(10deg) scale(1); }
     }
-    .drink-animation {
-      animation: drink-shake 0.5s ease-in-out;
+    .drink-shake {
+      animation: drink-shake 0.8s ease-in-out infinite;
+    }
+
+    /* Active step indicator */
+    .step-dot.active {
+      background: #ec4899;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.6);
+      transform: scale(1.3);
+    }
+
+    /* Button press animation */
+    @keyframes button-press {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.95); box-shadow: 0 0 40px currentColor; }
+      100% { transform: scale(1); }
+    }
+    .button-pressed {
+      animation: button-press 0.3s ease-out;
+    }
+
+    /* Player reveal glow */
+    @keyframes reveal-glow {
+      0%, 100% { box-shadow: 0 4px 15px currentColor; }
+      50% { box-shadow: 0 4px 30px currentColor, 0 0 40px currentColor; }
+    }
+    .reveal-glow {
+      animation: reveal-glow 1s ease-in-out infinite;
+    }
+
+    /* Status badge pop-in */
+    @keyframes badge-pop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .badge-pop {
+      animation: badge-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Drink counter pulse */
+    @keyframes counter-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(244, 63, 94, 0.2); }
+      50% { box-shadow: 0 0 40px rgba(244, 63, 94, 0.4), 0 0 60px rgba(244, 63, 94, 0.2); }
+    }
+    .counter-pulse {
+      animation: counter-pulse 1.5s ease-in-out infinite;
     }
   </style>
 </div>

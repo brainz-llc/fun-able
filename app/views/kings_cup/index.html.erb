@@ -195,138 +195,206 @@
     </svg>
   </div>
 
-  <!-- How to Play - Animated Demo Section -->
+  <!-- How to Play - Animated Demo Section with Phone Mockup -->
   <div class="relative z-10 py-12 pb-20 md:py-20 px-4" data-controller="kings-cup-demo">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 text-white">Como Jugar</h2>
 
     <!-- Phase Indicator -->
     <p class="text-center text-lg md:text-xl font-medium mb-8 h-8 text-amber-400"
        data-kings-cup-demo-target="phaseIndicator">
-      Roba una carta del mazo
+      Roba una carta del mazo...
     </p>
 
-    <!-- Demo Container -->
-    <div class="relative max-w-2xl mx-auto h-[420px] md:h-[480px] overflow-hidden">
+    <!-- Demo Container - Premium Phone Frame -->
+    <div class="relative max-w-sm mx-auto">
+      <!-- Phone Frame - Dark metallic with gold accents -->
+      <div class="relative rounded-[2.5rem] p-3 mx-auto phone-frame"
+           style="background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 50%, #0f0f0f 100%);
+                  box-shadow:
+                    0 25px 80px rgba(0,0,0,0.6),
+                    0 0 60px rgba(251, 191, 36, 0.15),
+                    inset 0 1px 1px rgba(255,255,255,0.1),
+                    inset 0 -1px 2px rgba(0,0,0,0.3);">
 
-      <!-- The Cup (Center) - Glowing and filling -->
-      <div class="absolute left-1/2 top-4 -translate-x-1/2 transition-all duration-700 ease-out"
-           data-kings-cup-demo-target="cup">
-        <div class="relative">
-          <!-- Cup glow effect -->
-          <div class="absolute inset-0 rounded-b-3xl blur-xl opacity-50"
-               style="background: linear-gradient(to top, rgba(251, 191, 36, 0.6), transparent);
-                      width: 80px; height: 100px; margin: auto;"></div>
-          <!-- Cup SVG -->
-          <div class="relative w-20 h-24 md:w-24 md:h-28 flex items-center justify-center">
-            <svg viewBox="0 0 100 120" class="w-full h-full" style="filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));">
-              <!-- Cup body -->
-              <path d="M20 30 L25 100 C25 110 75 110 75 100 L80 30 Z"
-                    fill="url(#cupGradient)" stroke="#fbbf24" stroke-width="2"/>
-              <!-- Cup rim -->
-              <ellipse cx="50" cy="30" rx="32" ry="8" fill="#1a1a1a" stroke="#fbbf24" stroke-width="2"/>
-              <!-- Liquid fill (animated) -->
-              <clipPath id="cupClip">
-                <path d="M22 35 L26 98 C26 106 74 106 74 98 L78 35 Z"/>
-              </clipPath>
-              <rect x="20" y="40" width="60" height="70" fill="url(#liquidGradient)" clip-path="url(#cupClip)"
-                    data-kings-cup-demo-target="liquid" style="transform: translateY(50px); transition: transform 1s ease-out;"/>
-              <!-- Crown on top -->
-              <text x="50" y="20" text-anchor="middle" font-size="20">&#128081;</text>
-              <defs>
-                <linearGradient id="cupGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color:#2a2a2a"/>
-                  <stop offset="100%" style="stop-color:#1a1a1a"/>
-                </linearGradient>
-                <linearGradient id="liquidGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color:#fbbf24"/>
-                  <stop offset="100%" style="stop-color:#b45309"/>
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
-          <!-- King count -->
-          <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-1" data-kings-cup-demo-target="kingCount">
-            <span class="w-4 h-4 rounded-full bg-gray-700 border border-gray-600 transition-all duration-500" data-king="1"></span>
-            <span class="w-4 h-4 rounded-full bg-gray-700 border border-gray-600 transition-all duration-500" data-king="2"></span>
-            <span class="w-4 h-4 rounded-full bg-gray-700 border border-gray-600 transition-all duration-500" data-king="3"></span>
-            <span class="w-4 h-4 rounded-full bg-gray-700 border border-gray-600 transition-all duration-500" data-king="4"></span>
-          </div>
+        <!-- Phone Notch with camera and speaker -->
+        <div class="absolute top-3 left-1/2 -translate-x-1/2 w-28 h-7 rounded-full bg-black z-20 flex items-center justify-center gap-2"
+             style="box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);">
+          <div class="w-2 h-2 rounded-full bg-gray-800" style="box-shadow: inset 0 0 2px rgba(255,255,255,0.1);"></div>
+          <div class="w-12 h-1 rounded-full bg-gray-800"></div>
         </div>
-      </div>
 
-      <!-- Card Deck -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-[140px] md:top-[160px] transition-all duration-500"
-           data-kings-cup-demo-target="deck">
-        <div class="relative">
-          <!-- Stacked cards effect -->
-          <div class="absolute w-24 h-32 md:w-28 md:h-36 rounded-xl"
-               style="background: linear-gradient(145deg, #2a2a2a, #1a1a1a); border: 1px solid rgba(255,255,255,0.1); top: 4px; left: 4px;"></div>
-          <div class="absolute w-24 h-32 md:w-28 md:h-36 rounded-xl"
-               style="background: linear-gradient(145deg, #2a2a2a, #1a1a1a); border: 1px solid rgba(255,255,255,0.1); top: 2px; left: 2px;"></div>
-          <!-- Top card (face down) -->
-          <div class="relative w-24 h-32 md:w-28 md:h-36 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105"
-               style="background: linear-gradient(145deg, #1a1a1a, #0f0f0f); border: 2px solid rgba(251, 191, 36, 0.3); box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);"
-               data-kings-cup-demo-target="topCard">
-            <div class="text-center">
-              <span class="text-3xl md:text-4xl">&#127183;</span>
-              <p class="text-white/40 text-xs mt-1">Toca para robar</p>
+        <!-- Side Buttons (decorative) -->
+        <div class="absolute -left-1 top-24 w-1 h-8 rounded-l-full bg-gradient-to-b from-gray-600 to-gray-700"></div>
+        <div class="absolute -left-1 top-36 w-1 h-12 rounded-l-full bg-gradient-to-b from-gray-600 to-gray-700"></div>
+        <div class="absolute -right-1 top-28 w-1 h-16 rounded-r-full bg-gradient-to-b from-gray-600 to-gray-700"></div>
+
+        <!-- Phone Screen -->
+        <div class="relative rounded-[2rem] overflow-hidden min-h-[520px]"
+             style="background: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);">
+
+          <!-- Screen Content -->
+          <div class="p-5 pt-12 h-full">
+
+            <!-- The Cup (Top Center) - Glowing and filling -->
+            <div class="flex justify-center mb-4" data-kings-cup-demo-target="cup">
+              <div class="relative">
+                <!-- Cup glow effect -->
+                <div class="absolute inset-0 blur-xl opacity-60"
+                     style="background: radial-gradient(ellipse at center bottom, rgba(251, 191, 36, 0.4), transparent 70%);
+                            width: 100px; height: 80px; top: 20px; left: 50%; transform: translateX(-50%);"></div>
+                <!-- Cup SVG -->
+                <div class="relative w-16 h-20 flex items-center justify-center">
+                  <svg viewBox="0 0 100 120" class="w-full h-full" style="filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));">
+                    <!-- Cup body -->
+                    <path d="M20 30 L25 100 C25 110 75 110 75 100 L80 30 Z"
+                          fill="url(#cupGradientPhone)" stroke="#fbbf24" stroke-width="2.5"/>
+                    <!-- Cup rim -->
+                    <ellipse cx="50" cy="30" rx="32" ry="8" fill="#1a1a1a" stroke="#fbbf24" stroke-width="2"/>
+                    <!-- Liquid fill (animated) -->
+                    <clipPath id="cupClipPhone">
+                      <path d="M22 35 L26 98 C26 106 74 106 74 98 L78 35 Z"/>
+                    </clipPath>
+                    <rect x="20" y="40" width="60" height="70" fill="url(#liquidGradientPhone)" clip-path="url(#cupClipPhone)"
+                          data-kings-cup-demo-target="liquid" style="transform: translateY(70px); transition: transform 1s ease-out;"/>
+                    <!-- Crown on top -->
+                    <text x="50" y="18" text-anchor="middle" font-size="16">&#128081;</text>
+                    <defs>
+                      <linearGradient id="cupGradientPhone" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#2a2a2a"/>
+                        <stop offset="100%" style="stop-color:#1a1a1a"/>
+                      </linearGradient>
+                      <linearGradient id="liquidGradientPhone" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fbbf24"/>
+                        <stop offset="100%" style="stop-color:#b45309"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <!-- King count dots -->
+                <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5" data-kings-cup-demo-target="kingCount">
+                  <span class="w-3 h-3 rounded-full bg-gray-700/80 border border-gray-600 transition-all duration-500" data-king="1"></span>
+                  <span class="w-3 h-3 rounded-full bg-gray-700/80 border border-gray-600 transition-all duration-500" data-king="2"></span>
+                  <span class="w-3 h-3 rounded-full bg-gray-700/80 border border-gray-600 transition-all duration-500" data-king="3"></span>
+                  <span class="w-3 h-3 rounded-full bg-gray-700/80 border border-gray-600 transition-all duration-500" data-king="4"></span>
+                </div>
+              </div>
             </div>
+
+            <!-- Card Area -->
+            <div class="relative h-[200px] flex items-center justify-center mt-6">
+              <!-- Card Deck -->
+              <div class="absolute transition-all duration-500 ease-out"
+                   data-kings-cup-demo-target="deck">
+                <div class="relative">
+                  <!-- Stacked cards effect -->
+                  <div class="absolute w-[120px] h-[168px] rounded-2xl"
+                       style="background: linear-gradient(145deg, #252530, #1a1a24); border: 1px solid rgba(255,255,255,0.08); top: 6px; left: 6px;"></div>
+                  <div class="absolute w-[120px] h-[168px] rounded-2xl"
+                       style="background: linear-gradient(145deg, #252530, #1a1a24); border: 1px solid rgba(255,255,255,0.08); top: 3px; left: 3px;"></div>
+                  <!-- Top card (face down) -->
+                  <div class="relative w-[120px] h-[168px] rounded-2xl flex items-center justify-center cursor-pointer transition-all duration-300"
+                       style="background: linear-gradient(145deg, #1a1a24, #0f0f18);
+                              border: 2px solid rgba(251, 191, 36, 0.4);
+                              box-shadow: 0 0 30px rgba(251, 191, 36, 0.25), 0 10px 40px rgba(0,0,0,0.4);"
+                       data-kings-cup-demo-target="topCard">
+                    <div class="text-center">
+                      <div class="text-5xl mb-2">&#127183;</div>
+                      <p class="text-amber-400/60 text-xs font-medium tracking-wide">Toca para robar</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Drawn Card (appears on draw) with 3D flip -->
+              <div class="absolute opacity-0 scale-0 transition-all duration-500"
+                   data-kings-cup-demo-target="drawnCard"
+                   style="perspective: 1000px;">
+                <div class="card-inner w-[130px] h-[182px] rounded-2xl p-4 flex flex-col items-center justify-between transition-all duration-500"
+                     style="background: linear-gradient(145deg, #1a1a24, #0a0a14);
+                            border: 2px solid rgba(251, 191, 36, 0.5);
+                            box-shadow: 0 0 40px rgba(251, 191, 36, 0.4), 0 15px 50px rgba(0,0,0,0.5);">
+                  <span class="font-bold text-3xl self-start" data-kings-cup-demo-target="cardValue" style="color: #fbbf24;">K</span>
+                  <span class="text-5xl" data-kings-cup-demo-target="cardSuit">&#9824;</span>
+                  <span class="text-xs font-bold uppercase tracking-widest" data-kings-cup-demo-target="cardRule" style="color: #fbbf24;">Copa</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rule Display -->
+            <div class="mt-4 px-2 opacity-0 translate-y-4 transition-all duration-500"
+                 data-kings-cup-demo-target="ruleDisplay">
+              <div class="rounded-2xl p-4 text-center"
+                   style="background: linear-gradient(145deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05));
+                          border: 1px solid rgba(251, 191, 36, 0.3);
+                          box-shadow: 0 0 30px rgba(251, 191, 36, 0.15), inset 0 1px 0 rgba(255,255,255,0.05);">
+                <h3 class="text-amber-400 font-bold text-xl mb-2" data-kings-cup-demo-target="ruleName">Cascada</h3>
+                <p class="text-white/70 text-sm leading-relaxed" data-kings-cup-demo-target="ruleDescription">Todos beben en cascada empezando por ti</p>
+              </div>
+            </div>
+
+            <!-- Next Player Indicator -->
+            <div class="mt-4 text-center opacity-0 transition-all duration-500" data-kings-cup-demo-target="nextPlayer">
+              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                   style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3);">
+                <div class="flex -space-x-2">
+                  <div class="w-6 h-6 rounded-full bg-gradient-to-br from-pink-400 to-pink-600 border-2 border-black/50 flex items-center justify-center text-xs">A</div>
+                  <div class="w-6 h-6 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 border-2 border-black/50 flex items-center justify-center text-xs">L</div>
+                </div>
+                <span class="text-amber-300 text-sm font-medium">Turno de Luis</span>
+                <svg class="w-4 h-4 text-amber-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </div>
+            </div>
+
           </div>
+          <!-- End Screen Content -->
+
+          <!-- Home Indicator -->
+          <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 rounded-full bg-white/20"></div>
         </div>
+        <!-- End Phone Screen -->
+      </div>
+      <!-- End Phone Frame -->
+
+      <!-- Step Indicators (outside phone) -->
+      <div class="flex justify-center items-center gap-3 mt-8">
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-amber-500/30 transition-all duration-300" data-kings-cup-demo-target="step1"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-amber-500/30 transition-all duration-300" data-kings-cup-demo-target="step2"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-amber-500/30 transition-all duration-300" data-kings-cup-demo-target="step3"></div>
+        <div class="step-dot w-2.5 h-2.5 rounded-full bg-amber-500/30 transition-all duration-300" data-kings-cup-demo-target="step4"></div>
       </div>
 
-      <!-- Drawn Card (appears on draw) -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-[140px] md:top-[160px] opacity-0 scale-0 transition-all duration-500"
-           data-kings-cup-demo-target="drawnCard">
-        <div class="w-28 h-36 md:w-32 md:h-44 rounded-xl p-3 flex flex-col items-center justify-between"
-             style="background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border: 2px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);">
-          <span class="text-amber-400 font-bold text-2xl self-start" data-kings-cup-demo-target="cardValue">K</span>
-          <span class="text-4xl" data-kings-cup-demo-target="cardSuit">&#9824;</span>
-          <span class="text-xs font-bold text-amber-400/80 uppercase tracking-wider" data-kings-cup-demo-target="cardRule">Copa</span>
+      <!-- Step Labels -->
+      <div class="flex justify-center gap-6 mt-6 text-center">
+        <div class="flex flex-col items-center">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1"
+               style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border: 1px solid rgba(251, 191, 36, 0.4);">
+            <span class="text-amber-400 font-bold text-xs">1</span>
+          </div>
+          <p class="text-white/50 text-[10px] md:text-xs">Roba</p>
         </div>
-      </div>
-
-      <!-- Rule Display -->
-      <div class="absolute left-1/2 -translate-x-1/2 bottom-4 w-full max-w-sm px-4 opacity-0 translate-y-4 transition-all duration-500"
-           data-kings-cup-demo-target="ruleDisplay">
-        <div class="rounded-xl p-4 text-center"
-             style="background: linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(10, 10, 10, 0.95)); border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);">
-          <h3 class="text-amber-400 font-bold text-lg mb-1" data-kings-cup-demo-target="ruleName">Cascada</h3>
-          <p class="text-white/70 text-sm" data-kings-cup-demo-target="ruleDescription">Todos beben en cascada empezando por quien saco la carta</p>
+        <div class="flex flex-col items-center">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1"
+               style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1)); border: 1px solid rgba(236, 72, 153, 0.4);">
+            <span class="text-pink-400 font-bold text-xs">2</span>
+          </div>
+          <p class="text-white/50 text-[10px] md:text-xs">Voltea</p>
         </div>
-      </div>
-
-    </div>
-
-    <!-- Step indicators -->
-    <div class="flex justify-center gap-8 mt-8 text-center">
-      <div class="flex flex-col items-center">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2"
-             style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1)); border: 2px solid rgba(251, 191, 36, 0.4);">
-          <span class="text-amber-400 font-bold">1</span>
+        <div class="flex flex-col items-center">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1"
+               style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(168, 85, 247, 0.4);">
+            <span class="text-purple-400 font-bold text-xs">3</span>
+          </div>
+          <p class="text-white/50 text-[10px] md:text-xs">Regla</p>
         </div>
-        <p class="text-white/60 text-xs md:text-sm">Roba una carta</p>
-      </div>
-      <div class="flex flex-col items-center">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2"
-             style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1)); border: 2px solid rgba(236, 72, 153, 0.4);">
-          <span class="text-pink-400 font-bold">2</span>
+        <div class="flex flex-col items-center">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1"
+               style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1)); border: 1px solid rgba(34, 197, 94, 0.4);">
+            <span class="text-green-400 font-bold text-xs">4</span>
+          </div>
+          <p class="text-white/50 text-[10px] md:text-xs">Siguiente</p>
         </div>
-        <p class="text-white/60 text-xs md:text-sm">Cumple la regla</p>
-      </div>
-      <div class="flex flex-col items-center">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2"
-             style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.1)); border: 2px solid rgba(168, 85, 247, 0.4);">
-          <span class="text-purple-400 font-bold">3</span>
-        </div>
-        <p class="text-white/60 text-xs md:text-sm">Rey = Copa</p>
-      </div>
-      <div class="flex flex-col items-center">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-2"
-             style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1)); border: 2px solid rgba(239, 68, 68, 0.4);">
-          <span class="text-red-400 font-bold">4</span>
-        </div>
-        <p class="text-white/60 text-xs md:text-sm">4to Rey bebe todo!</p>
       </div>
     </div>
   </div>
@@ -594,6 +662,83 @@
 
     .animate-cup-glow {
       animation: cup-glow 2s ease-in-out infinite;
+    }
+
+    /* Phone frame styling */
+    .phone-frame {
+      position: relative;
+    }
+
+    .phone-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 2.5rem;
+      padding: 1px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, rgba(0,0,0,0.2) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Card flip animation */
+    .card-flip {
+      animation: cardFlipIn 0.6s ease-out forwards;
+    }
+
+    @keyframes cardFlipIn {
+      0% {
+        transform: perspective(1000px) rotateY(-90deg) scale(0.8);
+        opacity: 0;
+      }
+      50% {
+        transform: perspective(1000px) rotateY(-20deg) scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: perspective(1000px) rotateY(0deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Deck pulse animation */
+    .deck-pulse {
+      animation: deckPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes deckPulse {
+      0%, 100% {
+        box-shadow: 0 0 30px rgba(251, 191, 36, 0.25), 0 10px 40px rgba(0,0,0,0.4);
+      }
+      50% {
+        box-shadow: 0 0 50px rgba(251, 191, 36, 0.5), 0 10px 40px rgba(0,0,0,0.4);
+      }
+    }
+
+    /* Active step indicator */
+    .step-dot.active {
+      background: #fbbf24;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.7);
+      transform: scale(1.4);
+    }
+
+    /* King filled indicator */
+    .king-filled {
+      animation: kingFill 0.5s ease-out forwards;
+    }
+
+    @keyframes kingFill {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.3);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
   </style>
 </div>
