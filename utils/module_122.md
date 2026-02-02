@@ -1,4 +1,4 @@
-# Add rate limiting middleware
+# Add data import pipeline
 
 ## Overview
 
@@ -6,13 +6,13 @@ This document outlines the implementation details for this feature.
 
 ## Requirements
 
-- Requirement 47: Core functionality
-- Requirement 85: Edge case handling
-- Requirement 105: Performance targets
+- Requirement 35: Core functionality
+- Requirement 74: Edge case handling
+- Requirement 144: Performance targets
 
 ## Implementation Notes
 
-Updated on 2026-02-23. Version 6.26.
+Updated on 2026-02-23. Version 2.64.
 
 ## Status
 
