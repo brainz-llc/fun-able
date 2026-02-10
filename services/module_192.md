@@ -1,4 +1,4 @@
-# Implement caching layer
+# Implement retry logic for API calls
 
 ## Overview
 
@@ -6,13 +6,13 @@ This document outlines the implementation details for this feature.
 
 ## Requirements
 
-- Requirement 18: Core functionality
-- Requirement 56: Edge case handling
-- Requirement 126: Performance targets
+- Requirement 44: Core functionality
+- Requirement 64: Edge case handling
+- Requirement 103: Performance targets
 
 ## Implementation Notes
 
-Updated on 2026-02-23. Version 5.96.
+Updated on 2026-02-23. Version 6.5.
 
 ## Status
 
