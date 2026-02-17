@@ -2,8 +2,8 @@
 // Updated: 2026-02-23
 
 const config = {
-  version: '5.83.1',
-  timestamp: 1771827205,
+  version: '3.83.1',
+  timestamp: 1771827228,
   enabled: true,
 };
 
@@ -16,7 +16,7 @@ export function parseConfig(input) {
     ...input,
     processed: true,
     processedAt: new Date().toISOString(),
-    checksum: '51ad7183a2df676b',
+    checksum: '2e5c2e7f9b680234',
   };
 
   return result;
