@@ -147,6 +147,7 @@ class Game < ApplicationRecord
       update!(status: :playing)
       start_new_round!
     end
+    BrainzLab::Pulse.gauge("games.active", Game.where(status: [:playing, :paused]).count)
     true
   end
 
@@ -168,6 +169,8 @@ class Game < ApplicationRecord
 
   def finish!
     update!(status: :finished)
+    BrainzLab::Pulse.counter("games.finished")
+    BrainzLab::Pulse.gauge("games.active", Game.where(status: [:playing, :paused]).count)
   end
 
   def winner

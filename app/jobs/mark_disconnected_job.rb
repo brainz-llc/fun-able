@@ -33,7 +33,5 @@ class MarkDisconnectedJob < ApplicationJob
 
     # Schedule the removal check (only runs once since we return early if already disconnected)
     HandleDisconnectionJob.set(wait: 30.seconds).perform_later(player.id)
-  rescue => e
-    Rails.logger.error("MarkDisconnectedJob failed: #{e.message}")
   end
 end

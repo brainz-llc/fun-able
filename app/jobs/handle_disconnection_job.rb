@@ -22,7 +22,5 @@ class HandleDisconnectionJob < ApplicationJob
 
     service = GameService.new(player.game)
     service.player_disconnected!(player)
-  rescue => e
-    Rails.logger.error("HandleDisconnectionJob failed for player #{game_player_id}: #{e.message}")
   end
 end

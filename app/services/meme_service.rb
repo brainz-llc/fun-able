@@ -53,6 +53,8 @@ class MemeService
       parse_giphy_response(response)
     rescue Faraday::Error => e
       Rails.logger.error("Giphy search error: #{e.message}")
+      BrainzLab::Reflex.capture(e, context: { provider: :giphy, action: :search })
+      BrainzLab::Signal.trigger("external_api.failure", severity: :medium, details: { provider: "giphy", action: "search", error: e.message })
       raise Error, "Failed to search GIFs"
     end
 
@@ -68,6 +70,8 @@ class MemeService
       parse_giphy_response(response)
     rescue Faraday::Error => e
       Rails.logger.error("Giphy trending error: #{e.message}")
+      BrainzLab::Reflex.capture(e, context: { provider: :giphy, action: :trending })
+      BrainzLab::Signal.trigger("external_api.failure", severity: :medium, details: { provider: "giphy", action: "trending", error: e.message })
       raise Error, "Failed to get trending GIFs"
     end
 
@@ -86,6 +90,8 @@ class MemeService
       parse_tenor_response(response)
     rescue Faraday::Error => e
       Rails.logger.error("Tenor search error: #{e.message}")
+      BrainzLab::Reflex.capture(e, context: { provider: :tenor, action: :search })
+      BrainzLab::Signal.trigger("external_api.failure", severity: :medium, details: { provider: "tenor", action: "search", error: e.message })
       raise Error, "Failed to search GIFs"
     end
 
@@ -101,6 +107,8 @@ class MemeService
       parse_tenor_response(response)
     rescue Faraday::Error => e
       Rails.logger.error("Tenor trending error: #{e.message}")
+      BrainzLab::Reflex.capture(e, context: { provider: :tenor, action: :trending })
+      BrainzLab::Signal.trigger("external_api.failure", severity: :medium, details: { provider: "tenor", action: "trending", error: e.message })
       raise Error, "Failed to get trending GIFs"
     end
 

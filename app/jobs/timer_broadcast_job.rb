@@ -15,7 +15,5 @@ class TimerBroadcastJob < ApplicationJob
     if round.timer_remaining > 0
       TimerBroadcastJob.set(wait: 5.seconds).perform_later(game_id)
     end
-  rescue => e
-    Rails.logger.error("TimerBroadcastJob failed: #{e.message}")
   end
 end

@@ -12,7 +12,5 @@ class RoundTimerExpiredJob < ApplicationJob
 
     service = GameService.new(game)
     service.handle_timer_expired!
-  rescue => e
-    Rails.logger.error("RoundTimerExpiredJob failed: #{e.message}")
   end
 end

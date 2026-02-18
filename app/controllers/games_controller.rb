@@ -22,6 +22,7 @@ class GamesController < ApplicationController
     @game.host = current_user
 
     if @game.save
+      BrainzLab::Pulse.counter("games.created")
       @game.add_player!(current_user)
       redirect_to lobby_game_path(@game)
     else
@@ -62,6 +63,7 @@ class GamesController < ApplicationController
     player = current_game.add_player!(current_user)
 
     if player
+      BrainzLab::Pulse.counter("games.player_joined")
       GameChannel.broadcast_player_joined(current_game, player)
       redirect_to lobby_game_path(current_game)
     else
@@ -85,6 +87,7 @@ class GamesController < ApplicationController
     code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
 
     Rails.logger.info "JOIN_BY_CODE: raw='#{raw_code.inspect}' cleaned='#{code}'"
+    BrainzLab::Recall.info("JOIN_BY_CODE", raw: raw_code.inspect, cleaned: code)
 
     game = Game.find_by_code(code)
 

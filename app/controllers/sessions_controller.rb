@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
 
   def create_guest
     guest = User.create_guest!
+    BrainzLab::Pulse.counter("users.guest_created")
     login(guest)
 
     respond_to do |format|

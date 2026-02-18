@@ -15,6 +15,7 @@ class GameActionsController < ApplicationController
     end
 
     if current_game.start!
+      BrainzLab::Pulse.counter("games.started")
       GameChannel.broadcast_game_started(current_game)
       redirect_to game_path(current_game)
     else
@@ -94,6 +95,7 @@ class GameActionsController < ApplicationController
     end
 
     if round.select_winner!(submission)
+      BrainzLab::Pulse.counter("rounds.completed")
       GameChannel.broadcast_winner_selected(current_game, round, submission)
 
       # Delay the next round broadcast to allow winner animation to play

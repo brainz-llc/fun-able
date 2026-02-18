@@ -101,6 +101,7 @@ class GameService
     else
       # No submissions at all - auto-select a random player as "winner" and skip to next round
       Rails.logger.warn("No submissions for round #{round.id}, skipping to next round")
+      BrainzLab::Recall.warn("No submissions for round, skipping", round_id: round.id, game_id: game.id)
       skip_round_no_submissions!
     end
   end
@@ -201,6 +202,7 @@ class GameService
         player.remove_cards_from_hand!(random_cards.map(&:id))
       rescue => e
         Rails.logger.error("Auto-submit failed for player #{player.id}: #{e.message}")
+        BrainzLab::Reflex.capture(e, context: { player_id: player.id, round_id: round.id })
       end
     end
   end
@@ -258,6 +260,7 @@ class GameService
     if game.player_count < 3
       game.finish!
       GameChannel.broadcast_game_ended(game)
+      BrainzLab::Signal.trigger("game.ended_prematurely", severity: :medium, details: { game_id: game.id, reason: "insufficient_players" })
     end
   end
 end

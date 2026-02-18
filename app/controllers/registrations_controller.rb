@@ -12,6 +12,7 @@ class RegistrationsController < ApplicationController
         email: user_params[:email],
         password: user_params[:password]
       )
+        BrainzLab::Pulse.counter("users.registered")
         redirect_to root_path, notice: '¡Cuenta creada exitosamente!'
       else
         @user = current_user
@@ -23,6 +24,7 @@ class RegistrationsController < ApplicationController
       @user.is_guest = false
 
       if @user.save
+        BrainzLab::Pulse.counter("users.registered")
         login(@user)
         redirect_to root_path, notice: '¡Bienvenido a Cartas Contra la Formalidad!'
       else
