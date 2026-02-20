@@ -38,6 +38,7 @@ class DecksController < ApplicationController
     @deck = current_user.created_decks.build(deck_params)
 
     if @deck.save
+      BrainzLab::Flux.track_for_user(current_user, "deck.created", deck_id: @deck.id, deck_name: @deck.name, content_rating: @deck.content_rating)
       redirect_to deck_path(@deck), notice: 'Mazo creado exitosamente'
     else
       @regions = Region.active.sorted

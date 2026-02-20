@@ -19,6 +19,7 @@ class SessionsController < ApplicationController
   def create_guest
     guest = User.create_guest!
     BrainzLab::Pulse.counter("users.guest_created")
+    BrainzLab::Flux.track_for_user(guest, "user.created", guest: true)
     login(guest)
 
     respond_to do |format|
