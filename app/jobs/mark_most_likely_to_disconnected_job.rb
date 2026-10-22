@@ -9,7 +9,7 @@ class MarkMostLikelyToDisconnectedJob < ApplicationJob
     player.mark_disconnected!
 
     MostLikelyToChannel.broadcast_to_game(player.most_likely_to_game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: player.id,
       connected: false
     })

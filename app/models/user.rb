@@ -2,10 +2,10 @@ class User < ApplicationRecord
   has_secure_password validations: false
 
   # Associations
-  has_many :created_decks, class_name: 'Deck', foreign_key: :creator_id, dependent: :nullify
+  has_many :created_decks, class_name: "Deck", foreign_key: :creator_id, dependent: :nullify
   has_many :deck_votes, dependent: :destroy
   has_many :voted_decks, through: :deck_votes, source: :deck
-  has_many :hosted_games, class_name: 'Game', foreign_key: :host_id, dependent: :nullify
+  has_many :hosted_games, class_name: "Game", foreign_key: :host_id, dependent: :nullify
   has_many :game_players, dependent: :destroy
   has_many :games, through: :game_players
 
@@ -22,7 +22,7 @@ class User < ApplicationRecord
   # Scopes
   scope :guests, -> { where(is_guest: true) }
   scope :registered, -> { where(is_guest: false) }
-  scope :active_recently, -> { where('updated_at > ?', 1.week.ago) }
+  scope :active_recently, -> { where("updated_at > ?", 1.week.ago) }
 
   # Class methods
   def self.create_guest!

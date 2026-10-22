@@ -2,9 +2,9 @@ class KingsCupPlayer < ApplicationRecord
   # Associations
   belongs_to :kings_cup_game
   belongs_to :user
-  belongs_to :mate, class_name: 'KingsCupPlayer', foreign_key: :mate_player_id, optional: true
-  has_many :drawn_cards, class_name: 'KingsCupCard', foreign_key: :drawn_by_id, dependent: :nullify
-  has_many :created_rules, class_name: 'KingsCupRule', foreign_key: :created_by_id, dependent: :nullify
+  belongs_to :mate, class_name: "KingsCupPlayer", foreign_key: :mate_player_id, optional: true
+  has_many :drawn_cards, class_name: "KingsCupCard", foreign_key: :drawn_by_id, dependent: :nullify
+  has_many :created_rules, class_name: "KingsCupRule", foreign_key: :created_by_id, dependent: :nullify
 
   # Enums
   enum :status, { active: 0, disconnected: 1, left: 2, kicked: 3 }

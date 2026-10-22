@@ -9,7 +9,7 @@ class CreateMostLikelyToVotes < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :most_likely_to_votes, [:most_likely_to_game_id, :round_number, :voter_id], unique: true, name: 'idx_mlt_votes_unique_per_round'
-    add_index :most_likely_to_votes, [:most_likely_to_game_id, :round_number], name: 'idx_mlt_votes_round'
+    add_index :most_likely_to_votes, [ :most_likely_to_game_id, :round_number, :voter_id ], unique: true, name: 'idx_mlt_votes_unique_per_round'
+    add_index :most_likely_to_votes, [ :most_likely_to_game_id, :round_number ], name: 'idx_mlt_votes_round'
   end
 end

@@ -1,8 +1,8 @@
 class KingsCupController < ApplicationController
-  before_action :set_game, only: [:show, :lobby, :join, :start, :draw_card, :add_rule, :set_mate, :leave, :kick]
-  before_action :require_game_player, only: [:lobby, :draw_card, :add_rule, :set_mate, :leave]
-  before_action :require_game_host, only: [:start, :kick]
-  before_action :require_playing, only: [:draw_card, :add_rule, :set_mate]
+  before_action :set_game, only: [ :show, :lobby, :join, :start, :draw_card, :add_rule, :set_mate, :leave, :kick ]
+  before_action :require_game_player, only: [ :lobby, :draw_card, :add_rule, :set_mate, :leave ]
+  before_action :require_game_host, only: [ :start, :kick ]
+  before_action :require_playing, only: [ :draw_card, :add_rule, :set_mate ]
 
   def index
     # Landing page for King's Cup
@@ -23,7 +23,7 @@ class KingsCupController < ApplicationController
       @game.add_player!(current_user)
       redirect_to kings_cup_lobby_path(@game)
     else
-      flash.now[:alert] = @game.errors.full_messages.join(', ')
+      flash.now[:alert] = @game.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -51,7 +51,7 @@ class KingsCupController < ApplicationController
     end
 
     unless @game.joinable?
-      redirect_to kings_cup_path, alert: 'No puedes unirte a esta partida'
+      redirect_to kings_cup_path, alert: "No puedes unirte a esta partida"
       return
     end
 
@@ -61,13 +61,13 @@ class KingsCupController < ApplicationController
       KingsCupChannel.broadcast_player_joined(@game, player)
       redirect_to kings_cup_lobby_path(@game)
     else
-      redirect_to kings_cup_path, alert: 'No se pudo unir a la partida'
+      redirect_to kings_cup_path, alert: "No se pudo unir a la partida"
     end
   end
 
   def join_by_code
     raw_code = params[:code]
-    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
+    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, "")
 
     game = KingsCupGame.find_by_code(code)
 
@@ -80,7 +80,7 @@ class KingsCupController < ApplicationController
 
   def start
     unless @game.can_start?
-      redirect_to kings_cup_lobby_path(@game), alert: 'No se puede iniciar la partida'
+      redirect_to kings_cup_lobby_path(@game), alert: "No se puede iniciar la partida"
       return
     end
 
@@ -88,13 +88,13 @@ class KingsCupController < ApplicationController
       KingsCupChannel.broadcast_game_started(@game)
       redirect_to kings_cup_show_path(@game)
     else
-      redirect_to kings_cup_lobby_path(@game), alert: 'Error al iniciar la partida'
+      redirect_to kings_cup_lobby_path(@game), alert: "Error al iniciar la partida"
     end
   end
 
   def draw_card
     unless current_kings_cup_player.current_turn?
-      render json: { error: 'No es tu turno' }, status: :forbidden
+      render json: { error: "No es tu turno" }, status: :forbidden
       return
     end
 
@@ -109,7 +109,7 @@ class KingsCupController < ApplicationController
         game: game_state_json
       }
     else
-      render json: { error: 'No se pudo sacar carta' }, status: :unprocessable_entity
+      render json: { error: "No se pudo sacar carta" }, status: :unprocessable_entity
     end
   end
 
@@ -123,7 +123,7 @@ class KingsCupController < ApplicationController
       KingsCupChannel.broadcast_rule_added(@game, rule)
       render json: { success: true, rule: rule_json(rule) }
     else
-      render json: { error: rule.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      render json: { error: rule.errors.full_messages.join(", ") }, status: :unprocessable_entity
     end
   end
 
@@ -131,7 +131,7 @@ class KingsCupController < ApplicationController
     target_player = @game.kings_cup_players.find_by(id: params[:player_id])
 
     unless target_player && target_player.id != current_kings_cup_player.id
-      render json: { error: 'Jugador invalido' }, status: :unprocessable_entity
+      render json: { error: "Jugador invalido" }, status: :unprocessable_entity
       return
     end
 
@@ -144,7 +144,7 @@ class KingsCupController < ApplicationController
   def leave
     @game.remove_player!(current_user)
     KingsCupChannel.broadcast_player_left(@game, current_kings_cup_player)
-    redirect_to kings_cup_path, notice: 'Has abandonado la partida'
+    redirect_to kings_cup_path, notice: "Has abandonado la partida"
   end
 
   def kick
@@ -155,7 +155,7 @@ class KingsCupController < ApplicationController
       KingsCupChannel.broadcast_player_kicked(@game, player)
       render json: { success: true }
     else
-      render json: { error: 'No se puede expulsar a este jugador' }, status: :unprocessable_entity
+      render json: { error: "No se puede expulsar a este jugador" }, status: :unprocessable_entity
     end
   end
 
@@ -164,7 +164,7 @@ class KingsCupController < ApplicationController
   def set_game
     @game = KingsCupGame.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to kings_cup_path, alert: 'Partida no encontrada'
+    redirect_to kings_cup_path, alert: "Partida no encontrada"
   end
 
   def current_kings_cup_player
@@ -174,19 +174,19 @@ class KingsCupController < ApplicationController
 
   def require_game_player
     unless current_kings_cup_player
-      redirect_to kings_cup_path, alert: 'No eres parte de esta partida'
+      redirect_to kings_cup_path, alert: "No eres parte de esta partida"
     end
   end
 
   def require_game_host
     unless @game.host?(current_user)
-      redirect_to kings_cup_show_path(@game), alert: 'Solo el anfitrion puede hacer esto'
+      redirect_to kings_cup_show_path(@game), alert: "Solo el anfitrion puede hacer esto"
     end
   end
 
   def require_playing
     unless @game.playing?
-      redirect_to kings_cup_show_path(@game), alert: 'La partida no esta activa'
+      redirect_to kings_cup_show_path(@game), alert: "La partida no esta activa"
     end
   end
 

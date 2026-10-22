@@ -29,8 +29,8 @@ class CreateKingsCupTables < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :kings_cup_players, [:kings_cup_game_id, :user_id], unique: true
-    add_index :kings_cup_players, [:kings_cup_game_id, :status]
+    add_index :kings_cup_players, [ :kings_cup_game_id, :user_id ], unique: true
+    add_index :kings_cup_players, [ :kings_cup_game_id, :status ]
 
     create_table :kings_cup_cards do |t|
       t.references :kings_cup_game, null: false, foreign_key: true
@@ -43,8 +43,8 @@ class CreateKingsCupTables < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :kings_cup_cards, [:kings_cup_game_id, :drawn]
-    add_index :kings_cup_cards, [:kings_cup_game_id, :suit, :value], unique: true
+    add_index :kings_cup_cards, [ :kings_cup_game_id, :drawn ]
+    add_index :kings_cup_cards, [ :kings_cup_game_id, :suit, :value ], unique: true
 
     create_table :kings_cup_rules do |t|
       t.references :kings_cup_game, null: false, foreign_key: true
@@ -55,6 +55,6 @@ class CreateKingsCupTables < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :kings_cup_rules, [:kings_cup_game_id, :active]
+    add_index :kings_cup_rules, [ :kings_cup_game_id, :active ]
   end
 end

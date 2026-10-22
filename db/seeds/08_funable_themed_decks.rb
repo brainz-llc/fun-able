@@ -29,7 +29,7 @@ content['decks'].each do |deck_data|
     deck.owned_cards.create!(
       content: content_text,
       card_type: :black,
-      pick_count: [blank_count, 3].min
+      pick_count: [ blank_count, 3 ].min
     )
   end
 

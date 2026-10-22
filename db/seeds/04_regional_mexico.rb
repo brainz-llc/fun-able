@@ -31,7 +31,7 @@ black_cards = [
   "En la peda, alguien confeso que _____.",
   "El Buen Fin es la excusa perfecta para _____.",
   "La suegra mexicana siempre critica _____.",
-  "Lo mas mexicano que he hecho es _____.",
+  "Lo mas mexicano que he hecho es _____."
 ]
 
 white_cards = [
@@ -91,7 +91,7 @@ white_cards = [
   "Aguachile nivel suicida",
   "Machaca con huevo",
   "Menudo de sabado",
-  "El atole de la abuela",
+  "El atole de la abuela"
 ]
 
 black_cards.each do |content|
@@ -100,7 +100,7 @@ black_cards.each do |content|
 
   deck.owned_cards.find_or_create_by!(content: content) do |c|
     c.card_type = :black
-    c.pick_count = [blank_count, 3].min
+    c.pick_count = [ blank_count, 3 ].min
   end
 end
 

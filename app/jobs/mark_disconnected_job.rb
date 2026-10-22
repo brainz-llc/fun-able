@@ -26,7 +26,7 @@ class MarkDisconnectedJob < ApplicationJob
     # Mark as disconnected and broadcast
     player.mark_disconnected!
     GameChannel.broadcast_to_game(player.game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: player.id,
       connected: false
     })

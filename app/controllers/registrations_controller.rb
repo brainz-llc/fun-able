@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  before_action :redirect_if_registered, only: [:new, :create]
+  before_action :redirect_if_registered, only: [ :new, :create ]
 
   def new
     @user = current_user&.guest? ? current_user : User.new
@@ -14,10 +14,10 @@ class RegistrationsController < ApplicationController
       )
         BrainzLab::Pulse.counter("users.registered")
         BrainzLab::Flux.track_for_user(current_user, "user.registered", upgraded_from_guest: true)
-        redirect_to root_path, notice: '¡Cuenta creada exitosamente!'
+        redirect_to root_path, notice: "¡Cuenta creada exitosamente!"
       else
         @user = current_user
-        flash.now[:alert] = current_user.errors.full_messages.join(', ')
+        flash.now[:alert] = current_user.errors.full_messages.join(", ")
         render :new, status: :unprocessable_entity
       end
     else
@@ -28,9 +28,9 @@ class RegistrationsController < ApplicationController
         BrainzLab::Pulse.counter("users.registered")
         BrainzLab::Flux.track_for_user(@user, "user.registered", upgraded_from_guest: false)
         login(@user)
-        redirect_to root_path, notice: '¡Bienvenido a Cartas Contra la Formalidad!'
+        redirect_to root_path, notice: "¡Bienvenido a Cartas Contra la Formalidad!"
       else
-        flash.now[:alert] = @user.errors.full_messages.join(', ')
+        flash.now[:alert] = @user.errors.full_messages.join(", ")
         render :new, status: :unprocessable_entity
       end
     end

@@ -31,12 +31,12 @@ class GameChannel < ApplicationCable::Channel
 
   # Client actions
   def ping
-    transmit({ type: 'pong', timestamp: Time.current.to_i })
+    transmit({ type: "pong", timestamp: Time.current.to_i })
   end
 
   def request_state
     transmit({
-      type: 'game_state',
+      type: "game_state",
       game: game_state,
       player: player_state
     })
@@ -50,7 +50,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_player_joined(game, player)
       broadcast_to_game(game, {
-        type: 'player_joined',
+        type: "player_joined",
         player: player_data(player),
         player_count: game.player_count
       })
@@ -58,7 +58,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_player_left(game, player)
       broadcast_to_game(game, {
-        type: 'player_left',
+        type: "player_left",
         player_id: player.id,
         user_id: player.user_id,
         player_count: game.player_count
@@ -67,7 +67,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_player_kicked(game, player)
       broadcast_to_game(game, {
-        type: 'player_kicked',
+        type: "player_kicked",
         player_id: player.id,
         user_id: player.user_id
       })
@@ -75,7 +75,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_settings_updated(game)
       broadcast_to_game(game, {
-        type: 'settings_updated',
+        type: "settings_updated",
         settings: {
           deck_id: game.deck_id,
           points_to_win: game.points_to_win,
@@ -89,7 +89,7 @@ class GameChannel < ApplicationCable::Channel
       round = game.current_round
 
       broadcast_to_game(game, {
-        type: 'game_started',
+        type: "game_started",
         round: round_data(round),
         judge_id: round.judge_id
       })
@@ -97,7 +97,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_new_round(game, round)
       broadcast_to_game(game, {
-        type: 'new_round',
+        type: "new_round",
         round: round_data(round),
         judge_id: round.judge_id,
         leaderboard: leaderboard_data(game)
@@ -106,7 +106,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_card_submitted(game, round)
       broadcast_to_game(game, {
-        type: 'card_submitted',
+        type: "card_submitted",
         submissions_count: round.submissions_count,
         expected_count: round.expected_submissions_count,
         all_submitted: round.all_submitted?
@@ -115,7 +115,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_judging_started(game, round)
       broadcast_to_game(game, {
-        type: 'judging_started',
+        type: "judging_started",
         round_id: round.id,
         submissions: submissions_data(round),
         timer_expires_at: round.timer_expires_at&.iso8601
@@ -124,7 +124,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_winner_selected(game, round, winning_submission)
       broadcast_to_game(game, {
-        type: 'winner_selected',
+        type: "winner_selected",
         round_id: round.id,
         winning_submission_id: winning_submission.id,
         winner_player_id: winning_submission.player_id,
@@ -138,7 +138,7 @@ class GameChannel < ApplicationCable::Channel
       winner = game.winner
 
       broadcast_to_game(game, {
-        type: 'game_ended',
+        type: "game_ended",
         winner_id: winner&.id,
         winner_name: winner&.display_name,
         winner_score: winner&.score,
@@ -148,7 +148,7 @@ class GameChannel < ApplicationCable::Channel
 
     def broadcast_timer_update(game, round)
       broadcast_to_game(game, {
-        type: 'timer_update',
+        type: "timer_update",
         round_id: round.id,
         remaining: round.timer_remaining,
         expires_at: round.timer_expires_at&.iso8601
@@ -214,7 +214,7 @@ class GameChannel < ApplicationCable::Channel
 
   def broadcast_player_status_changed
     GameChannel.broadcast_to_game(@game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: @game_player.id,
       connected: @game_player.connected?
     })

@@ -5,7 +5,7 @@ class Card < ApplicationRecord
   has_many :decks, through: :deck_cards
   has_many :hand_cards, dependent: :destroy
   has_many :submission_cards, dependent: :destroy
-  has_many :rounds_as_black, class_name: 'Round', foreign_key: :black_card_id, dependent: :nullify
+  has_many :rounds_as_black, class_name: "Round", foreign_key: :black_card_id, dependent: :nullify
   has_one_attached :meme_image
 
   # Enums
@@ -18,7 +18,7 @@ class Card < ApplicationRecord
 
   # Scopes
   scope :for_deck, ->(deck_id) { where(deck_id: deck_id) }
-  scope :shuffled, -> { order('RANDOM()') }
+  scope :shuffled, -> { order("RANDOM()") }
 
   # Callbacks
   before_validation :set_defaults
@@ -32,7 +32,7 @@ class Card < ApplicationRecord
     return content if white?
 
     # Count blanks in content
-    blank_count = content.scan('_____').count
+    blank_count = content.scan("_____").count
     if blank_count.zero?
       # No explicit blanks, add one at the end
       "#{content} _____"
@@ -43,7 +43,7 @@ class Card < ApplicationRecord
 
   def blanks_count
     return 0 if white?
-    count = content.scan('_____').count
+    count = content.scan("_____").count
     count.zero? ? 1 : count
   end
 
@@ -61,7 +61,7 @@ class Card < ApplicationRecord
   end
 
   def css_class
-    black? ? 'card-black' : 'card-white'
+    black? ? "card-black" : "card-white"
   end
 
   def duplicate_for_deck(target_deck)

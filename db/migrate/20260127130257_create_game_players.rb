@@ -12,7 +12,7 @@ class CreateGamePlayers < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :game_players, [:game_id, :user_id], unique: true
-    add_index :game_players, [:game_id, :status]
+    add_index :game_players, [ :game_id, :user_id ], unique: true
+    add_index :game_players, [ :game_id, :status ]
   end
 end

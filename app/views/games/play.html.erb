@@ -99,7 +99,7 @@
                       border: 2px solid rgba(236, 72, 153, 0.4);
                       box-shadow: 0 0 30px rgba(236, 72, 153, 0.2), 0 15px 30px rgba(0,0,0,0.5);">
             <p class="text-white text-sm leading-relaxed font-medium">
-              <%= round.black_card.display_content_with_blanks.gsub('_____', '<span class="inline-block w-14 border-b-2 border-pink-400"></span>').html_safe %>
+              <%= card_content_with_blanks(round.black_card, blank_class: "inline-block w-14 border-b-2 border-pink-400") %>
             </p>
             <div class="flex items-center justify-between mt-3">
               <span class="text-[10px] text-pink-500/60">Fun-able</span>

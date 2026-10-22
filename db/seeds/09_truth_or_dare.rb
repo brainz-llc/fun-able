@@ -18,7 +18,7 @@ mild_truths = [
   "Que es lo mas torpe que has hecho en publico?",
   "Cual es tu mayor inseguridad?",
   "Que es lo que mas te molesta de ti mismo?",
-  "Cual es tu talento oculto?",
+  "Cual es tu talento oculto?"
 ]
 
 # Medium Truths (Medios)
@@ -37,7 +37,7 @@ medium_truths = [
   "Has hecho trampa en algo importante? Que?",
   "Cual es tu crush secreto del grupo?",
   "Que es lo mas vergonzoso que tienes en tu telefono?",
-  "Has hablado mal de alguien presente? De quien?",
+  "Has hablado mal de alguien presente? De quien?"
 ]
 
 # Spicy Truths (Picantes)
@@ -56,7 +56,7 @@ spicy_truths = [
   "Has stalkeado al ex de tu pareja? Que encontraste?",
   "Cual es tu secreto mas oscuro que nadie sabe?",
   "Has besado a mas de una persona en la misma noche?",
-  "Que es lo mas vergonzoso que has buscado en internet?",
+  "Que es lo mas vergonzoso que has buscado en internet?"
 ]
 
 # Create Truth Cards
@@ -92,7 +92,7 @@ mild_dares = [
   "Cuenta una historia usando solo emojis",
   "Canta el himno nacional haciendo flexiones",
   "Actua como si fueras un bebe por 1 minuto",
-  "Deja que el grupo cambie tu foto de perfil por 24 horas",
+  "Deja que el grupo cambie tu foto de perfil por 24 horas"
 ]
 
 # Medium Dares (Medios)
@@ -111,7 +111,7 @@ medium_dares = [
   "Cuenta tu momento mas vergonzoso con lujo de detalles",
   "Deja que te peinen como quieran",
   "Haz un video de TikTok ahora mismo",
-  "Coquetea con la pared como si fuera tu crush",
+  "Coquetea con la pared como si fuera tu crush"
 ]
 
 # Spicy Dares (Picantes)
@@ -131,7 +131,7 @@ spicy_dares = [
   "Graba un audio diciendole a alguien que lo/la extranas",
   "Deja que revisen tu carpeta de fotos eliminadas",
   "Actua un beso de pelicula con un cojin",
-  "Hazle un cumplido atrevido a cada persona del grupo",
+  "Hazle un cumplido atrevido a cada persona del grupo"
 ]
 
 # Create Dare Cards

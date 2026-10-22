@@ -8,7 +8,7 @@ class CreateCardSubmissions < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :card_submissions, [:round_id, :player_id], unique: true
-    add_index :card_submissions, [:round_id, :reveal_order]
+    add_index :card_submissions, [ :round_id, :player_id ], unique: true
+    add_index :card_submissions, [ :round_id, :reveal_order ]
   end
 end

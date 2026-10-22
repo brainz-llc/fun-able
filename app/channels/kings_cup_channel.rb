@@ -26,12 +26,12 @@ class KingsCupChannel < ApplicationCable::Channel
   end
 
   def ping
-    transmit({ type: 'pong', timestamp: Time.current.to_i })
+    transmit({ type: "pong", timestamp: Time.current.to_i })
   end
 
   def request_state
     transmit({
-      type: 'game_state',
+      type: "game_state",
       game: game_state,
       player: player_state
     })
@@ -45,7 +45,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_player_joined(game, player)
       broadcast_to_game(game, {
-        type: 'player_joined',
+        type: "player_joined",
         player: player_data(player),
         player_count: game.player_count
       })
@@ -53,7 +53,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_player_left(game, player)
       broadcast_to_game(game, {
-        type: 'player_left',
+        type: "player_left",
         player_id: player.id,
         user_id: player.user_id,
         player_count: game.player_count
@@ -62,7 +62,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_player_kicked(game, player)
       broadcast_to_game(game, {
-        type: 'player_kicked',
+        type: "player_kicked",
         player_id: player.id,
         user_id: player.user_id
       })
@@ -70,7 +70,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_game_started(game)
       broadcast_to_game(game, {
-        type: 'game_started',
+        type: "game_started",
         cards_remaining: game.cards_remaining,
         current_player_id: game.current_player&.id
       })
@@ -78,7 +78,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_card_drawn(game, card, player)
       broadcast_to_game(game, {
-        type: 'card_drawn',
+        type: "card_drawn",
         card: {
           id: card.id,
           suit: card.suit,
@@ -105,7 +105,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_rule_added(game, rule)
       broadcast_to_game(game, {
-        type: 'rule_added',
+        type: "rule_added",
         rule: {
           id: rule.id,
           rule_text: rule.rule_text,
@@ -116,7 +116,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_mate_set(game, player, mate)
       broadcast_to_game(game, {
-        type: 'mate_set',
+        type: "mate_set",
         player_id: player.id,
         player_name: player.display_name,
         mate_id: mate.id,
@@ -126,9 +126,9 @@ class KingsCupChannel < ApplicationCable::Channel
 
     def broadcast_game_ended(game)
       broadcast_to_game(game, {
-        type: 'game_ended',
+        type: "game_ended",
         kings_drawn: game.kings_drawn,
-        last_king_player: game.drawn_cards.find_by(value: 'K')&.drawn_by&.display_name
+        last_king_player: game.drawn_cards.find_by(value: "K")&.drawn_by&.display_name
       })
     end
 
@@ -156,7 +156,7 @@ class KingsCupChannel < ApplicationCable::Channel
 
   def broadcast_player_status_changed
     KingsCupChannel.broadcast_to_game(@game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: @player.id,
       connected: @player.connected?
     })

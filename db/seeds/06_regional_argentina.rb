@@ -29,7 +29,7 @@ black_cards = [
   "El psicoanalista opino que _____ es tu problema.",
   "La pizza argentina lleva _____.",
   "En la bailanta habia _____.",
-  "Lo mas berreta del pais es _____.",
+  "Lo mas berreta del pais es _____."
 ]
 
 white_cards = [
@@ -86,7 +86,7 @@ white_cards = [
   "Un porteño agrandado",
   "Un rosarino comiendo asado",
   "Un mendocino con vino",
-  "Un entrerriano pescando",
+  "Un entrerriano pescando"
 ]
 
 black_cards.each do |content|
@@ -95,7 +95,7 @@ black_cards.each do |content|
 
   deck.owned_cards.find_or_create_by!(content: content) do |c|
     c.card_type = :black
-    c.pick_count = [blank_count, 3].min
+    c.pick_count = [ blank_count, 3 ].min
   end
 end
 

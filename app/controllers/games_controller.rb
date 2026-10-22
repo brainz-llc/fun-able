@@ -1,9 +1,9 @@
 class GamesController < ApplicationController
   include GameAuthorizable
 
-  before_action :require_login, except: [:show, :join]
-  before_action :set_game, only: [:show, :lobby, :join]
-  before_action :require_game_player, only: [:lobby]
+  before_action :require_login, except: [ :show, :join ]
+  before_action :set_game, only: [ :show, :lobby, :join ]
+  before_action :require_game_player, only: [ :lobby ]
 
   def new
     create_or_find_guest! unless logged_in?
@@ -27,7 +27,7 @@ class GamesController < ApplicationController
       redirect_to lobby_game_path(@game)
     else
       @decks = Deck.published.includes(:region).popular
-      flash.now[:alert] = @game.errors.full_messages.join(', ')
+      flash.now[:alert] = @game.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -56,7 +56,7 @@ class GamesController < ApplicationController
     end
 
     unless current_game.joinable?
-      redirect_to root_path, alert: 'No puedes unirte a esta partida'
+      redirect_to root_path, alert: "No puedes unirte a esta partida"
       return
     end
 
@@ -67,7 +67,7 @@ class GamesController < ApplicationController
       GameChannel.broadcast_player_joined(current_game, player)
       redirect_to lobby_game_path(current_game)
     else
-      redirect_to root_path, alert: 'No se pudo unir a la partida'
+      redirect_to root_path, alert: "No se pudo unir a la partida"
     end
   end
 
@@ -84,7 +84,7 @@ class GamesController < ApplicationController
 
   def find_and_join_by_code
     raw_code = params[:code]
-    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
+    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, "")
 
     Rails.logger.info "JOIN_BY_CODE: raw='#{raw_code.inspect}' cleaned='#{code}'"
     BrainzLab::Recall.info("JOIN_BY_CODE", raw: raw_code.inspect, cleaned: code)
@@ -101,7 +101,7 @@ class GamesController < ApplicationController
   def set_game
     @current_game = Game.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: 'Partida no encontrada'
+    redirect_to root_path, alert: "Partida no encontrada"
   end
 
   def game_params

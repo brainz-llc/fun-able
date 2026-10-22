@@ -7,11 +7,11 @@ class GameActionsController < ApplicationController
 
   def start
     unless game_host?
-      return respond_with_error('Solo el anfitrión puede iniciar la partida')
+      return respond_with_error("Solo el anfitrión puede iniciar la partida")
     end
 
     unless current_game.can_start?
-      return respond_with_error('No se puede iniciar la partida. Verifica que haya suficientes jugadores y un mazo seleccionado.')
+      return respond_with_error("No se puede iniciar la partida. Verifica que haya suficientes jugadores y un mazo seleccionado.")
     end
 
     if current_game.start!
@@ -19,7 +19,7 @@ class GameActionsController < ApplicationController
       GameChannel.broadcast_game_started(current_game)
       redirect_to game_path(current_game)
     else
-      respond_with_error('Error al iniciar la partida')
+      respond_with_error("Error al iniciar la partida")
     end
   end
 
@@ -27,15 +27,15 @@ class GameActionsController < ApplicationController
     round = current_game.current_round
 
     unless round&.submitting?
-      return respond_with_error('No puedes enviar cartas ahora')
+      return respond_with_error("No puedes enviar cartas ahora")
     end
 
     if current_game_player.current_judge?
-      return respond_with_error('El Zar no puede enviar cartas')
+      return respond_with_error("El Zar no puede enviar cartas")
     end
 
     if current_game_player.submitted_for_round?(round)
-      return respond_with_error('Ya enviaste tus cartas')
+      return respond_with_error("Ya enviaste tus cartas")
     end
 
     card_ids = params[:card_ids].to_a.map(&:to_i)
@@ -45,7 +45,7 @@ class GameActionsController < ApplicationController
     end
 
     unless current_game_player.has_cards?(card_ids)
-      return respond_with_error('No tienes esas cartas')
+      return respond_with_error("No tienes esas cartas")
     end
 
     submission = round.card_submissions.build(player: current_game_player)
@@ -73,7 +73,7 @@ class GameActionsController < ApplicationController
         format.turbo_stream
       end
     else
-      respond_with_error(submission.errors.full_messages.join(', '))
+      respond_with_error(submission.errors.full_messages.join(", "))
     end
   end
 
@@ -81,17 +81,17 @@ class GameActionsController < ApplicationController
     round = current_game.current_round
 
     unless round&.judging? || round&.revealing?
-      return respond_with_error('No puedes seleccionar ganador ahora')
+      return respond_with_error("No puedes seleccionar ganador ahora")
     end
 
     unless current_game_player.current_judge?
-      return respond_with_error('Solo el Zar puede seleccionar al ganador')
+      return respond_with_error("Solo el Zar puede seleccionar al ganador")
     end
 
     submission = round.card_submissions.find_by(id: params[:submission_id])
 
     unless submission
-      return respond_with_error('Selección inválida')
+      return respond_with_error("Selección inválida")
     end
 
     if round.select_winner!(submission)
@@ -114,7 +114,7 @@ class GameActionsController < ApplicationController
         format.turbo_stream
       end
     else
-      respond_with_error('Error al seleccionar ganador')
+      respond_with_error("Error al seleccionar ganador")
     end
   end
 
@@ -128,12 +128,12 @@ class GameActionsController < ApplicationController
     current_game_player.leave!
     GameChannel.broadcast_player_left(current_game, current_game_player)
 
-    redirect_to root_path, notice: 'Has abandonado la partida'
+    redirect_to root_path, notice: "Has abandonado la partida"
   end
 
   def kick
     unless game_host?
-      return respond_with_error('Solo el anfitrión puede expulsar jugadores')
+      return respond_with_error("Solo el anfitrión puede expulsar jugadores")
     end
 
     player = current_game.game_players.find_by(id: params[:player_id])
@@ -147,17 +147,17 @@ class GameActionsController < ApplicationController
         format.turbo_stream
       end
     else
-      respond_with_error('No se puede expulsar a ese jugador')
+      respond_with_error("No se puede expulsar a ese jugador")
     end
   end
 
   def update_settings
     unless game_host?
-      return respond_with_error('Solo el anfitrión puede cambiar la configuración')
+      return respond_with_error("Solo el anfitrión puede cambiar la configuración")
     end
 
     unless current_game.lobby?
-      return respond_with_error('No puedes cambiar la configuración después de iniciar')
+      return respond_with_error("No puedes cambiar la configuración después de iniciar")
     end
 
     if current_game.update(settings_params)
@@ -168,7 +168,7 @@ class GameActionsController < ApplicationController
         format.turbo_stream
       end
     else
-      respond_with_error(current_game.errors.full_messages.join(', '))
+      respond_with_error(current_game.errors.full_messages.join(", "))
     end
   end
 
@@ -177,7 +177,7 @@ class GameActionsController < ApplicationController
   def set_game
     @current_game = Game.find(params[:game_id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: 'Partida no encontrada'
+    redirect_to root_path, alert: "Partida no encontrada"
   end
 
   def settings_params
@@ -187,7 +187,7 @@ class GameActionsController < ApplicationController
   def respond_with_error(message)
     respond_to do |format|
       format.html { redirect_to game_path(current_game), alert: message }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash', locals: { alert: message }) }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash", locals: { alert: message }) }
       format.json { render json: { error: message }, status: :unprocessable_entity }
     end
   end

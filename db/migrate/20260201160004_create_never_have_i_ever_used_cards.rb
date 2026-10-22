@@ -7,6 +7,6 @@ class CreateNeverHaveIEverUsedCards < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :never_have_i_ever_used_cards, [:never_have_i_ever_game_id, :never_have_i_ever_card_id], unique: true, name: 'idx_nhie_used_cards_game_card'
+    add_index :never_have_i_ever_used_cards, [ :never_have_i_ever_game_id, :never_have_i_ever_card_id ], unique: true, name: 'idx_nhie_used_cards_game_card'
   end
 end

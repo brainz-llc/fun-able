@@ -19,7 +19,7 @@ tame_cards = [
   "Yo nunca nunca me he comido algo de la nevera que no era mio",
   "Yo nunca nunca he leido el diario o mensajes de alguien mas",
   "Yo nunca nunca me he saltado hacer ejercicio despues de decir que lo haria",
-  "Yo nunca nunca he dicho 'estoy llegando' cuando todavia estaba en casa",
+  "Yo nunca nunca he dicho 'estoy llegando' cuando todavia estaba en casa"
 ]
 
 # Spicy cards (more adult themes)
@@ -47,7 +47,7 @@ spicy_cards = [
   "Yo nunca nunca me han sido infiel",
   "Yo nunca nunca he terminado una relacion por texto",
   "Yo nunca nunca he tenido una aventura de verano",
-  "Yo nunca nunca he dicho 'te amo' sin sentirlo",
+  "Yo nunca nunca he dicho 'te amo' sin sentirlo"
 ]
 
 # Extreme cards (very adult/embarrassing)
@@ -71,7 +71,7 @@ extreme_cards = [
   "Yo nunca nunca he mentido a un policia",
   "Yo nunca nunca me he metido en una pelea fisica",
   "Yo nunca nunca he sido el otro/la otra en una relacion",
-  "Yo nunca nunca he hecho algo sexual por dinero o regalos",
+  "Yo nunca nunca he hecho algo sexual por dinero o regalos"
 ]
 
 # Create all cards

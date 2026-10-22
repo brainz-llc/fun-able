@@ -26,12 +26,12 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
   end
 
   def ping
-    transmit({ type: 'pong', timestamp: Time.current.to_i })
+    transmit({ type: "pong", timestamp: Time.current.to_i })
   end
 
   def request_state
     transmit({
-      type: 'game_state',
+      type: "game_state",
       game: game_state,
       player: player_state
     })
@@ -45,7 +45,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_player_joined(game, player)
       broadcast_to_game(game, {
-        type: 'player_joined',
+        type: "player_joined",
         player: player_data(player),
         player_count: game.player_count
       })
@@ -53,7 +53,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_player_left(game, player)
       broadcast_to_game(game, {
-        type: 'player_left',
+        type: "player_left",
         player_id: player.id,
         user_id: player.user_id,
         player_count: game.player_count
@@ -62,7 +62,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_player_kicked(game, player)
       broadcast_to_game(game, {
-        type: 'player_kicked',
+        type: "player_kicked",
         player_id: player.id,
         user_id: player.user_id
       })
@@ -70,7 +70,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_settings_updated(game)
       broadcast_to_game(game, {
-        type: 'settings_updated',
+        type: "settings_updated",
         settings: {
           category: game.category,
           starting_points: game.starting_points,
@@ -81,7 +81,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_game_started(game)
       broadcast_to_game(game, {
-        type: 'game_started',
+        type: "game_started",
         current_card: card_data(game.current_card),
         current_reader_id: game.current_reader&.id,
         leaderboard: leaderboard_data(game)
@@ -90,7 +90,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_new_card(game)
       broadcast_to_game(game, {
-        type: 'new_card',
+        type: "new_card",
         current_card: card_data(game.current_card),
         current_reader_id: game.current_reader&.id,
         leaderboard: leaderboard_data(game)
@@ -99,7 +99,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_player_drank(game, player)
       broadcast_to_game(game, {
-        type: 'player_drank',
+        type: "player_drank",
         player_id: player.id,
         player_name: player.display_name,
         new_points: player.points,
@@ -109,7 +109,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
     def broadcast_player_eliminated(game, player)
       broadcast_to_game(game, {
-        type: 'player_eliminated',
+        type: "player_eliminated",
         player_id: player.id,
         player_name: player.display_name
       })
@@ -119,7 +119,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
       winner = game.winner
 
       broadcast_to_game(game, {
-        type: 'game_ended',
+        type: "game_ended",
         winner_id: winner&.id,
         winner_name: winner&.display_name,
         winner_points: winner&.points,
@@ -175,7 +175,7 @@ class NeverHaveIEverChannel < ApplicationCable::Channel
 
   def broadcast_player_status_changed
     NeverHaveIEverChannel.broadcast_to_game(@game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: @player.id,
       connected: @player.connected?
     })

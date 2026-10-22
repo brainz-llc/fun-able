@@ -14,6 +14,6 @@ class CreateWouldYouRatherPlayers < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :would_you_rather_players, [:would_you_rather_game_id, :user_id], unique: true, name: 'idx_wyr_players_game_user'
+    add_index :would_you_rather_players, [ :would_you_rather_game_id, :user_id ], unique: true, name: 'idx_wyr_players_game_user'
   end
 end

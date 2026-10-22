@@ -12,7 +12,7 @@ class MarkKingsCupDisconnectedJob < ApplicationJob
       player.mark_disconnected!
 
       KingsCupChannel.broadcast_to_game(player.kings_cup_game, {
-        type: 'player_status_changed',
+        type: "player_status_changed",
         player_id: player.id,
         connected: false
       })

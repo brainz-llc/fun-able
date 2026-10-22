@@ -38,8 +38,8 @@ module CartasContraLaFormalidad
 
     # Spanish locale as default for Latin American market
     config.i18n.default_locale = :es
-    config.i18n.available_locales = [:es, :en]
-    config.i18n.fallbacks = [:es, :en]
+    config.i18n.available_locales = [ :es, :en ]
+    config.i18n.fallbacks = [ :es, :en ]
 
     # Time zone for Latin America (can be overridden per user)
     config.time_zone = "America/Mexico_City"

@@ -1,6 +1,6 @@
 class TruthOrDareGame < ApplicationRecord
   # Associations
-  belongs_to :host, class_name: 'User'
+  belongs_to :host, class_name: "User"
   has_many :truth_or_dare_players, dependent: :destroy
   has_many :players, through: :truth_or_dare_players, source: :user
 
@@ -16,8 +16,8 @@ class TruthOrDareGame < ApplicationRecord
   before_validation :generate_code, on: :create
 
   # Scopes
-  scope :active, -> { where(status: [:lobby, :playing, :paused]) }
-  scope :joinable, -> { lobby.where('(SELECT COUNT(*) FROM truth_or_dare_players WHERE truth_or_dare_players.truth_or_dare_game_id = truth_or_dare_games.id) < truth_or_dare_games.max_players') }
+  scope :active, -> { where(status: [ :lobby, :playing, :paused ]) }
+  scope :joinable, -> { lobby.where("(SELECT COUNT(*) FROM truth_or_dare_players WHERE truth_or_dare_players.truth_or_dare_game_id = truth_or_dare_games.id) < truth_or_dare_games.max_players") }
   scope :recent, -> { order(created_at: :desc) }
 
   # Class methods
@@ -34,7 +34,7 @@ class TruthOrDareGame < ApplicationRecord
 
   # Instance methods
   def active_players
-    truth_or_dare_players.where(status: [:active, :disconnected]).order(:position)
+    truth_or_dare_players.where(status: [ :active, :disconnected ]).order(:position)
   end
 
   def player_count
@@ -133,7 +133,7 @@ class TruthOrDareGame < ApplicationRecord
     end
 
     if card
-      update!(used_truth_ids: used_truth_ids + [card.id])
+      update!(used_truth_ids: used_truth_ids + [ card.id ])
     end
 
     card
@@ -149,7 +149,7 @@ class TruthOrDareGame < ApplicationRecord
     end
 
     if card
-      update!(used_dare_ids: used_dare_ids + [card.id])
+      update!(used_dare_ids: used_dare_ids + [ card.id ])
     end
 
     card

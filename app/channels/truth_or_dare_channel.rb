@@ -27,12 +27,12 @@ class TruthOrDareChannel < ApplicationCable::Channel
   end
 
   def ping
-    transmit({ type: 'pong', timestamp: Time.current.to_i })
+    transmit({ type: "pong", timestamp: Time.current.to_i })
   end
 
   def request_state
     transmit({
-      type: 'game_state',
+      type: "game_state",
       game: game_state,
       player: player_state
     })
@@ -46,7 +46,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_player_joined(game, player)
       broadcast_to_game(game, {
-        type: 'player_joined',
+        type: "player_joined",
         player: player_data(player),
         player_count: game.player_count
       })
@@ -54,7 +54,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_player_left(game, user)
       broadcast_to_game(game, {
-        type: 'player_left',
+        type: "player_left",
         user_id: user.id,
         player_count: game.player_count
       })
@@ -62,7 +62,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_player_kicked(game, player)
       broadcast_to_game(game, {
-        type: 'player_kicked',
+        type: "player_kicked",
         player_id: player.id,
         user_id: player.user_id
       })
@@ -70,7 +70,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_settings_updated(game)
       broadcast_to_game(game, {
-        type: 'settings_updated',
+        type: "settings_updated",
         settings: {
           max_players: game.max_players,
           intensity_level: game.intensity_level
@@ -80,7 +80,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_game_started(game)
       broadcast_to_game(game, {
-        type: 'game_started',
+        type: "game_started",
         current_player_id: game.current_player.id,
         current_player_name: game.current_player.display_name
       })
@@ -88,7 +88,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_card_drawn(game, player, card_type, card)
       broadcast_to_game(game, {
-        type: 'card_drawn',
+        type: "card_drawn",
         player_id: player.id,
         player_name: player.display_name,
         card_type: card_type,
@@ -102,7 +102,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_turn_completed(game, player, challenge_type, drank)
       broadcast_to_game(game, {
-        type: 'turn_completed',
+        type: "turn_completed",
         player_id: player.id,
         player_name: player.display_name,
         challenge_type: challenge_type,
@@ -115,7 +115,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
     def broadcast_game_ended(game)
       broadcast_to_game(game, {
-        type: 'game_ended',
+        type: "game_ended",
         final_leaderboard: leaderboard_data(game)
       })
     end
@@ -157,7 +157,7 @@ class TruthOrDareChannel < ApplicationCable::Channel
 
   def broadcast_player_status_changed
     TruthOrDareChannel.broadcast_to_game(@game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: @player.id,
       connected: @player.connected?
     })

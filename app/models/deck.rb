@@ -1,10 +1,10 @@
 class Deck < ApplicationRecord
   # Associations
-  belongs_to :creator, class_name: 'User', optional: true
+  belongs_to :creator, class_name: "User", optional: true
   belongs_to :region, optional: true
   has_many :deck_cards, dependent: :destroy
   has_many :cards, through: :deck_cards
-  has_many :owned_cards, class_name: 'Card', dependent: :destroy
+  has_many :owned_cards, class_name: "Card", dependent: :destroy
   has_many :deck_votes, dependent: :destroy
   has_many :voters, through: :deck_votes, source: :user
   has_many :games, dependent: :nullify
@@ -25,7 +25,7 @@ class Deck < ApplicationRecord
   scope :by_rating, ->(rating) { where(content_rating: rating) if rating.present? }
   scope :popular, -> { order(votes_count: :desc) }
   scope :recent, -> { order(created_at: :desc) }
-  scope :playable, -> { where('(SELECT COUNT(*) FROM cards WHERE cards.deck_id = decks.id AND cards.card_type = 0) >= 10 AND (SELECT COUNT(*) FROM cards WHERE cards.deck_id = decks.id AND cards.card_type = 1) >= 25') }
+  scope :playable, -> { where("(SELECT COUNT(*) FROM cards WHERE cards.deck_id = decks.id AND cards.card_type = 0) >= 10 AND (SELECT COUNT(*) FROM cards WHERE cards.deck_id = decks.id AND cards.card_type = 1) >= 25") }
 
   # Callbacks
   after_touch :update_votes_count
@@ -75,9 +75,9 @@ class Deck < ApplicationRecord
 
   def rating_badge_class
     case content_rating
-    when 'family' then 'rating-family'
-    when 'adult' then 'rating-adult'
-    when 'nsfw' then 'rating-nsfw'
+    when "family" then "rating-family"
+    when "adult" then "rating-adult"
+    when "nsfw" then "rating-nsfw"
     end
   end
 
@@ -94,7 +94,7 @@ class Deck < ApplicationRecord
 
   def minimum_cards_for_publishing
     unless playable?
-      errors.add(:base, 'El mazo necesita al menos 10 cartas negras y 25 cartas blancas para publicarse')
+      errors.add(:base, "El mazo necesita al menos 10 cartas negras y 25 cartas blancas para publicarse")
     end
   end
 

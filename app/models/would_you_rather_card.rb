@@ -6,7 +6,7 @@ class WouldYouRatherCard < ApplicationRecord
 
   # Scopes
   scope :by_category, ->(category) { where(category: category) if category.present? }
-  scope :shuffled, -> { order(Arel.sql('RANDOM()')) }
+  scope :shuffled, -> { order(Arel.sql("RANDOM()")) }
   scope :popular, -> { order(times_played: :desc) }
 
   # Categories
@@ -15,9 +15,9 @@ class WouldYouRatherCard < ApplicationRecord
   # Instance methods
   def record_play!(winning_choice)
     increment!(:times_played)
-    if winning_choice == 'a'
+    if winning_choice == "a"
       increment!(:option_a_wins)
-    elsif winning_choice == 'b'
+    elsif winning_choice == "b"
       increment!(:option_b_wins)
     end
   end

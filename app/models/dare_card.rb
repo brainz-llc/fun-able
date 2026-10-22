@@ -8,7 +8,7 @@ class DareCard < ApplicationRecord
   # Scopes
   scope :by_intensity, ->(level) { where(intensity: level) }
   scope :up_to_intensity, ->(level) { where(intensity: ..level) }
-  scope :shuffled, -> { order('RANDOM()') }
+  scope :shuffled, -> { order("RANDOM()") }
   scope :not_in, ->(ids) { where.not(id: ids) if ids.present? }
 
   # Class methods
