@@ -20,25 +20,25 @@ class GameService
       game.add_player!(host)
       game
     else
-      raise Error, game.errors.full_messages.join(', ')
+      raise Error, game.errors.full_messages.join(", ")
     end
   end
 
   def self.join_game(user, code)
     game = Game.find_by_code(code)
-    raise Error, 'Partida no encontrada' unless game
-    raise Error, 'La partida ya comenzó' unless game.lobby?
-    raise Error, 'La partida está llena' if game.full?
+    raise Error, "Partida no encontrada" unless game
+    raise Error, "La partida ya comenzó" unless game.lobby?
+    raise Error, "La partida está llena" if game.full?
 
     player = game.add_player!(user)
-    raise Error, 'No se pudo unir' unless player
+    raise Error, "No se pudo unir" unless player
 
     GameChannel.broadcast_player_joined(game, player)
     player
   end
 
   def start_game!
-    raise Error, 'No se puede iniciar' unless game.can_start?
+    raise Error, "No se puede iniciar" unless game.can_start?
 
     game.transaction do
       game.update!(status: :playing)
@@ -53,11 +53,11 @@ class GameService
 
   def submit_cards!(player, card_ids)
     round = game.current_round
-    raise Error, 'No hay ronda activa' unless round
-    raise Error, 'No es momento de enviar cartas' unless round.submitting?
-    raise Error, 'Eres el Zar' if player.current_judge?
-    raise Error, 'Ya enviaste cartas' if player.submitted_for_round?(round)
-    raise Error, 'Cartas inválidas' unless player.has_cards?(card_ids)
+    raise Error, "No hay ronda activa" unless round
+    raise Error, "No es momento de enviar cartas" unless round.submitting?
+    raise Error, "Eres el Zar" if player.current_judge?
+    raise Error, "Ya enviaste cartas" if player.submitted_for_round?(round)
+    raise Error, "Cartas inválidas" unless player.has_cards?(card_ids)
 
     expected = round.pick_count
     raise Error, "Necesitas #{expected} carta(s)" if card_ids.length != expected
@@ -108,11 +108,11 @@ class GameService
 
   def select_winner!(judge_player, submission_id)
     round = game.current_round
-    raise Error, 'No es momento de seleccionar' unless round&.judging? || round&.revealing?
-    raise Error, 'No eres el Zar' unless judge_player.current_judge?
+    raise Error, "No es momento de seleccionar" unless round&.judging? || round&.revealing?
+    raise Error, "No eres el Zar" unless judge_player.current_judge?
 
     submission = round.card_submissions.find(submission_id)
-    raise Error, 'Selección inválida' unless submission
+    raise Error, "Selección inválida" unless submission
 
     game.transaction do
       round.select_winner!(submission)
@@ -136,12 +136,12 @@ class GameService
     return unless round
 
     case round.phase
-    when 'submitting'
+    when "submitting"
       # Auto-submit random cards for players who haven't submitted
       auto_submit_for_missing_players!
       # Force advance to judging even if some players couldn't submit
       force_advance_to_judging!
-    when 'judging'
+    when "judging"
       # Auto-select random winner
       auto_select_winner!
     end
@@ -189,7 +189,7 @@ class GameService
     round = game.current_round
     submitted_player_ids = round.card_submissions.pluck(:player_id)
 
-    game.active_players.where.not(id: [round.judge_id] + submitted_player_ids).each do |player|
+    game.active_players.where.not(id: [ round.judge_id ] + submitted_player_ids).each do |player|
       # Pick random cards from hand
       random_cards = player.cards_in_hand.sample(round.pick_count)
       next if random_cards.length < round.pick_count

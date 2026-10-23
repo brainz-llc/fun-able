@@ -34,7 +34,7 @@ countries = [
   { code: 'NI', name: 'Nicaragua', emoji_flag: '🇳🇮', position: 16 },
   { code: 'DO', name: 'Republica Dominicana', emoji_flag: '🇩🇴', position: 17 },
   { code: 'PR', name: 'Puerto Rico', emoji_flag: '🇵🇷', position: 18 },
-  { code: 'CU', name: 'Cuba', emoji_flag: '🇨🇺', position: 19 },
+  { code: 'CU', name: 'Cuba', emoji_flag: '🇨🇺', position: 19 }
 ]
 
 countries.each do |country|

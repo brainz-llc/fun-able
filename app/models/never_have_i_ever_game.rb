@@ -1,7 +1,7 @@
 class NeverHaveIEverGame < ApplicationRecord
   # Associations
-  belongs_to :host, class_name: 'User'
-  belongs_to :current_card, class_name: 'NeverHaveIEverCard', optional: true
+  belongs_to :host, class_name: "User"
+  belongs_to :current_card, class_name: "NeverHaveIEverCard", optional: true
   has_many :never_have_i_ever_players, dependent: :destroy
   has_many :players, through: :never_have_i_ever_players, source: :user
   has_many :never_have_i_ever_used_cards, dependent: :destroy
@@ -20,8 +20,8 @@ class NeverHaveIEverGame < ApplicationRecord
   before_validation :generate_code, on: :create
 
   # Scopes
-  scope :active, -> { where(status: [:lobby, :playing, :paused]) }
-  scope :joinable, -> { lobby.where('(SELECT COUNT(*) FROM never_have_i_ever_players WHERE never_have_i_ever_players.never_have_i_ever_game_id = never_have_i_ever_games.id) < never_have_i_ever_games.max_players') }
+  scope :active, -> { where(status: [ :lobby, :playing, :paused ]) }
+  scope :joinable, -> { lobby.where("(SELECT COUNT(*) FROM never_have_i_ever_players WHERE never_have_i_ever_players.never_have_i_ever_game_id = never_have_i_ever_games.id) < never_have_i_ever_games.max_players") }
 
   # Class methods
   def self.find_by_code(code)
@@ -37,7 +37,7 @@ class NeverHaveIEverGame < ApplicationRecord
 
   # Instance methods
   def active_players
-    never_have_i_ever_players.where(status: [:active, :disconnected])
+    never_have_i_ever_players.where(status: [ :active, :disconnected ])
   end
 
   def player_count
@@ -142,13 +142,13 @@ class NeverHaveIEverGame < ApplicationRecord
     active_players.update_all(drank_this_round: false)
 
     # Check for eliminated players
-    eliminated = active_players.where('points <= 0')
+    eliminated = active_players.where("points <= 0")
     eliminated.each do |player|
       NeverHaveIEverChannel.broadcast_player_eliminated(self, player)
     end
 
     # Check for game over (one player left or all eliminated)
-    remaining = active_players.where('points > 0')
+    remaining = active_players.where("points > 0")
     if remaining.count <= 1
       finish!
       NeverHaveIEverChannel.broadcast_game_ended(self)

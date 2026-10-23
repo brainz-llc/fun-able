@@ -109,7 +109,7 @@ black_cards = [
   "Mi mayor miedo es _____.",
   "_____ es lo unico que me mantiene cuerdo.",
   "La maestra me castigo por _____.",
-  "Si pudiera, le diria al mundo que _____.",
+  "Si pudiera, le diria al mundo que _____."
 ]
 
 # White cards (answers)
@@ -329,7 +329,7 @@ white_cards = [
   "El momento exacto",
   "La oportunidad perdida",
   "Una mentira piadosa",
-  "La verdad incomoda",
+  "La verdad incomoda"
 ]
 
 # Create cards
@@ -340,7 +340,7 @@ black_cards.each do |content|
 
   deck.owned_cards.find_or_create_by!(content: content) do |c|
     c.card_type = :black
-    c.pick_count = [blank_count, 3].min
+    c.pick_count = [ blank_count, 3 ].min
   end
 end
 

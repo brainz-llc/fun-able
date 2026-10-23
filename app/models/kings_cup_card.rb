@@ -1,12 +1,12 @@
 class KingsCupCard < ApplicationRecord
   # Associations
   belongs_to :kings_cup_game
-  belongs_to :drawn_by, class_name: 'KingsCupPlayer', optional: true
+  belongs_to :drawn_by, class_name: "KingsCupPlayer", optional: true
 
   # Validations
   validates :suit, presence: true, inclusion: { in: KingsCupGame::SUITS }
   validates :value, presence: true, inclusion: { in: KingsCupGame::VALUES }
-  validates :suit, uniqueness: { scope: [:kings_cup_game_id, :value] }
+  validates :suit, uniqueness: { scope: [ :kings_cup_game_id, :value ] }
 
   # Scopes
   scope :available, -> { where(drawn: false) }
@@ -23,7 +23,7 @@ class KingsCupCard < ApplicationRecord
   end
 
   def red?
-    suit_color == 'red'
+    suit_color == "red"
   end
 
   def rule

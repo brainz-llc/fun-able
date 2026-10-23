@@ -14,7 +14,7 @@ class CreateTruthOrDarePlayers < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :truth_or_dare_players, [:truth_or_dare_game_id, :user_id], unique: true, name: 'idx_tod_players_game_user'
-    add_index :truth_or_dare_players, [:truth_or_dare_game_id, :status], name: 'idx_tod_players_game_status'
+    add_index :truth_or_dare_players, [ :truth_or_dare_game_id, :user_id ], unique: true, name: 'idx_tod_players_game_user'
+    add_index :truth_or_dare_players, [ :truth_or_dare_game_id, :status ], name: 'idx_tod_players_game_status'
   end
 end

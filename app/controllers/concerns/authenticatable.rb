@@ -20,14 +20,14 @@ module Authenticatable
   def require_login
     unless logged_in?
       store_location
-      redirect_to new_session_path, alert: t('errors.login_required', default: 'Debes iniciar sesión')
+      redirect_to new_session_path, alert: t("errors.login_required", default: "Debes iniciar sesión")
     end
   end
 
   def require_registered_user
     if guest_user?
       store_location
-      redirect_to new_registration_path, alert: t('errors.registration_required', default: 'Debes crear una cuenta')
+      redirect_to new_registration_path, alert: t("errors.registration_required", default: "Debes crear una cuenta")
     elsif !logged_in?
       store_location
       redirect_to new_session_path

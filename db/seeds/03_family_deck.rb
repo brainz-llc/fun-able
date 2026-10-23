@@ -28,7 +28,7 @@ black_cards = [
   "Mi lugar favorito es _____.",
   "_____ es lo mas cool.",
   "La musica que me gusta es _____.",
-  "Si fuera un superhéroe mi nombre seria _____.",
+  "Si fuera un superhéroe mi nombre seria _____."
 ]
 
 white_cards = [
@@ -71,7 +71,7 @@ white_cards = [
   "Cantar en el carro",
   "Los dias de lluvia",
   "Un chocolate caliente",
-  "Dormir hasta tarde",
+  "Dormir hasta tarde"
 ]
 
 black_cards.each do |content|
@@ -80,7 +80,7 @@ black_cards.each do |content|
 
   deck.owned_cards.find_or_create_by!(content: content) do |c|
     c.card_type = :black
-    c.pick_count = [blank_count, 3].min
+    c.pick_count = [ blank_count, 3 ].min
   end
 end
 

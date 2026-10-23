@@ -7,6 +7,6 @@ class CreateSubmissionCards < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :submission_cards, [:card_submission_id, :play_order]
+    add_index :submission_cards, [ :card_submission_id, :play_order ]
   end
 end

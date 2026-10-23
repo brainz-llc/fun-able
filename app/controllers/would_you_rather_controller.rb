@@ -1,8 +1,8 @@
 class WouldYouRatherController < ApplicationController
   include Authenticatable
 
-  before_action :set_game, only: [:show, :lobby, :join, :start, :vote, :next_round, :leave]
-  before_action :require_player, only: [:show, :vote, :next_round, :leave]
+  before_action :set_game, only: [ :show, :lobby, :join, :start, :vote, :next_round, :leave ]
+  before_action :require_player, only: [ :show, :vote, :next_round, :leave ]
 
   def index
     @active_games = WouldYouRatherGame.active.includes(:host).order(created_at: :desc).limit(10)
@@ -23,7 +23,7 @@ class WouldYouRatherController < ApplicationController
       @game.add_player!(current_user)
       redirect_to lobby_would_you_rather_path(@game)
     else
-      flash.now[:alert] = @game.errors.full_messages.join(', ')
+      flash.now[:alert] = @game.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -46,7 +46,7 @@ class WouldYouRatherController < ApplicationController
         @game.add_player!(current_user)
         WouldYouRatherChannel.broadcast_player_joined(@game, @game.player_for(current_user))
       else
-        redirect_to would_you_rather_index_path, alert: 'No puedes unirte a esta partida'
+        redirect_to would_you_rather_index_path, alert: "No puedes unirte a esta partida"
         return
       end
     end
@@ -64,7 +64,7 @@ class WouldYouRatherController < ApplicationController
     end
 
     unless @game.joinable?
-      redirect_to would_you_rather_index_path, alert: 'No puedes unirte a esta partida'
+      redirect_to would_you_rather_index_path, alert: "No puedes unirte a esta partida"
       return
     end
 
@@ -74,12 +74,12 @@ class WouldYouRatherController < ApplicationController
       WouldYouRatherChannel.broadcast_player_joined(@game, player)
       redirect_to lobby_would_you_rather_path(@game)
     else
-      redirect_to would_you_rather_index_path, alert: 'No se pudo unir a la partida'
+      redirect_to would_you_rather_index_path, alert: "No se pudo unir a la partida"
     end
   end
 
   def join_by_code
-    code = params[:code]&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
+    code = params[:code]&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, "")
     game = WouldYouRatherGame.find_by_code(code)
 
     if game
@@ -91,7 +91,7 @@ class WouldYouRatherController < ApplicationController
 
   def start
     unless @game.host?(current_user)
-      redirect_to would_you_rather_path(@game), alert: 'Solo el anfitrion puede iniciar el juego'
+      redirect_to would_you_rather_path(@game), alert: "Solo el anfitrion puede iniciar el juego"
       return
     end
 
@@ -99,7 +99,7 @@ class WouldYouRatherController < ApplicationController
       WouldYouRatherChannel.broadcast_game_started(@game)
       redirect_to would_you_rather_path(@game)
     else
-      redirect_to lobby_would_you_rather_path(@game), alert: 'No se puede iniciar el juego'
+      redirect_to lobby_would_you_rather_path(@game), alert: "No se puede iniciar el juego"
     end
   end
 
@@ -107,12 +107,12 @@ class WouldYouRatherController < ApplicationController
     choice = params[:choice]
 
     unless %w[a b].include?(choice)
-      render json: { error: 'Opcion invalida' }, status: :unprocessable_entity
+      render json: { error: "Opcion invalida" }, status: :unprocessable_entity
       return
     end
 
     if @current_player.voted_for_round?(@game.current_round)
-      render json: { error: 'Ya votaste en esta ronda' }, status: :unprocessable_entity
+      render json: { error: "Ya votaste en esta ronda" }, status: :unprocessable_entity
       return
     end
 
@@ -136,7 +136,7 @@ class WouldYouRatherController < ApplicationController
 
   def next_round
     unless @game.host?(current_user)
-      render json: { error: 'Solo el anfitrion puede avanzar' }, status: :unprocessable_entity
+      render json: { error: "Solo el anfitrion puede avanzar" }, status: :unprocessable_entity
       return
     end
 
@@ -149,7 +149,7 @@ class WouldYouRatherController < ApplicationController
   def leave
     @game.remove_player!(current_user)
     WouldYouRatherChannel.broadcast_player_left(@game, @current_player)
-    redirect_to would_you_rather_index_path, notice: 'Has abandonado la partida'
+    redirect_to would_you_rather_index_path, notice: "Has abandonado la partida"
   end
 
   private
@@ -157,13 +157,13 @@ class WouldYouRatherController < ApplicationController
   def set_game
     @game = WouldYouRatherGame.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to would_you_rather_index_path, alert: 'Partida no encontrada'
+    redirect_to would_you_rather_index_path, alert: "Partida no encontrada"
   end
 
   def require_player
     @current_player = @game.player_for(current_user)
     unless @current_player
-      redirect_to would_you_rather_index_path, alert: 'No eres parte de esta partida'
+      redirect_to would_you_rather_index_path, alert: "No eres parte de esta partida"
     end
   end
 

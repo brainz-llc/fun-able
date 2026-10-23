@@ -2,7 +2,7 @@ class DeckCardsController < ApplicationController
   before_action :require_registered_user
   before_action :set_deck
   before_action :require_deck_owner
-  before_action :set_card, only: [:edit, :update, :destroy]
+  before_action :set_card, only: [ :edit, :update, :destroy ]
 
   def index
     @black_cards = @deck.black_cards
@@ -18,11 +18,11 @@ class DeckCardsController < ApplicationController
 
     if @card.save
       respond_to do |format|
-        format.html { redirect_to deck_deck_cards_path(@deck), notice: 'Carta agregada' }
+        format.html { redirect_to deck_deck_cards_path(@deck), notice: "Carta agregada" }
         format.turbo_stream
       end
     else
-      flash.now[:alert] = @card.errors.full_messages.join(', ')
+      flash.now[:alert] = @card.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -33,11 +33,11 @@ class DeckCardsController < ApplicationController
   def update
     if @card.update(card_params)
       respond_to do |format|
-        format.html { redirect_to deck_deck_cards_path(@deck), notice: 'Carta actualizada' }
+        format.html { redirect_to deck_deck_cards_path(@deck), notice: "Carta actualizada" }
         format.turbo_stream
       end
     else
-      flash.now[:alert] = @card.errors.full_messages.join(', ')
+      flash.now[:alert] = @card.errors.full_messages.join(", ")
       render :edit, status: :unprocessable_entity
     end
   end
@@ -46,15 +46,15 @@ class DeckCardsController < ApplicationController
     @card.destroy
 
     respond_to do |format|
-      format.html { redirect_to deck_deck_cards_path(@deck), notice: 'Carta eliminada' }
+      format.html { redirect_to deck_deck_cards_path(@deck), notice: "Carta eliminada" }
       format.turbo_stream { render turbo_stream: turbo_stream.remove(@card) }
     end
   end
 
   def bulk_create
-    cards_text = params[:cards] || ''
+    cards_text = params[:cards] || ""
     cards_data = cards_text.split("\n").map(&:strip).reject(&:blank?)
-    card_type = params[:card_type] || 'white'
+    card_type = params[:card_type] || "white"
 
     created_count = 0
     cards_data.each do |content|
@@ -64,7 +64,7 @@ class DeckCardsController < ApplicationController
       card = @deck.owned_cards.build(
         content: content,
         card_type: card_type,
-        pick_count: card_type == 'black' ? count_blanks(content) : 1
+        pick_count: card_type == "black" ? count_blanks(content) : 1
       )
       created_count += 1 if card.save
     end
@@ -84,7 +84,7 @@ class DeckCardsController < ApplicationController
 
   def require_deck_owner
     unless @deck.creator_id == current_user&.id
-      redirect_to deck_path(@deck), alert: 'No tienes permiso'
+      redirect_to deck_path(@deck), alert: "No tienes permiso"
     end
   end
 
@@ -93,7 +93,7 @@ class DeckCardsController < ApplicationController
   end
 
   def count_blanks(content)
-    count = content.scan('_____').count
-    count.zero? ? 1 : [count, 3].min
+    count = content.scan("_____").count
+    count.zero? ? 1 : [ count, 3 ].min
   end
 end

@@ -1,9 +1,9 @@
 class NeverHaveIEverController < ApplicationController
   include NeverHaveIEverAuthorizable
 
-  before_action :require_login, except: [:index, :show, :join]
-  before_action :set_game, only: [:show, :lobby, :join]
-  before_action :require_nhie_game_player, only: [:lobby]
+  before_action :require_login, except: [ :index, :show, :join ]
+  before_action :set_game, only: [ :show, :lobby, :join ]
+  before_action :require_nhie_game_player, only: [ :lobby ]
 
   def index
     # Landing page for Never Have I Ever
@@ -28,7 +28,7 @@ class NeverHaveIEverController < ApplicationController
       @game.add_player!(current_user)
       redirect_to lobby_never_have_i_ever_game_path(@game)
     else
-      flash.now[:alert] = @game.errors.full_messages.join(', ')
+      flash.now[:alert] = @game.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -56,7 +56,7 @@ class NeverHaveIEverController < ApplicationController
     end
 
     unless current_nhie_game.joinable?
-      redirect_to never_have_i_ever_path, alert: 'No puedes unirte a esta partida'
+      redirect_to never_have_i_ever_path, alert: "No puedes unirte a esta partida"
       return
     end
 
@@ -66,7 +66,7 @@ class NeverHaveIEverController < ApplicationController
       NeverHaveIEverChannel.broadcast_player_joined(current_nhie_game, player)
       redirect_to lobby_never_have_i_ever_game_path(current_nhie_game)
     else
-      redirect_to never_have_i_ever_path, alert: 'No se pudo unir a la partida'
+      redirect_to never_have_i_ever_path, alert: "No se pudo unir a la partida"
     end
   end
 
@@ -82,7 +82,7 @@ class NeverHaveIEverController < ApplicationController
 
   def find_and_join_by_code
     raw_code = params[:code]
-    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
+    code = raw_code&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, "")
 
     game = NeverHaveIEverGame.find_by_code(code)
 
@@ -96,7 +96,7 @@ class NeverHaveIEverController < ApplicationController
   def set_game
     @current_nhie_game = NeverHaveIEverGame.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to never_have_i_ever_path, alert: 'Partida no encontrada'
+    redirect_to never_have_i_ever_path, alert: "Partida no encontrada"
   end
 
   def game_params

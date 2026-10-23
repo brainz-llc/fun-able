@@ -11,7 +11,7 @@ class WouldYouRatherPlayer < ApplicationRecord
   validates :user_id, uniqueness: { scope: :would_you_rather_game_id }
 
   # Scopes
-  scope :connected, -> { where(status: [:active]) }
+  scope :connected, -> { where(status: [ :active ]) }
   scope :by_drinks, -> { order(drinks_taken: :desc) }
 
   # Delegate
@@ -28,7 +28,7 @@ class WouldYouRatherPlayer < ApplicationRecord
     new_streak = current_streak + 1
     update!(
       current_streak: new_streak,
-      max_streak: [max_streak, new_streak].max
+      max_streak: [ max_streak, new_streak ].max
     )
   end
 

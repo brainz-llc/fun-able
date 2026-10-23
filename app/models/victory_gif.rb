@@ -8,7 +8,7 @@ class VictoryGif < ApplicationRecord
   # Scopes
   scope :for_round_win, -> { round_win }
   scope :for_game_win, -> { game_win }
-  scope :random_one, -> { order('RANDOM()').first }
+  scope :random_one, -> { order("RANDOM()").first }
 
   # Class methods
   def self.random_for(category)

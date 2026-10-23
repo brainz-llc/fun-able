@@ -6,6 +6,6 @@ class CreateDeckCards < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :deck_cards, [:deck_id, :card_id], unique: true
+    add_index :deck_cards, [ :deck_id, :card_id ], unique: true
   end
 end

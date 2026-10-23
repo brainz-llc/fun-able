@@ -6,6 +6,6 @@ class CreateHandCards < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :hand_cards, [:game_player_id, :card_id], unique: true
+    add_index :hand_cards, [ :game_player_id, :card_id ], unique: true
   end
 end

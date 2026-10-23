@@ -1,9 +1,9 @@
 class Round < ApplicationRecord
   # Associations
   belongs_to :game
-  belongs_to :judge, class_name: 'GamePlayer'
-  belongs_to :black_card, class_name: 'Card'
-  belongs_to :winner, class_name: 'GamePlayer', optional: true
+  belongs_to :judge, class_name: "GamePlayer"
+  belongs_to :black_card, class_name: "Card"
+  belongs_to :winner, class_name: "GamePlayer", optional: true
   has_many :card_submissions, dependent: :destroy
 
   # Enums
@@ -23,7 +23,7 @@ class Round < ApplicationRecord
 
   def timer_remaining
     return 0 unless timer_expires_at
-    [(timer_expires_at - Time.current).to_i, 0].max
+    [ (timer_expires_at - Time.current).to_i, 0 ].max
   end
 
   def timer_expired?
@@ -118,7 +118,7 @@ class Round < ApplicationRecord
   private
 
   def check_game_winner!
-    winning_player = game.game_players.find_by('score >= ?', game.points_to_win)
+    winning_player = game.game_players.find_by("score >= ?", game.points_to_win)
 
     if winning_player
       game.finish!

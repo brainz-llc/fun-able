@@ -1,0 +1,25 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "HTTP Verb Confusion",
+      "warning_code": 118,
+      "fingerprint": "efcf3bb132316224759991c5c3d94009c9e2b8ddcc199237aee9125603d96568",
+      "check_name": "VerbConfusion",
+      "message": "Potential HTTP verb confusion. `HEAD` is routed like `GET` but `request.get?` will return `false`",
+      "file": "app/controllers/concerns/authenticatable.rb",
+      "line": 71,
+      "link": "https://brakemanscanner.org/docs/warning_types/http_verb_confusion/",
+      "code": "session[:return_to] = request.fullpath if request.get?",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Authenticatable",
+        "method": "store_location"
+      },
+      "user_input": "request.get?",
+      "confidence": "Weak",
+      "note": "False positive. This check flags a GET-only guard that a HEAD request slips past. Here the guard protects nothing security-relevant: store_location only remembers a path in the session so redirect_back_or can send the user where they were headed after signing in. A HEAD request simply does not get a return location stored - no authorization is bypassed and no state is changed. Nothing downstream trusts session[:return_to] beyond redirect_to."
+    }
+  ],
+  "brakeman_version": "7.1.2"
+}

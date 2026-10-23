@@ -8,7 +8,7 @@ class NeverHaveIEverMarkDisconnectedJob < ApplicationJob
 
     player.mark_disconnected!
     NeverHaveIEverChannel.broadcast_to_game(player.game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: player.id,
       connected: false
     })

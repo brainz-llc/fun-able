@@ -7,6 +7,6 @@ class NeverHaveIEverCard < ApplicationRecord
   validates :category, presence: true
 
   # Scopes
-  scope :shuffled, -> { order(Arel.sql('RANDOM()')) }
+  scope :shuffled, -> { order(Arel.sql("RANDOM()")) }
   scope :by_category, ->(cat) { where(category: cat) }
 end

@@ -12,7 +12,7 @@ class CreateDecks < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :decks, [:status, :content_rating]
+    add_index :decks, [ :status, :content_rating ]
     add_index :decks, :official
   end
 end

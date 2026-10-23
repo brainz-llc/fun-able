@@ -29,7 +29,7 @@ black_cards = [
   "La arepa perfecta lleva _____.",
   "Lo mas rolo que puedes hacer es _____.",
   "En el TransMilenio vi a alguien con _____.",
-  "El man de la tienda siempre ofrece _____.",
+  "El man de la tienda siempre ofrece _____."
 ]
 
 white_cards = [
@@ -77,7 +77,7 @@ white_cards = [
   "Un boyacense madrugador",
   "Un llanero cantando",
   "Un amazonense en la selva",
-  "Un isleño relajado",
+  "Un isleño relajado"
 ]
 
 black_cards.each do |content|
@@ -86,7 +86,7 @@ black_cards.each do |content|
 
   deck.owned_cards.find_or_create_by!(content: content) do |c|
     c.card_type = :black
-    c.pick_count = [blank_count, 3].min
+    c.pick_count = [ blank_count, 3 ].min
   end
 end
 

@@ -1,7 +1,7 @@
 class Region < ApplicationRecord
   # Self-referential for hierarchy
-  belongs_to :parent, class_name: 'Region', optional: true
-  has_many :children, class_name: 'Region', foreign_key: :parent_id, dependent: :nullify
+  belongs_to :parent, class_name: "Region", optional: true
+  has_many :children, class_name: "Region", foreign_key: :parent_id, dependent: :nullify
 
   # Associations
   has_many :decks, dependent: :nullify
@@ -18,21 +18,21 @@ class Region < ApplicationRecord
 
   # Class methods
   def self.for_select
-    active.sorted.map { |r| [r.display_name, r.id] }
+    active.sorted.map { |r| [ r.display_name, r.id ] }
   end
 
   def self.grouped_for_select
     roots.active.sorted.includes(:children).map do |root|
       [
         root.display_name,
-        root.children.active.sorted.map { |c| [c.display_name, c.id] }
+        root.children.active.sorted.map { |c| [ c.display_name, c.id ] }
       ]
     end
   end
 
   # Instance methods
   def display_name
-    [emoji_flag, name].compact.join(' ')
+    [ emoji_flag, name ].compact.join(" ")
   end
 
   def root?
@@ -45,15 +45,15 @@ class Region < ApplicationRecord
 
   def ancestors
     return [] if root?
-    [parent] + parent.ancestors
+    [ parent ] + parent.ancestors
   end
 
   def descendants
-    children.flat_map { |c| [c] + c.descendants }
+    children.flat_map { |c| [ c ] + c.descendants }
   end
 
   def self_and_descendants
-    [self] + descendants
+    [ self ] + descendants
   end
 
   def deck_count

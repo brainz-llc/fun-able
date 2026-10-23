@@ -9,7 +9,7 @@ round_win_gifs = [
   "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif", # Party
   "https://media.giphy.com/media/26BRBKqUiq586bRVm/giphy.gif", # Yes!
   "https://media.giphy.com/media/3oz8xAFtqoOUUrsh7W/giphy.gif", # Happy
-  "https://media.giphy.com/media/26tPplGWjN0xLybiU/giphy.gif", # Cheering
+  "https://media.giphy.com/media/26tPplGWjN0xLybiU/giphy.gif" # Cheering
 ]
 
 game_win_gifs = [
@@ -19,7 +19,7 @@ game_win_gifs = [
   "https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif", # Victory
   "https://media.giphy.com/media/3o6gDWzmAzrpi5DQU8/giphy.gif", # Confetti
   "https://media.giphy.com/media/26BRBPVfvbBhNjGxi/giphy.gif", # The best
-  "https://media.giphy.com/media/l41YqKTI3pFKuI9CE/giphy.gif", # Winner dance
+  "https://media.giphy.com/media/l41YqKTI3pFKuI9CE/giphy.gif" # Winner dance
 ]
 
 round_win_gifs.each do |url|

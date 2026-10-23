@@ -13,7 +13,7 @@ class CreateNeverHaveIEverPlayers < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :never_have_i_ever_players, [:never_have_i_ever_game_id, :user_id], unique: true, name: 'idx_nhie_players_game_user'
-    add_index :never_have_i_ever_players, [:never_have_i_ever_game_id, :status], name: 'idx_nhie_players_game_status'
+    add_index :never_have_i_ever_players, [ :never_have_i_ever_game_id, :user_id ], unique: true, name: 'idx_nhie_players_game_user'
+    add_index :never_have_i_ever_players, [ :never_have_i_ever_game_id, :status ], name: 'idx_nhie_players_game_status'
   end
 end

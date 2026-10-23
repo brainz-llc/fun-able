@@ -1,7 +1,7 @@
 class MostLikelyToGame < ApplicationRecord
   # Associations
-  belongs_to :host, class_name: 'User'
-  belongs_to :current_card, class_name: 'MostLikelyToCard', optional: true
+  belongs_to :host, class_name: "User"
+  belongs_to :current_card, class_name: "MostLikelyToCard", optional: true
   has_many :most_likely_to_players, dependent: :destroy
   has_many :players, through: :most_likely_to_players, source: :user
   has_many :most_likely_to_votes, dependent: :destroy
@@ -18,8 +18,8 @@ class MostLikelyToGame < ApplicationRecord
   before_validation :generate_code, on: :create
 
   # Scopes
-  scope :active, -> { where(status: [:lobby, :playing, :paused]) }
-  scope :joinable, -> { lobby.where('(SELECT COUNT(*) FROM most_likely_to_players WHERE most_likely_to_players.most_likely_to_game_id = most_likely_to_games.id) < most_likely_to_games.max_players') }
+  scope :active, -> { where(status: [ :lobby, :playing, :paused ]) }
+  scope :joinable, -> { lobby.where("(SELECT COUNT(*) FROM most_likely_to_players WHERE most_likely_to_players.most_likely_to_game_id = most_likely_to_games.id) < most_likely_to_games.max_players") }
   scope :recent, -> { order(created_at: :desc) }
 
   # Class methods
@@ -36,7 +36,7 @@ class MostLikelyToGame < ApplicationRecord
 
   # Instance methods
   def active_players
-    most_likely_to_players.where(status: [:active, :disconnected]).order(:position)
+    most_likely_to_players.where(status: [ :active, :disconnected ]).order(:position)
   end
 
   def player_count
@@ -103,7 +103,7 @@ class MostLikelyToGame < ApplicationRecord
       update!(
         status: :playing,
         current_round: 1,
-        phase: 'voting',
+        phase: "voting",
         used_card_ids: []
       )
       draw_new_card!
@@ -112,7 +112,7 @@ class MostLikelyToGame < ApplicationRecord
   end
 
   def finish!
-    update!(status: :finished, phase: 'results')
+    update!(status: :finished, phase: "results")
   end
 
   def draw_new_card!
@@ -127,8 +127,8 @@ class MostLikelyToGame < ApplicationRecord
       card.record_play!
       update!(
         current_card: card,
-        used_card_ids: used_card_ids + [card.id],
-        phase: 'voting'
+        used_card_ids: used_card_ids + [ card.id ],
+        phase: "voting"
       )
     end
 
@@ -160,7 +160,7 @@ class MostLikelyToGame < ApplicationRecord
   end
 
   def reveal_results!
-    update!(phase: 'revealing')
+    update!(phase: "revealing")
 
     # Award drinks to winners
     winners.each(&:drink!)

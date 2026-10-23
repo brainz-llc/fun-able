@@ -22,12 +22,12 @@ class WouldYouRatherChannel < ApplicationCable::Channel
   end
 
   def ping
-    transmit({ type: 'pong', timestamp: Time.current.to_i })
+    transmit({ type: "pong", timestamp: Time.current.to_i })
   end
 
   def request_state
     transmit({
-      type: 'game_state',
+      type: "game_state",
       game: game_state,
       player: player_state
     })
@@ -41,7 +41,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_player_joined(game, player)
       broadcast_to_game(game, {
-        type: 'player_joined',
+        type: "player_joined",
         player: player_data(player),
         player_count: game.player_count
       })
@@ -49,7 +49,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_player_left(game, player)
       broadcast_to_game(game, {
-        type: 'player_left',
+        type: "player_left",
         player_id: player.id,
         user_id: player.user_id,
         player_count: game.player_count
@@ -58,7 +58,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_game_started(game)
       broadcast_to_game(game, {
-        type: 'game_started',
+        type: "game_started",
         round: game.current_round,
         card: card_data(game.current_card),
         voting_ends_at: game.voting_ends_at&.iso8601
@@ -67,7 +67,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_new_round(game)
       broadcast_to_game(game, {
-        type: 'new_round',
+        type: "new_round",
         round: game.current_round,
         max_rounds: game.max_rounds,
         card: card_data(game.current_card),
@@ -78,7 +78,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_vote_submitted(game)
       broadcast_to_game(game, {
-        type: 'vote_submitted',
+        type: "vote_submitted",
         votes_count: game.votes_for_current_round.count,
         total_players: game.active_players.count,
         all_voted: game.all_voted?
@@ -87,7 +87,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_votes_revealed(game, results)
       broadcast_to_game(game, {
-        type: 'votes_revealed',
+        type: "votes_revealed",
         option_a_votes: results[:option_a_votes],
         option_b_votes: results[:option_b_votes],
         option_a_percentage: calculate_percentage(results[:option_a_votes], results[:option_b_votes]),
@@ -101,7 +101,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
     def broadcast_game_ended(game)
       broadcast_to_game(game, {
-        type: 'game_ended',
+        type: "game_ended",
         final_leaderboard: leaderboard_data(game)
       })
     end
@@ -161,7 +161,7 @@ class WouldYouRatherChannel < ApplicationCable::Channel
 
   def broadcast_player_status_changed
     WouldYouRatherChannel.broadcast_to_game(@game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: @player.id,
       connected: @player.connected?
     })

@@ -1,7 +1,7 @@
 class WouldYouRatherGame < ApplicationRecord
   # Associations
-  belongs_to :host, class_name: 'User'
-  belongs_to :current_card, class_name: 'WouldYouRatherCard', optional: true
+  belongs_to :host, class_name: "User"
+  belongs_to :current_card, class_name: "WouldYouRatherCard", optional: true
   has_many :would_you_rather_players, dependent: :destroy
   has_many :players, through: :would_you_rather_players, source: :user
   has_many :would_you_rather_votes, dependent: :destroy
@@ -17,7 +17,7 @@ class WouldYouRatherGame < ApplicationRecord
   before_validation :generate_code, on: :create
 
   # Scopes
-  scope :active, -> { where(status: [:lobby, :playing]) }
+  scope :active, -> { where(status: [ :lobby, :playing ]) }
   scope :joinable, -> { lobby }
 
   # Class methods
@@ -34,7 +34,7 @@ class WouldYouRatherGame < ApplicationRecord
 
   # Instance methods
   def active_players
-    would_you_rather_players.where(status: [:active, :disconnected])
+    would_you_rather_players.where(status: [ :active, :disconnected ])
   end
 
   def player_count
@@ -107,7 +107,7 @@ class WouldYouRatherGame < ApplicationRecord
     update!(
       current_card: new_card,
       current_round: current_round + 1,
-      phase: 'voting',
+      phase: "voting",
       voting_ends_at: 30.seconds.from_now
     )
   end
@@ -123,22 +123,22 @@ class WouldYouRatherGame < ApplicationRecord
   def reveal_votes!
     return unless all_voted? || voting_ended?
 
-    update!(phase: 'revealing')
+    update!(phase: "revealing")
 
     votes = votes_for_current_round
-    option_a_votes = votes.where(choice: 'a').count
-    option_b_votes = votes.where(choice: 'b').count
+    option_a_votes = votes.where(choice: "a").count
+    option_b_votes = votes.where(choice: "b").count
 
     # Determine minority
     minority_choice = if option_a_votes < option_b_votes
-                        'a'
-                      elsif option_b_votes < option_a_votes
-                        'b'
-                      else
+                        "a"
+    elsif option_b_votes < option_a_votes
+                        "b"
+    else
                         nil # Tie - no one drinks
-                      end
+    end
 
-    winning_choice = minority_choice == 'a' ? 'b' : 'a' if minority_choice
+    winning_choice = minority_choice == "a" ? "b" : "a" if minority_choice
 
     # Update player stats
     if minority_choice
@@ -170,7 +170,7 @@ class WouldYouRatherGame < ApplicationRecord
   end
 
   def finish!
-    update!(status: :finished, phase: 'finished')
+    update!(status: :finished, phase: "finished")
   end
 
   def broadcast_channel

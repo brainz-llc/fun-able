@@ -10,7 +10,7 @@ class CreateWouldYouRatherVotes < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :would_you_rather_votes, [:would_you_rather_game_id, :round_number], name: 'idx_wyr_votes_game_round'
-    add_index :would_you_rather_votes, [:would_you_rather_game_id, :would_you_rather_player_id, :round_number], unique: true, name: 'idx_wyr_votes_unique_per_round'
+    add_index :would_you_rather_votes, [ :would_you_rather_game_id, :round_number ], name: 'idx_wyr_votes_game_round'
+    add_index :would_you_rather_votes, [ :would_you_rather_game_id, :would_you_rather_player_id, :round_number ], unique: true, name: 'idx_wyr_votes_unique_per_round'
   end
 end

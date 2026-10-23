@@ -12,6 +12,6 @@ class CreateRegions < ActiveRecord::Migration[8.1]
     end
     add_index :regions, :parent_id
     add_index :regions, :code, unique: true
-    add_index :regions, [:active, :position]
+    add_index :regions, [ :active, :position ]
   end
 end

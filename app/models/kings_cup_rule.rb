@@ -1,7 +1,7 @@
 class KingsCupRule < ApplicationRecord
   # Associations
   belongs_to :kings_cup_game
-  belongs_to :created_by, class_name: 'KingsCupPlayer', optional: true
+  belongs_to :created_by, class_name: "KingsCupPlayer", optional: true
 
   # Validations
   validates :rule_text, presence: true, length: { maximum: 200 }
@@ -16,6 +16,6 @@ class KingsCupRule < ApplicationRecord
   end
 
   def creator_name
-    created_by&.display_name || 'Sistema'
+    created_by&.display_name || "Sistema"
   end
 end

@@ -26,12 +26,12 @@ class MostLikelyToChannel < ApplicationCable::Channel
   end
 
   def ping
-    transmit({ type: 'pong', timestamp: Time.current.to_i })
+    transmit({ type: "pong", timestamp: Time.current.to_i })
   end
 
   def request_state
     transmit({
-      type: 'game_state',
+      type: "game_state",
       game: game_state,
       player: player_state
     })
@@ -45,7 +45,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
     def broadcast_player_joined(game, player)
       broadcast_to_game(game, {
-        type: 'player_joined',
+        type: "player_joined",
         player: player_data(player),
         player_count: game.player_count
       })
@@ -53,7 +53,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
     def broadcast_player_left(game, player)
       broadcast_to_game(game, {
-        type: 'player_left',
+        type: "player_left",
         player_id: player.id,
         user_id: player.user_id,
         player_count: game.player_count
@@ -62,7 +62,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
     def broadcast_game_started(game)
       broadcast_to_game(game, {
-        type: 'game_started',
+        type: "game_started",
         round: game.current_round,
         total_rounds: game.total_rounds,
         card: card_data(game.current_card),
@@ -72,7 +72,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
     def broadcast_vote_received(game, voter)
       broadcast_to_game(game, {
-        type: 'vote_received',
+        type: "vote_received",
         voter_id: voter.id,
         votes_count: game.votes_for_round.count,
         expected_count: game.active_players.count,
@@ -85,7 +85,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
       vote_counts = game.vote_counts
 
       broadcast_to_game(game, {
-        type: 'reveal_results',
+        type: "reveal_results",
         round: game.current_round,
         winners: winners.map { |w| player_data(w) },
         vote_counts: vote_counts.transform_keys(&:to_s),
@@ -97,7 +97,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
     def broadcast_new_round(game)
       broadcast_to_game(game, {
-        type: 'new_round',
+        type: "new_round",
         round: game.current_round,
         total_rounds: game.total_rounds,
         card: card_data(game.current_card),
@@ -108,7 +108,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
     def broadcast_game_ended(game)
       broadcast_to_game(game, {
-        type: 'game_ended',
+        type: "game_ended",
         final_leaderboard: leaderboard_data(game),
         winner: game.leaderboard.first ? player_data(game.leaderboard.first) : nil
       })
@@ -157,7 +157,7 @@ class MostLikelyToChannel < ApplicationCable::Channel
 
   def broadcast_player_status_changed
     MostLikelyToChannel.broadcast_to_game(@game, {
-      type: 'player_status_changed',
+      type: "player_status_changed",
       player_id: @player.id,
       connected: @player.connected?
     })

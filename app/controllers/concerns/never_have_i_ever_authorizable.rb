@@ -19,25 +19,25 @@ module NeverHaveIEverAuthorizable
 
   def require_nhie_game_player
     unless current_nhie_player
-      redirect_to root_path, alert: 'No eres parte de esta partida'
+      redirect_to root_path, alert: "No eres parte de esta partida"
     end
   end
 
   def require_nhie_game_host
     unless nhie_game_host?
-      redirect_to never_have_i_ever_game_path(current_nhie_game), alert: 'Solo el anfitrion puede hacer esto'
+      redirect_to never_have_i_ever_game_path(current_nhie_game), alert: "Solo el anfitrion puede hacer esto"
     end
   end
 
   def require_nhie_active_game
     unless current_nhie_game&.playing?
-      redirect_to never_have_i_ever_game_path(current_nhie_game), alert: 'La partida no esta activa'
+      redirect_to never_have_i_ever_game_path(current_nhie_game), alert: "La partida no esta activa"
     end
   end
 
   def require_nhie_lobby
     unless current_nhie_game&.lobby?
-      redirect_to never_have_i_ever_game_path(current_nhie_game), alert: 'La partida ya comenzo'
+      redirect_to never_have_i_ever_game_path(current_nhie_game), alert: "La partida ya comenzo"
     end
   end
 end

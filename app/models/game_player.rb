@@ -7,8 +7,8 @@ class GamePlayer < ApplicationRecord
   has_many :hand_cards, dependent: :destroy
   has_many :cards_in_hand, through: :hand_cards, source: :card
   has_many :card_submissions, foreign_key: :player_id, dependent: :destroy
-  has_many :judged_rounds, class_name: 'Round', foreign_key: :judge_id, dependent: :nullify
-  has_many :won_rounds, class_name: 'Round', foreign_key: :winner_id, dependent: :nullify
+  has_many :judged_rounds, class_name: "Round", foreign_key: :judge_id, dependent: :nullify
+  has_many :won_rounds, class_name: "Round", foreign_key: :winner_id, dependent: :nullify
 
   # Enums
   enum :status, { active: 0, disconnected: 1, left: 2, kicked: 3 }

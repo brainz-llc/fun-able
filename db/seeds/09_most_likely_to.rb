@@ -91,7 +91,7 @@ cards = [
   { content: "sea el ultimo en enterarse del chisme", category: "general" },
   { content: "invente una excusa elaborada para no ir a algo", category: "general" },
   { content: "confunda la sal con el azucar", category: "general" },
-  { content: "se queme cocinando agua", category: "general" },
+  { content: "se queme cocinando agua", category: "general" }
 ]
 
 cards.each do |card_data|

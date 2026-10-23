@@ -12,7 +12,7 @@ class CreateMostLikelyToPlayers < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :most_likely_to_players, [:most_likely_to_game_id, :user_id], unique: true, name: 'idx_mlt_players_game_user'
-    add_index :most_likely_to_players, [:most_likely_to_game_id, :status], name: 'idx_mlt_players_game_status'
+    add_index :most_likely_to_players, [ :most_likely_to_game_id, :user_id ], unique: true, name: 'idx_mlt_players_game_user'
+    add_index :most_likely_to_players, [ :most_likely_to_game_id, :status ], name: 'idx_mlt_players_game_status'
   end
 end

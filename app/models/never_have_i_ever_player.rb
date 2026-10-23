@@ -9,7 +9,7 @@ class NeverHaveIEverPlayer < ApplicationRecord
   # Scopes
   scope :by_position, -> { order(:position) }
   scope :by_points, -> { order(points: :desc) }
-  scope :alive, -> { where('points > 0') }
+  scope :alive, -> { where("points > 0") }
 
   # Delegations
   delegate :display_name, :avatar_initials, to: :user

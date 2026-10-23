@@ -1,6 +1,6 @@
 class Game < ApplicationRecord
   # Associations
-  belongs_to :host, class_name: 'User'
+  belongs_to :host, class_name: "User"
   belongs_to :deck, optional: true
   has_many :game_players, dependent: :destroy
   has_many :players, through: :game_players, source: :user
@@ -20,8 +20,8 @@ class Game < ApplicationRecord
   before_validation :generate_code, on: :create
 
   # Scopes
-  scope :active, -> { where(status: [:lobby, :playing, :paused]) }
-  scope :joinable, -> { lobby.where('(SELECT COUNT(*) FROM game_players WHERE game_players.game_id = games.id AND game_players.is_spectator = false) < games.max_players') }
+  scope :active, -> { where(status: [ :lobby, :playing, :paused ]) }
+  scope :joinable, -> { lobby.where("(SELECT COUNT(*) FROM game_players WHERE game_players.game_id = games.id AND game_players.is_spectator = false) < games.max_players") }
   scope :recent, -> { order(created_at: :desc) }
 
   # Class methods
@@ -45,7 +45,7 @@ class Game < ApplicationRecord
     # Include both active AND disconnected players - disconnected players are still
     # part of the game until they leave/get kicked. Brief disconnections happen during
     # page refreshes via Turbo, so we shouldn't exclude them from game logic.
-    game_players.where(status: [:active, :disconnected]).playing
+    game_players.where(status: [ :active, :disconnected ]).playing
   end
 
   def spectators
@@ -147,7 +147,7 @@ class Game < ApplicationRecord
       update!(status: :playing)
       start_new_round!
     end
-    BrainzLab::Pulse.gauge("games.active", Game.where(status: [:playing, :paused]).count)
+    BrainzLab::Pulse.gauge("games.active", Game.where(status: [ :playing, :paused ]).count)
     true
   end
 
@@ -170,7 +170,7 @@ class Game < ApplicationRecord
   def finish!
     update!(status: :finished)
     BrainzLab::Pulse.counter("games.finished")
-    BrainzLab::Pulse.gauge("games.active", Game.where(status: [:playing, :paused]).count)
+    BrainzLab::Pulse.gauge("games.active", Game.where(status: [ :playing, :paused ]).count)
   end
 
   def winner
@@ -193,7 +193,7 @@ class Game < ApplicationRecord
   end
 
   def deck_must_be_playable
-    errors.add(:deck, 'debe ser jugable') unless deck&.playable?
+    errors.add(:deck, "debe ser jugable") unless deck&.playable?
   end
 
   def select_next_judge
@@ -202,7 +202,7 @@ class Game < ApplicationRecord
 
     if last_judge_position
       # Find next player after current judge
-      next_player = players.where('position > ?', last_judge_position).first
+      next_player = players.where("position > ?", last_judge_position).first
       next_player || players.first
     else
       players.first

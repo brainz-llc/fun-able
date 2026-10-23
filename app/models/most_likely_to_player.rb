@@ -2,8 +2,8 @@ class MostLikelyToPlayer < ApplicationRecord
   # Associations
   belongs_to :most_likely_to_game
   belongs_to :user
-  has_many :votes_cast, class_name: 'MostLikelyToVote', foreign_key: :voter_id, dependent: :destroy
-  has_many :votes_received, class_name: 'MostLikelyToVote', foreign_key: :voted_for_id, dependent: :destroy
+  has_many :votes_cast, class_name: "MostLikelyToVote", foreign_key: :voter_id, dependent: :destroy
+  has_many :votes_received, class_name: "MostLikelyToVote", foreign_key: :voted_for_id, dependent: :destroy
 
   # Enums
   enum :status, { active: 0, disconnected: 1, left: 2, kicked: 3 }

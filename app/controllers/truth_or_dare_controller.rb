@@ -1,7 +1,7 @@
 class TruthOrDareController < ApplicationController
-  before_action :require_login, except: [:index, :show, :join]
-  before_action :set_game, only: [:show, :lobby, :join, :play]
-  before_action :require_game_player, only: [:lobby, :play]
+  before_action :require_login, except: [ :index, :show, :join ]
+  before_action :set_game, only: [ :show, :lobby, :join, :play ]
+  before_action :require_game_player, only: [ :lobby, :play ]
 
   def index
     @games = TruthOrDareGame.joinable.recent.limit(10)
@@ -25,7 +25,7 @@ class TruthOrDareController < ApplicationController
       @game.add_player!(current_user)
       redirect_to truth_or_dare_lobby_path(@game)
     else
-      flash.now[:alert] = @game.errors.full_messages.join(', ')
+      flash.now[:alert] = @game.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -59,7 +59,7 @@ class TruthOrDareController < ApplicationController
     end
 
     unless @game.joinable?
-      redirect_to truth_or_dare_index_path, alert: 'No puedes unirte a esta partida'
+      redirect_to truth_or_dare_index_path, alert: "No puedes unirte a esta partida"
       return
     end
 
@@ -69,12 +69,12 @@ class TruthOrDareController < ApplicationController
       TruthOrDareChannel.broadcast_player_joined(@game, player)
       redirect_to truth_or_dare_lobby_path(@game)
     else
-      redirect_to truth_or_dare_index_path, alert: 'No se pudo unir a la partida'
+      redirect_to truth_or_dare_index_path, alert: "No se pudo unir a la partida"
     end
   end
 
   def join_by_code
-    code = params[:code]&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, '')
+    code = params[:code]&.to_s&.upcase&.strip&.gsub(/[^A-Z0-9]/, "")
     game = TruthOrDareGame.find_by_code(code)
 
     if game
@@ -89,7 +89,7 @@ class TruthOrDareController < ApplicationController
     @game = TruthOrDareGame.find(params[:id])
 
     unless @game.host?(current_user)
-      redirect_to truth_or_dare_lobby_path(@game), alert: 'Solo el anfitrion puede iniciar'
+      redirect_to truth_or_dare_lobby_path(@game), alert: "Solo el anfitrion puede iniciar"
       return
     end
 
@@ -97,7 +97,7 @@ class TruthOrDareController < ApplicationController
       TruthOrDareChannel.broadcast_game_started(@game)
       redirect_to truth_or_dare_play_path(@game)
     else
-      redirect_to truth_or_dare_lobby_path(@game), alert: 'No se puede iniciar la partida'
+      redirect_to truth_or_dare_lobby_path(@game), alert: "No se puede iniciar la partida"
     end
   end
 
@@ -106,17 +106,17 @@ class TruthOrDareController < ApplicationController
     player = @game.player_for(current_user)
 
     unless player&.current_turn?
-      render json: { error: 'No es tu turno' }, status: :forbidden
+      render json: { error: "No es tu turno" }, status: :forbidden
       return
     end
 
     card = @game.draw_truth_card!
 
     if card
-      TruthOrDareChannel.broadcast_card_drawn(@game, player, 'truth', card)
+      TruthOrDareChannel.broadcast_card_drawn(@game, player, "truth", card)
       render json: { success: true, card: { id: card.id, content: card.content, intensity: card.intensity } }
     else
-      render json: { error: 'No hay cartas disponibles' }, status: :unprocessable_entity
+      render json: { error: "No hay cartas disponibles" }, status: :unprocessable_entity
     end
   end
 
@@ -125,17 +125,17 @@ class TruthOrDareController < ApplicationController
     player = @game.player_for(current_user)
 
     unless player&.current_turn?
-      render json: { error: 'No es tu turno' }, status: :forbidden
+      render json: { error: "No es tu turno" }, status: :forbidden
       return
     end
 
     card = @game.draw_dare_card!
 
     if card
-      TruthOrDareChannel.broadcast_card_drawn(@game, player, 'dare', card)
+      TruthOrDareChannel.broadcast_card_drawn(@game, player, "dare", card)
       render json: { success: true, card: { id: card.id, content: card.content, intensity: card.intensity } }
     else
-      render json: { error: 'No hay cartas disponibles' }, status: :unprocessable_entity
+      render json: { error: "No hay cartas disponibles" }, status: :unprocessable_entity
     end
   end
 
@@ -144,13 +144,13 @@ class TruthOrDareController < ApplicationController
     player = @game.player_for(current_user)
 
     unless player&.current_turn?
-      render json: { error: 'No es tu turno' }, status: :forbidden
+      render json: { error: "No es tu turno" }, status: :forbidden
       return
     end
 
     challenge_type = params[:challenge_type]
 
-    if challenge_type == 'truth'
+    if challenge_type == "truth"
       player.record_truth!
     else
       player.record_dare!
@@ -167,7 +167,7 @@ class TruthOrDareController < ApplicationController
     player = @game.player_for(current_user)
 
     unless player&.current_turn?
-      render json: { error: 'No es tu turno' }, status: :forbidden
+      render json: { error: "No es tu turno" }, status: :forbidden
       return
     end
 
@@ -182,14 +182,14 @@ class TruthOrDareController < ApplicationController
     @game = TruthOrDareGame.find(params[:id])
     @game.remove_player!(current_user)
     TruthOrDareChannel.broadcast_player_left(@game, current_user)
-    redirect_to truth_or_dare_index_path, notice: 'Has abandonado la partida'
+    redirect_to truth_or_dare_index_path, notice: "Has abandonado la partida"
   end
 
   def kick
     @game = TruthOrDareGame.find(params[:id])
 
     unless @game.host?(current_user)
-      redirect_to truth_or_dare_lobby_path(@game), alert: 'Solo el anfitrion puede expulsar'
+      redirect_to truth_or_dare_lobby_path(@game), alert: "Solo el anfitrion puede expulsar"
       return
     end
 
@@ -206,15 +206,15 @@ class TruthOrDareController < ApplicationController
     @game = TruthOrDareGame.find(params[:id])
 
     unless @game.host?(current_user)
-      redirect_to truth_or_dare_lobby_path(@game), alert: 'Solo el anfitrion puede cambiar la configuracion'
+      redirect_to truth_or_dare_lobby_path(@game), alert: "Solo el anfitrion puede cambiar la configuracion"
       return
     end
 
     if @game.update(settings_params)
       TruthOrDareChannel.broadcast_settings_updated(@game)
-      redirect_to truth_or_dare_lobby_path(@game), notice: 'Configuracion actualizada'
+      redirect_to truth_or_dare_lobby_path(@game), notice: "Configuracion actualizada"
     else
-      redirect_to truth_or_dare_lobby_path(@game), alert: @game.errors.full_messages.join(', ')
+      redirect_to truth_or_dare_lobby_path(@game), alert: @game.errors.full_messages.join(", ")
     end
   end
 
@@ -223,7 +223,7 @@ class TruthOrDareController < ApplicationController
   def set_game
     @game = TruthOrDareGame.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to truth_or_dare_index_path, alert: 'Partida no encontrada'
+    redirect_to truth_or_dare_index_path, alert: "Partida no encontrada"
   end
 
   def require_game_player

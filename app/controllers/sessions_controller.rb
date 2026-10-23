@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :redirect_if_logged_in, only: [:new, :create]
+  before_action :redirect_if_logged_in, only: [ :new, :create ]
 
   def new
   end
@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       login(user)
       redirect_back_or root_path
     else
-      flash.now[:alert] = 'Correo o contraseña incorrectos'
+      flash.now[:alert] = "Correo o contraseña incorrectos"
       render :new, status: :unprocessable_entity
     end
   end
@@ -30,7 +30,7 @@ class SessionsController < ApplicationController
 
   def destroy
     logout
-    redirect_to root_path, notice: '¡Hasta pronto!'
+    redirect_to root_path, notice: "¡Hasta pronto!"
   end
 
   private

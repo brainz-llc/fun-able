@@ -1,8 +1,8 @@
 class DecksController < ApplicationController
-  before_action :require_login, except: [:index, :show]
-  before_action :require_registered_user, only: [:new, :create]
-  before_action :set_deck, only: [:show, :edit, :update, :destroy, :publish, :unpublish, :vote]
-  before_action :require_deck_owner, only: [:edit, :update, :destroy, :publish, :unpublish]
+  before_action :require_login, except: [ :index, :show ]
+  before_action :require_registered_user, only: [ :new, :create ]
+  before_action :set_deck, only: [ :show, :edit, :update, :destroy, :publish, :unpublish, :vote ]
+  before_action :require_deck_owner, only: [ :edit, :update, :destroy, :publish, :unpublish ]
 
   def index
     @decks = Deck.published.includes(:region, :creator)
@@ -11,9 +11,9 @@ class DecksController < ApplicationController
     @decks = @decks.by_rating(params[:content_rating]) if params[:content_rating].present?
 
     @decks = case params[:sort]
-    when 'recent'
+    when "recent"
       @decks.recent
-    when 'popular'
+    when "popular"
       @decks.popular
     else
       @decks.popular
@@ -39,10 +39,10 @@ class DecksController < ApplicationController
 
     if @deck.save
       BrainzLab::Flux.track_for_user(current_user, "deck.created", deck_id: @deck.id, deck_name: @deck.name, content_rating: @deck.content_rating)
-      redirect_to deck_path(@deck), notice: 'Mazo creado exitosamente'
+      redirect_to deck_path(@deck), notice: "Mazo creado exitosamente"
     else
       @regions = Region.active.sorted
-      flash.now[:alert] = @deck.errors.full_messages.join(', ')
+      flash.now[:alert] = @deck.errors.full_messages.join(", ")
       render :new, status: :unprocessable_entity
     end
   end
@@ -53,30 +53,30 @@ class DecksController < ApplicationController
 
   def update
     if @deck.update(deck_params)
-      redirect_to deck_path(@deck), notice: 'Mazo actualizado'
+      redirect_to deck_path(@deck), notice: "Mazo actualizado"
     else
       @regions = Region.active.sorted
-      flash.now[:alert] = @deck.errors.full_messages.join(', ')
+      flash.now[:alert] = @deck.errors.full_messages.join(", ")
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @deck.destroy
-    redirect_to decks_path, notice: 'Mazo eliminado'
+    redirect_to decks_path, notice: "Mazo eliminado"
   end
 
   def publish
     if @deck.publish!
-      redirect_to deck_path(@deck), notice: 'Mazo publicado'
+      redirect_to deck_path(@deck), notice: "Mazo publicado"
     else
-      redirect_to deck_path(@deck), alert: 'No se pudo publicar el mazo. Verifica que tenga suficientes cartas.'
+      redirect_to deck_path(@deck), alert: "No se pudo publicar el mazo. Verifica que tenga suficientes cartas."
     end
   end
 
   def unpublish
     @deck.draft!
-    redirect_to deck_path(@deck), notice: 'Mazo despublicado'
+    redirect_to deck_path(@deck), notice: "Mazo despublicado"
   end
 
   def vote
@@ -100,12 +100,12 @@ class DecksController < ApplicationController
   def set_deck
     @deck = Deck.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to decks_path, alert: 'Mazo no encontrado'
+    redirect_to decks_path, alert: "Mazo no encontrado"
   end
 
   def require_deck_owner
     unless @deck.creator_id == current_user&.id
-      redirect_to deck_path(@deck), alert: 'No tienes permiso para editar este mazo'
+      redirect_to deck_path(@deck), alert: "No tienes permiso para editar este mazo"
     end
   end
 
